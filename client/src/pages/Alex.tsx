@@ -20,7 +20,7 @@ export default function Alex() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start max-w-5xl mx-auto">
             {/* Video */}
             <div className="flex justify-center">
-              <AlexVideo className="w-full max-w-sm" />
+              <AlexVideo videoSrc="/manus-storage/alex-video-main_a07cc531.mp4" className="w-full max-w-sm" />
             </div>
 
             {/* Info panel */}

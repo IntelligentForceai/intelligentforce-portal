@@ -45,7 +45,7 @@ export default function Contact() {
             {/* Left: Info + ALEX */}
             <div className="flex flex-col gap-6">
               {/* ALEX video */}
-              <AlexVideo className="w-full max-w-xs mx-auto" />
+              <AlexVideo videoSrc="/manus-storage/alex-video-main_a07cc531.mp4" className="w-full max-w-xs mx-auto" />
 
               {/* Contact info */}
               <div className="bg-card border border-border rounded-2xl p-6">

@@ -29,7 +29,7 @@ export default function About() {
         <div className="container">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="flex justify-center">
-              <AlexVideo className="w-full max-w-xs" />
+              <AlexVideo videoSrc="/manus-storage/alex-video-main_a07cc531.mp4" className="w-full max-w-xs" />
             </div>
             <div>
               <h2 className="text-3xl font-bold text-white mb-6">{a.storyTitle}</h2>

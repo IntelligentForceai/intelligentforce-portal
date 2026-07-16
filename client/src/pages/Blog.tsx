@@ -50,7 +50,7 @@ export default function Blog() {
       {/* ALEX video */}
       <section className="pb-8 bg-background">
         <div className="container flex justify-center">
-          <AlexVideo className="w-full max-w-xs" />
+          <AlexVideo videoSrc="/manus-storage/alex-video-main_a07cc531.mp4" className="w-full max-w-xs" />
         </div>
       </section>
 

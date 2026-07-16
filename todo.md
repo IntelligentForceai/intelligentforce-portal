@@ -45,5 +45,5 @@
 ## Phase 7: Content Updates
 - [x] Fjerne telefonnummer fra alle sider (kun e-post)
 - [x] Legge inn ALEX sin e-post: alex@intelligentforce.ai på alle sider
-- [ ] Komprimere og laste opp ALEX-videoer fra HeyGen
-- [ ] Koble videoer til riktige sider i portalen
+- [x] Komprimere og laste opp ALEX-videoer fra HeyGen
+- [x] Koble videoer til riktige sider i portalen
