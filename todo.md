@@ -1,0 +1,43 @@
+# IntelligentForce Portal TODO
+
+## Phase 1: Setup
+- [x] i18n translation system (NO/EN)
+- [x] Global styles matching intelligentforce.ai dark theme
+- [x] Navigation component (desktop + mobile hamburger)
+- [x] Language toggle (🇳🇴/🇬🇧)
+- [x] App.tsx routing for all pages
+- [x] ALEX video component (reusable)
+- [x] Footer component
+
+## Phase 2: Home + Meet ALEX
+- [x] Home page - hero section
+- [x] Home page - How it works (3 steps)
+- [x] Home page - Why Choose IntelligentForce (6 cards)
+- [x] Home page - CTA section
+- [x] Meet ALEX page with video placeholder
+
+## Phase 3: Features, Pricing, About Us
+- [x] Features page
+- [x] Pricing page - 3 tiers + monthly/yearly toggle
+- [x] Pricing page - FAQ accordion
+- [x] About Us page - story, values, team
+
+## Phase 4: Blog + Contact
+- [x] Blog page - 5 real articles
+- [x] Blog page - category filters
+- [x] Blog page - newsletter signup
+- [x] Contact page - form (name, email, category, message)
+- [x] Contact page - office info + FAQ
+
+## Phase 5: Footer + Social
+- [x] Footer with all internal links
+- [x] Social media icon placeholders (LinkedIn, Instagram, Facebook)
+- [x] Correct contact emails
+
+## Phase 6: QA
+- [x] Mobile responsiveness all pages
+- [x] Tablet responsiveness all pages
+- [x] All translation keys replaced
+- [x] Video slots ready for HeyGen MP4
+- [ ] Checkpoint saved
+- [ ] Push to GitHub
