@@ -47,3 +47,13 @@
 - [x] Legge inn ALEX sin e-post: alex@intelligentforce.ai på alle sider
 - [x] Komprimere og laste opp ALEX-videoer fra HeyGen
 - [x] Koble videoer til riktige sider i portalen
+
+## Phase 8: GitHub sync og Admin-panel
+- [ ] Pushe alle siste endringer til GitHub
+- [ ] Bygge admin-panel med sikker innlogging (kun Valdi)
+- [ ] Live statusrapport med automatisk oppdatering hvert 5. minutt
+- [ ] Portalhelse-oversikt (sider oppe, responstid)
+- [ ] Besøksstatistikk (siste 24t, 7 dager)
+- [ ] Kontaktskjema-oversikt (nye henvendelser)
+- [ ] Agentaktivitet (mest besøkte agenter)
+- [ ] Systemstatus-indikatorer (grønn/gul/rød)
