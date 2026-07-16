@@ -97,7 +97,7 @@ export default function Pricing() {
       {/* ALEX video */}
       <section className="pb-4 bg-background">
         <div className="container flex justify-center">
-          <AlexVideo videoSrc="/manus-storage/alex-video-main_a07cc531.mp4" className="w-full max-w-xs" />
+          <AlexVideo videoSrc="/manus-storage/alex-video-pricing_dc17766c.mp4" className="w-full max-w-xs" />
         </div>
       </section>
 
