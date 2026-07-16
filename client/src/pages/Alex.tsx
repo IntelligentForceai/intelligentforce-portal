@@ -1,11 +1,26 @@
+import { useState } from "react";
 import { Link } from "wouter";
 import { useLang } from "@/contexts/LanguageContext";
 import AlexVideo from "@/components/AlexVideo";
 import { Clock, Globe, ArrowRight } from "lucide-react";
 
+const agents = [
+  { id: "data-analyst", name: "Data Analyst", nameNo: "Dataanalytiker", color: "bg-blue-500/20 border-blue-500/40 text-blue-300", img: "https://d2xsxph8kpxj0f.cloudfront.net/310519663514335084/37gsm9ZJmAXwwkBHHCppPv/agent-data-analyst-J48SW4YK2wujbGbyqBgbpd.webp", roiEn: "40+ hrs/month", roiNo: "40+ timer/mnd" },
+  { id: "customer-service", name: "Customer Service", nameNo: "Kundeservice", color: "bg-cyan-500/20 border-cyan-500/40 text-cyan-300", img: "https://d2xsxph8kpxj0f.cloudfront.net/310519663514335084/37gsm9ZJmAXwwkBHHCppPv/agent-customer-service-YviKVseSUs6J9UhRz5NPwC.webp", roiEn: "60% cost reduction", roiNo: "60% kostnadsreduksjon" },
+  { id: "market-analyst", name: "Market Analyst", nameNo: "Markedsanalytiker", color: "bg-green-500/20 border-green-500/40 text-green-300", img: "https://d2xsxph8kpxj0f.cloudfront.net/310519663514335084/37gsm9ZJmAXwwkBHHCppPv/agent-market-analyst-DFSLHF2rf9kqmUfMn626Un.webp", roiEn: "+15–25% revenue", roiNo: "+15–25% inntekter" },
+  { id: "risk-manager", name: "Risk Manager", nameNo: "Risikostyrer", color: "bg-purple-500/20 border-purple-500/40 text-purple-300", img: "https://d2xsxph8kpxj0f.cloudfront.net/310519663514335084/37gsm9ZJmAXwwkBHHCppPv/agent-risk-manager-MsGLgAdZLVgrXgyLvKw3nq.webp", roiEn: "50% compliance savings", roiNo: "50% compliance-besparelse" },
+  { id: "process-optimizer", name: "Process Optimizer", nameNo: "Prosessoptimaliserer", color: "bg-orange-500/20 border-orange-500/40 text-orange-300", img: "https://d2xsxph8kpxj0f.cloudfront.net/310519663514335084/37gsm9ZJmAXwwkBHHCppPv/agent-process-optimizer-M5rXyNTwSa3zjCNEimx8dy.webp", roiEn: "+30–40% productivity", roiNo: "+30–40% produktivitet" },
+  { id: "content-creator", name: "Content Creator", nameNo: "Innholdsskaper", color: "bg-pink-500/20 border-pink-500/40 text-pink-300", img: "https://d2xsxph8kpxj0f.cloudfront.net/310519663514335084/37gsm9ZJmAXwwkBHHCppPv/agent-content-creator-VCZxPvDhj9jUupMbLM6uP3.webp", roiEn: "70% content cost savings", roiNo: "70% innholdskostbesparelse" },
+  { id: "supply-chain", name: "Supply Chain", nameNo: "Forsyningskjede", color: "bg-teal-500/20 border-teal-500/40 text-teal-300", img: "https://d2xsxph8kpxj0f.cloudfront.net/310519663514335084/37gsm9ZJmAXwwkBHHCppPv/agent-supply-chain-gtXahePnw5ue6WNrdFL8Tg.webp", roiEn: "$100K+ annual savings", roiNo: "$100K+ årlig besparelse" },
+  { id: "hr-specialist", name: "HR Specialist", nameNo: "HR-spesialist", color: "bg-yellow-500/20 border-yellow-500/40 text-yellow-300", img: "https://d2xsxph8kpxj0f.cloudfront.net/310519663514335084/37gsm9ZJmAXwwkBHHCppPv/agent-hr-specialist-RTVXDb3xEUDtD2TMcFnFpi.webp", roiEn: "20+ hrs/week saved", roiNo: "20+ timer/uke spart" },
+  { id: "financial-analyst", name: "Financial Analyst", nameNo: "Finansanalytiker", color: "bg-sky-500/20 border-sky-500/40 text-sky-300", img: "https://d2xsxph8kpxj0f.cloudfront.net/310519663514335084/37gsm9ZJmAXwwkBHHCppPv/agent-financial-analyst-XhbPHsyZo3mmmH9qrqtyBE.webp", roiEn: "80% less reporting time", roiNo: "80% kortere rapporteringstid" },
+];
+
 export default function Alex() {
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const a = t.alex;
+  const isNo = lang === "no";
+  const [hoveredAgent, setHoveredAgent] = useState<string | null>(null);
 
   return (
     <div className="min-h-screen pt-16">
@@ -77,6 +92,54 @@ export default function Alex() {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 9 Agents Section */}
+      <section className="py-20 bg-card/10">
+        <div className="container">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-4">
+              {isNo ? "ALEX koordinerer 9 spesialiserte agenter" : "ALEX Coordinates 9 Specialized Agents"}
+            </h2>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+              {isNo
+                ? "Hver agent er ekspert på sitt felt. ALEX sikrer at riktig agent håndterer hvert spørsmål – automatisk og øyeblikkelig."
+                : "Each agent is an expert in their field. ALEX ensures the right agent handles every request – automatically and instantly."}
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-4">
+            {agents.map((agent) => (
+              <div
+                key={agent.id}
+                className={`border rounded-2xl p-4 flex flex-col items-center text-center cursor-pointer transition-all duration-200 hover:scale-105 ${agent.color}`}
+                onMouseEnter={() => setHoveredAgent(agent.id)}
+                onMouseLeave={() => setHoveredAgent(null)}
+              >
+                <img
+                  src={agent.img}
+                  alt={agent.name}
+                  className="w-20 h-20 rounded-full object-cover border-2 border-white/20 mb-3"
+                />
+                <h3 className="text-white font-bold text-sm mb-1">
+                  {isNo ? agent.nameNo : agent.name}
+                </h3>
+                <span className="text-xs font-medium opacity-80">
+                  {isNo ? agent.roiNo : agent.roiEn}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-10 text-center">
+            <Link
+              href="/features"
+              className="btn-gradient inline-flex items-center gap-2 px-8 py-4 rounded-full font-bold text-white"
+            >
+              {isNo ? "Se alle funksjoner" : "Explore All Features"} <ArrowRight size={18} />
+            </Link>
           </div>
         </div>
       </section>
