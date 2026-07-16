@@ -129,7 +129,6 @@ export const translations = {
       ctaTitle: "Klar til å komme i gang?",
       ctaSub: "Velg din plan og begynn å automatisere bedriften din i dag.",
       ctaBtn: "Ta Business Health Check",
-      phone: "+47 [TELEFONNUMMER]", // TODO: Erstatt med ekte telefonnummer
     },
     about: {
       hero: "Om IntelligentForce",
@@ -225,9 +224,7 @@ export const translations = {
       heroSub: "Vi er her for å hjelpe deg komme i gang med AI-automatisering",
       infoTitle: "Kontaktinformasjon",
       emailLabel: "E-post",
-      phoneLabel: "Telefon",
-      phone: "+47 [TELEFONNUMMER]", // TODO: Erstatt med ekte telefonnummer
-      phoneHours: "Man–Fre: 09:00–17:00",
+      emailAlex: "alex@intelligentforce.ai",
       officeLabel: "Kontor",
       office: "Oslo, Norge",
       officeServing: "Betjener kunder globalt",
@@ -436,7 +433,6 @@ export const translations = {
       ctaTitle: "Ready to Get Started?",
       ctaSub: "Choose your plan and start automating your business today.",
       ctaBtn: "Take Business Health Check",
-      phone: "+47 [PHONE NUMBER]", // TODO: Replace with real phone number
     },
     about: {
       hero: "About IntelligentForce",
@@ -532,9 +528,7 @@ export const translations = {
       heroSub: "We're here to help you get started with AI automation",
       infoTitle: "Contact Information",
       emailLabel: "Email",
-      phoneLabel: "Phone",
-      phone: "+47 [PHONE NUMBER]", // TODO: Replace with real phone number
-      phoneHours: "Mon–Fri: 09:00–17:00",
+      emailAlex: "alex@intelligentforce.ai",
       officeLabel: "Office",
       office: "Oslo, Norway",
       officeServing: "Serving clients globally",

@@ -172,10 +172,8 @@ export default function Pricing() {
             </div>
           </div>
 
-          {/* Phone placeholder */}
           <p className="text-center text-muted-foreground text-sm mt-6">
-            {/* TODO: Erstatt telefonnummer nedenfor med ekte nummer */}
-            Spørsmål? Ring oss: <span className="text-white font-medium">{p.phone}</span>
+            Spørsmål? Kontakt oss på <a href="mailto:hello@intelligentforce.ai" className="text-cyan-400 hover:text-cyan-300 transition-colors">hello@intelligentforce.ai</a> eller chat med <a href="/alex" className="text-cyan-400 hover:text-cyan-300 transition-colors">ALEX</a>.
           </p>
         </div>
       </section>

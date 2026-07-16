@@ -61,12 +61,11 @@ export default function Contact() {
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
-                    <Phone size={18} className="text-blue-400 mt-0.5 shrink-0" />
+                    <Mail size={18} className="text-cyan-400 mt-0.5 shrink-0" />
                     <div>
-                      <p className="text-xs text-muted-foreground mb-1">{c.phoneLabel}</p>
-                      {/* TODO: Erstatt telefonnummer med ekte nummer */}
-                      <p className="text-sm text-white font-medium">{c.phone}</p>
-                      <p className="text-xs text-muted-foreground">{c.phoneHours}</p>
+                      <p className="text-xs text-muted-foreground mb-1">ALEX</p>
+                      <a href="mailto:alex@intelligentforce.ai" className="text-sm text-white hover:text-cyan-400 transition-colors">alex@intelligentforce.ai</a>
+                      <p className="text-xs text-muted-foreground">{c.response}</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">

@@ -115,9 +115,7 @@ export default function Footer() {
             <h4 className="text-sm font-semibold text-white mb-3">{t.footer.contact}</h4>
             <ul className="space-y-2">
               <li><a href="mailto:hello@intelligentforce.ai" className="text-sm text-muted-foreground hover:text-white transition-colors">hello@intelligentforce.ai</a></li>
-              <li><a href="mailto:info@intelligentforce.ai" className="text-sm text-muted-foreground hover:text-white transition-colors">info@intelligentforce.ai</a></li>
-              <li><a href="mailto:support@intelligentforce.ai" className="text-sm text-muted-foreground hover:text-white transition-colors">support@intelligentforce.ai</a></li>
-              <li><a href="mailto:post@intelligentforce.ai" className="text-sm text-muted-foreground hover:text-white transition-colors">post@intelligentforce.ai</a></li>
+              <li><a href="mailto:alex@intelligentforce.ai" className="text-sm text-muted-foreground hover:text-cyan-400 transition-colors">alex@intelligentforce.ai</a></li>
             </ul>
           </div>
         </div>
