@@ -39,5 +39,5 @@
 - [x] Tablet responsiveness all pages
 - [x] All translation keys replaced
 - [x] Video slots ready for HeyGen MP4
-- [ ] Checkpoint saved
-- [ ] Push to GitHub
+- [x] Checkpoint saved
+- [x] Push to GitHub

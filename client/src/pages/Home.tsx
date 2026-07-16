@@ -1,179 +1,250 @@
-import { Link } from "wouter";
 import { useLang } from "@/contexts/LanguageContext";
+import { Link } from "wouter";
 import AlexVideo from "@/components/AlexVideo";
-import { Search, BarChart2, Zap, CheckCircle2, ArrowRight } from "lucide-react";
+import { ArrowRight, CheckCircle2, Zap, BarChart3, Shield, Users, Clock, Star, TrendingUp, Globe, Award } from "lucide-react";
+
+const whyIcons = [
+  <Globe className="w-6 h-6 text-cyan-400" />,
+  <BarChart3 className="w-6 h-6 text-cyan-400" />,
+  <Zap className="w-6 h-6 text-cyan-400" />,
+  <Shield className="w-6 h-6 text-cyan-400" />,
+  <Users className="w-6 h-6 text-cyan-400" />,
+  <Clock className="w-6 h-6 text-cyan-400" />,
+];
+
+const clientLogos = [
+  "Fortune 500", "Global 2000", "FTSE 100", "DAX 40", "CAC 40", "Nikkei 225"
+];
 
 export default function Home() {
   const { t } = useLang();
-  const h = t.home;
 
-  const whyCards = [
-    { title: h.why1Title, desc: h.why1Desc, icon: "🧩" },
-    { title: h.why2Title, desc: h.why2Desc, icon: "📊" },
-    { title: h.why3Title, desc: h.why3Desc, icon: "⚡" },
-    { title: h.why4Title, desc: h.why4Desc, icon: "✅" },
-    { title: h.why5Title, desc: h.why5Desc, icon: "🤖" },
-    { title: h.why6Title, desc: h.why6Desc, icon: "🛟" },
+  const whyItems = [
+    { title: t.home.w1Title, desc: t.home.w1Desc },
+    { title: t.home.w2Title, desc: t.home.w2Desc },
+    { title: t.home.w3Title, desc: t.home.w3Desc },
+    { title: t.home.w4Title, desc: t.home.w4Desc },
+    { title: t.home.w5Title, desc: t.home.w5Desc },
+    { title: t.home.w6Title, desc: t.home.w6Desc },
   ];
 
   return (
-    <div className="min-h-screen">
-      {/* Hero */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        {/* Background image */}
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage:
-              "url('https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=1600&q=80')",
-          }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/60 to-background" />
+    <div className="min-h-screen bg-[#050a14] text-white">
 
-        <div className="relative z-10 container text-center pt-24 pb-16">
+      {/* HERO */}
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+        {/* Background grid */}
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiMxYTJhNGEiIGZpbGwtb3BhY2l0eT0iMC40Ij48cGF0aCBkPSJNMzYgMzRoLTJ2LTJoMnYyem0wLTRoLTJ2LTJoMnYyem0tNCA0aC0ydi0yaDJ2MnptMC00aC0ydi0yaDJ2MnoiLz48L2c+PC9nPjwvc3ZnPg==')] opacity-30" />
+        {/* Gradient orbs */}
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-indigo-900/20 rounded-full blur-3xl" />
+
+        <div className="relative z-10 container mx-auto px-4 text-center max-w-5xl">
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur border border-white/20 rounded-full px-4 py-1.5 text-xs font-semibold tracking-widest text-white/90 mb-8">
-            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
-            {h.badge}
+          <div className="inline-flex items-center gap-2 bg-cyan-500/10 border border-cyan-500/30 rounded-full px-4 py-2 mb-8">
+            <span className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse" />
+            <span className="text-cyan-400 text-sm font-medium tracking-widest uppercase">{t.home.badge}</span>
           </div>
 
-          {/* Headline */}
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white leading-tight mb-6">
-            {h.hero1}{" "}
-            <span className="gradient-text">{h.hero2}</span>
+          {/* Hero headline */}
+          <h1 className="text-5xl md:text-7xl font-black mb-6 leading-tight">
+            <span className="text-white">{t.home.hero1}</span>
+            <br />
+            <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-indigo-400 bg-clip-text text-transparent">
+              {t.home.hero2}
+            </span>
           </h1>
 
-          <p className="text-lg sm:text-xl text-white/70 max-w-2xl mx-auto mb-10">
-            {h.heroSub}
+          <p className="text-xl md:text-2xl text-slate-300 mb-10 max-w-3xl mx-auto leading-relaxed">
+            {t.home.heroSub}
           </p>
 
-          {/* CTAs */}
-          <div className="flex flex-col sm:flex-row gap-3 justify-center mb-10">
-            <Link
-              href="/contact"
-              className="btn-gradient px-8 py-4 rounded-full font-semibold text-white text-base flex items-center justify-center gap-2"
-            >
-              {h.cta1} <ArrowRight size={18} />
+          {/* CTA buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+            <Link href="/contact">
+              <button className="group flex items-center gap-2 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold px-8 py-4 rounded-xl text-lg transition-all duration-200 shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 hover:scale-105 active:scale-95">
+                {t.home.cta1}
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </button>
             </Link>
-            <Link
-              href="/contact"
-              className="px-8 py-4 rounded-full font-semibold text-white border border-white/30 hover:bg-white/10 transition-colors text-base"
-            >
-              {h.cta2}
+            <Link href="/contact">
+              <button className="flex items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/20 hover:border-white/40 text-white font-semibold px-8 py-4 rounded-xl text-lg transition-all duration-200 backdrop-blur-sm">
+                {t.home.cta2}
+              </button>
             </Link>
-            <Link
-              href="/alex"
-              className="px-8 py-4 rounded-full font-semibold text-white border border-white/30 hover:bg-white/10 transition-colors text-base flex items-center justify-center gap-2"
-            >
-              💬 {h.cta3}
+            <Link href="/alex">
+              <button className="flex items-center gap-2 bg-transparent hover:bg-white/5 border border-cyan-500/40 hover:border-cyan-500/70 text-cyan-400 font-semibold px-8 py-4 rounded-xl text-lg transition-all duration-200">
+                💬 {t.home.cta3}
+              </button>
             </Link>
           </div>
 
           {/* Trust badges */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center text-sm text-white/60">
-            <span className="flex items-center gap-2">
-              <CheckCircle2 size={16} className="text-cyan-400" /> {h.roi}
-            </span>
-            <span className="flex items-center gap-2">
-              <CheckCircle2 size={16} className="text-cyan-400" /> {h.speed}
-            </span>
+          <div className="flex flex-col sm:flex-row gap-6 justify-center text-sm text-slate-400">
+            <div className="flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 text-cyan-400" />
+              <span>{t.home.trust1}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 text-cyan-400" />
+              <span>{t.home.trust2}</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Scroll indicator */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+          <div className="w-6 h-10 border-2 border-white/20 rounded-full flex items-start justify-center p-1">
+            <div className="w-1.5 h-3 bg-cyan-400 rounded-full animate-pulse" />
           </div>
         </div>
       </section>
 
-      {/* How it works */}
-      <section className="py-20 bg-background">
-        <div className="container">
-          <div className="text-center mb-14">
-            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-3">{h.howTitle}</h2>
-            <p className="text-muted-foreground text-lg">{h.howSub}</p>
+      {/* GLOBAL CLIENTS TICKER */}
+      <section className="py-8 border-y border-white/5 bg-white/2">
+        <div className="container mx-auto px-4">
+          <p className="text-center text-slate-500 text-sm mb-6 uppercase tracking-widest">Trusted by enterprises worldwide</p>
+          <div className="flex flex-wrap justify-center gap-8 md:gap-16">
+            {clientLogos.map((logo) => (
+              <div key={logo} className="text-slate-600 font-bold text-sm tracking-wider hover:text-slate-400 transition-colors">
+                {logo}
+              </div>
+            ))}
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        </div>
+      </section>
+
+      {/* HOW IT WORKS */}
+      <section className="py-24 relative">
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-blue-950/20 to-transparent" />
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">{t.home.howTitle}</h2>
+            <p className="text-slate-400 text-xl max-w-2xl mx-auto">{t.home.howSub}</p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             {[
-              { icon: <Search size={32} className="text-cyan-400" />, num: "01", title: h.step1Title, desc: h.step1Desc },
-              { icon: <BarChart2 size={32} className="text-blue-400" />, num: "02", title: h.step2Title, desc: h.step2Desc },
-              { icon: <Zap size={32} className="text-purple-400" />, num: "03", title: h.step3Title, desc: h.step3Desc },
-            ].map((step) => (
-              <div key={step.num} className="relative bg-card border border-border rounded-2xl p-8 card-hover">
-                <div className="absolute top-4 right-4 text-4xl font-black text-white/5">{step.num}</div>
-                <div className="mb-4">{step.icon}</div>
-                <h3 className="text-xl font-bold text-white mb-2">{step.title}</h3>
-                <p className="text-muted-foreground">{step.desc}</p>
+              { num: "01", title: t.home.step1Title, desc: t.home.step1Desc, icon: <BarChart3 className="w-8 h-8" /> },
+              { num: "02", title: t.home.step2Title, desc: t.home.step2Desc, icon: <TrendingUp className="w-8 h-8" /> },
+              { num: "03", title: t.home.step3Title, desc: t.home.step3Desc, icon: <Zap className="w-8 h-8" /> },
+            ].map((step, i) => (
+              <div key={i} className="relative group">
+                {i < 2 && (
+                  <div className="hidden md:block absolute top-12 left-full w-full h-px bg-gradient-to-r from-cyan-500/50 to-transparent z-10" />
+                )}
+                <div className="bg-gradient-to-b from-slate-800/60 to-slate-900/60 border border-white/10 rounded-2xl p-8 hover:border-cyan-500/30 transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/10 group-hover:-translate-y-1">
+                  <div className="flex items-center gap-4 mb-6">
+                    <span className="text-5xl font-black text-cyan-500/20 leading-none">{step.num}</span>
+                    <div className="text-cyan-400">{step.icon}</div>
+                  </div>
+                  <h3 className="text-2xl font-bold mb-3">{step.title}</h3>
+                  <p className="text-slate-400 leading-relaxed">{step.desc}</p>
+                </div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Why choose */}
-      <section className="py-20 bg-card/30">
-        <div className="container">
-          <div className="text-center mb-14">
-            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-3">{h.whyTitle}</h2>
-            <p className="text-muted-foreground text-lg">{h.whySub}</p>
+      {/* WHY INTELLIGENTFORCE */}
+      <section className="py-24">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">{t.home.whyTitle}</h2>
+            <p className="text-slate-400 text-xl">{t.home.whySub}</p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {whyCards.map((card) => (
-              <div key={card.title} className="bg-card border border-border rounded-2xl p-6 card-hover">
-                <div className="text-3xl mb-3">{card.icon}</div>
-                <h3 className="text-lg font-bold text-white mb-2">{card.title}</h3>
-                <p className="text-muted-foreground text-sm">{card.desc}</p>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            {whyItems.map((item, i) => (
+              <div key={i} className="bg-gradient-to-b from-slate-800/40 to-slate-900/40 border border-white/8 rounded-2xl p-6 hover:border-cyan-500/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-cyan-500/5">
+                <div className="mb-4">{whyIcons[i]}</div>
+                <h3 className="text-lg font-bold mb-2">{item.title}</h3>
+                <p className="text-slate-400 text-sm leading-relaxed">{item.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA banner */}
-      <section className="py-20 bg-background">
-        <div className="container">
-          <div className="relative rounded-3xl overflow-hidden bg-gradient-to-r from-blue-900/60 to-purple-900/60 border border-white/10 p-10 sm:p-16 text-center">
-            <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-purple-500/10" />
+      {/* STATS SECTION */}
+      <section className="py-16 relative">
+        <div className="absolute inset-0 bg-gradient-to-r from-cyan-950/30 via-blue-950/30 to-indigo-950/30" />
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto text-center">
+            {[
+              { value: "60%", label: "Cost reduction" },
+              { value: "2 weeks", label: "Time to deploy" },
+              { value: "9", label: "Specialized AI agents" },
+              { value: "24/7", label: "ALEX availability" },
+            ].map((stat, i) => (
+              <div key={i} className="group">
+                <div className="text-4xl md:text-5xl font-black bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent mb-2 group-hover:scale-110 transition-transform">
+                  {stat.value}
+                </div>
+                <div className="text-slate-400 text-sm">{stat.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA SECTION */}
+      <section className="py-24">
+        <div className="container mx-auto px-4">
+          <div className="relative bg-gradient-to-br from-cyan-900/40 via-blue-900/40 to-indigo-900/40 border border-cyan-500/20 rounded-3xl p-12 md:p-16 text-center max-w-4xl mx-auto overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-cyan-500/5 to-transparent" />
+            <div className="absolute -top-20 -right-20 w-60 h-60 bg-cyan-500/10 rounded-full blur-3xl" />
             <div className="relative z-10">
-              <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">{h.ctaTitle}</h2>
-              <p className="text-white/70 text-lg mb-8 max-w-xl mx-auto">{h.ctaSub}</p>
-              <Link
-                href="/contact"
-                className="btn-gradient inline-flex items-center gap-2 px-10 py-4 rounded-full font-bold text-white text-lg"
-              >
-                {h.ctaBtn} <ArrowRight size={20} />
+              <Award className="w-12 h-12 text-cyan-400 mx-auto mb-6" />
+              <h2 className="text-4xl md:text-5xl font-bold mb-4">{t.home.ctaTitle}</h2>
+              <p className="text-slate-300 text-xl mb-8 max-w-2xl mx-auto">{t.home.ctaSub}</p>
+              <Link href="/contact">
+                <button className="group inline-flex items-center gap-2 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold px-10 py-4 rounded-xl text-lg transition-all duration-200 shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 hover:scale-105 active:scale-95">
+                  {t.home.ctaBtn}
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </button>
               </Link>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Meet ALEX section */}
-      <section className="py-20 bg-card/20">
-        <div className="container">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            {/* Video */}
-            <div className="flex justify-center">
-              <AlexVideo className="w-full max-w-xs" />
-            </div>
-            {/* Text */}
+      {/* ALEX SECTION */}
+      <section className="py-24 relative">
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-slate-900/50 to-transparent" />
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="grid md:grid-cols-2 gap-12 items-center max-w-5xl mx-auto">
             <div>
-              <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">{h.alexTitle}</h2>
-              <p className="text-muted-foreground text-lg mb-4">{h.alexDesc}</p>
-              <p className="text-muted-foreground mb-8">{h.alexDesc2}</p>
-              <div className="flex flex-col sm:flex-row gap-3">
-                <Link
-                  href="/alex"
-                  className="btn-gradient px-6 py-3 rounded-full font-semibold text-white flex items-center justify-center gap-2"
-                >
-                  💬 {h.alexBtn1}
+              <AlexVideo />
+            </div>
+            <div>
+              <div className="inline-flex items-center gap-2 bg-cyan-500/10 border border-cyan-500/30 rounded-full px-3 py-1 mb-6">
+                <span className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse" />
+                <span className="text-cyan-400 text-xs font-medium uppercase tracking-wider">Meet ALEX</span>
+              </div>
+              <h2 className="text-4xl font-bold mb-4">{t.home.alexTitle}</h2>
+              <p className="text-slate-300 text-lg mb-4 leading-relaxed">{t.home.alexDesc}</p>
+              <p className="text-slate-400 mb-8 leading-relaxed">{t.home.alexSub}</p>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Link href="/alex">
+                  <button className="flex items-center gap-2 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold px-6 py-3 rounded-xl transition-all duration-200 hover:scale-105 active:scale-95">
+                    💬 {t.home.alexBtn1}
+                  </button>
                 </Link>
-                <Link
-                  href="/features"
-                  className="px-6 py-3 rounded-full font-semibold text-white border border-white/30 hover:bg-white/10 transition-colors text-center"
-                >
-                  {h.alexBtn2}
+                <Link href="/features">
+                  <button className="flex items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/20 hover:border-white/40 text-white font-semibold px-6 py-3 rounded-xl transition-all duration-200">
+                    {t.home.alexBtn2}
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
                 </Link>
               </div>
             </div>
           </div>
         </div>
       </section>
+
     </div>
   );
 }
