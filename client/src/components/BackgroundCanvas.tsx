@@ -119,19 +119,11 @@ export default function BackgroundCanvas() {
 
       ctx!.clearRect(0, 0, W, H);
 
-      // 1. Dark base gradient
-      const bg = ctx!.createLinearGradient(0, 0, 0, H);
-      bg.addColorStop(0, "#080c14");
-      bg.addColorStop(0.5, "#090e18");
-      bg.addColorStop(1, "#07111a");
-      ctx!.fillStyle = bg;
-      ctx!.fillRect(0, 0, W, H);
-
-      // 2. Overlay tint
+      // 1. Semi-transparent dark overlay (lets hero image show through)
       const overlay = ctx!.createLinearGradient(0, 0, 0, H);
-      overlay.addColorStop(0, "rgba(8,12,20,0.68)");
-      overlay.addColorStop(0.5, "rgba(6,18,35,0.55)");
-      overlay.addColorStop(1, "rgba(8,12,20,0.72)");
+      overlay.addColorStop(0, "rgba(8,12,20,0.72)");
+      overlay.addColorStop(0.5, "rgba(6,18,35,0.60)");
+      overlay.addColorStop(1, "rgba(8,12,20,0.75)");
       ctx!.fillStyle = overlay;
       ctx!.fillRect(0, 0, W, H);
 
