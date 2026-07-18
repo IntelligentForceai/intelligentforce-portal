@@ -16,6 +16,7 @@ import Contact from "./pages/Contact";
 import Alex from "./pages/Alex";
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
+import BackgroundCanvas from "./components/BackgroundCanvas";
 
 // Admin routes render without the public Navbar/Footer
 function AdminRouter() {
@@ -59,12 +60,15 @@ function App() {
             {isAdminRoute ? (
               <AdminRouter />
             ) : (
-              <div className="min-h-screen flex flex-col bg-background">
-                <Navbar />
-                <main className="flex-1">
-                  <PublicRouter />
-                </main>
-                <Footer />
+              <div className="min-h-screen flex flex-col" style={{ background: "transparent" }}>
+                <BackgroundCanvas />
+                <div style={{ position: "relative", zIndex: 1, display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+                  <Navbar />
+                  <main className="flex-1">
+                    <PublicRouter />
+                  </main>
+                  <Footer />
+                </div>
               </div>
             )}
           </TooltipProvider>
