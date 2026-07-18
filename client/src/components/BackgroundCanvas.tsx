@@ -119,11 +119,11 @@ export default function BackgroundCanvas() {
 
       ctx!.clearRect(0, 0, W, H);
 
-      // 1. Semi-transparent dark overlay (lets hero image show through)
+      // 1. Very light overlay so hero image shows through clearly
       const overlay = ctx!.createLinearGradient(0, 0, 0, H);
-      overlay.addColorStop(0, "rgba(8,12,20,0.72)");
-      overlay.addColorStop(0.5, "rgba(6,18,35,0.60)");
-      overlay.addColorStop(1, "rgba(8,12,20,0.75)");
+      overlay.addColorStop(0, "rgba(8,12,20,0.30)");
+      overlay.addColorStop(0.5, "rgba(6,18,35,0.22)");
+      overlay.addColorStop(1, "rgba(8,12,20,0.35)");
       ctx!.fillStyle = overlay;
       ctx!.fillRect(0, 0, W, H);
 

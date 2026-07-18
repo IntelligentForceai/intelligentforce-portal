@@ -69,8 +69,8 @@ function App() {
                   backgroundSize: "cover",
                   backgroundPosition: "center center",
                   backgroundRepeat: "no-repeat",
-                  opacity: 0.22,
-                  filter: "saturate(0.4) brightness(0.6)",
+                  opacity: 0.45,
+                  filter: "saturate(0.5) brightness(0.7)",
                   zIndex: 0,
                   pointerEvents: "none",
                 }} />
