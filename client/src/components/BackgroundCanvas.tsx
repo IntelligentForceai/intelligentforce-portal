@@ -12,12 +12,6 @@ export default function BackgroundCanvas() {
     let W = 0, H = 0;
     let animId: number;
 
-    // ── HERO IMAGE (background layer) ──────────────────────
-    const heroImg = new Image();
-    heroImg.src = "/images/hero_ai_agents.jpg";
-    let imgLoaded = false;
-    heroImg.onload = () => { imgLoaded = true; };
-
     function resize() {
       W = canvas!.width = window.innerWidth;
       H = canvas!.height = document.documentElement.scrollHeight;
@@ -133,25 +127,7 @@ export default function BackgroundCanvas() {
       ctx!.fillStyle = bg;
       ctx!.fillRect(0, 0, W, H);
 
-      // 2. Hero image – gjennomsiktig, desaturert
-      if (imgLoaded) {
-        ctx!.save();
-        ctx!.globalAlpha = 0.28;
-        ctx!.filter = "saturate(0.45) brightness(0.65)";
-        // Cover-fill: scale to cover entire canvas
-        const iw = heroImg.naturalWidth;
-        const ih = heroImg.naturalHeight;
-        const scale = Math.max(W / iw, H / ih);
-        const dw = iw * scale;
-        const dh = ih * scale;
-        const dx = (W - dw) / 2;
-        const dy = (H - dh) / 2;
-        ctx!.drawImage(heroImg, dx, dy, dw, dh);
-        ctx!.filter = "none";
-        ctx!.restore();
-      }
-
-      // 3. Overlay tint
+      // 2. Overlay tint
       const overlay = ctx!.createLinearGradient(0, 0, 0, H);
       overlay.addColorStop(0, "rgba(8,12,20,0.68)");
       overlay.addColorStop(0.5, "rgba(6,18,35,0.55)");

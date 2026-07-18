@@ -61,6 +61,19 @@ function App() {
               <AdminRouter />
             ) : (
               <div className="min-h-screen flex flex-col" style={{ background: "transparent" }}>
+                {/* Hero background image – fixed, full-screen, subtle */}
+                <div style={{
+                  position: "fixed",
+                  inset: 0,
+                  backgroundImage: "url('/images/hero_ai_agents.jpg')",
+                  backgroundSize: "cover",
+                  backgroundPosition: "center center",
+                  backgroundRepeat: "no-repeat",
+                  opacity: 0.22,
+                  filter: "saturate(0.4) brightness(0.6)",
+                  zIndex: 0,
+                  pointerEvents: "none",
+                }} />
                 <BackgroundCanvas />
                 <div style={{ position: "relative", zIndex: 1, display: "flex", flexDirection: "column", minHeight: "100vh" }}>
                   <Navbar />
