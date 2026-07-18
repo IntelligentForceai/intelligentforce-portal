@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Link } from "wouter";
 import { useLang } from "@/contexts/LanguageContext";
 import AlexVideo from "@/components/AlexVideo";
+import { trpc } from "@/lib/trpc";
+import { usePageTracker } from "@/hooks/usePageTracker";
 import { BarChart2, Headphones, Zap, Shield, Brain, Plug, ArrowRight, ChevronDown } from "lucide-react";
 
 const agents = [
@@ -138,6 +140,8 @@ export default function Features() {
   const f = t.features;
   const isNo = lang === "no";
   const [activeAgent, setActiveAgent] = useState<string | null>(null);
+  usePageTracker("/features");
+  const trackAgentMutation = trpc.portal.trackAgentView.useMutation();
 
   const coreFeatures = [
     { icon: <BarChart2 size={28} className="text-cyan-400" />, title: f.f1Title, desc: f.f1Desc },
@@ -218,7 +222,12 @@ export default function Features() {
                 <div
                   key={agent.id}
                   className={`bg-gradient-to-br ${agent.color} border ${agent.border} rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 shadow-lg ${agent.glow} hover:scale-[1.02] hover:shadow-xl`}
-                  onClick={() => setActiveAgent(isActive ? null : agent.id)}
+                  onClick={() => {
+                    if (!isActive) {
+                      trackAgentMutation.mutate({ agentId: agent.id, agentName: isNo ? agent.nameNo : agent.name });
+                    }
+                    setActiveAgent(isActive ? null : agent.id);
+                  }}
                 >
                   <div className="p-5 flex items-center gap-4">
                     <img

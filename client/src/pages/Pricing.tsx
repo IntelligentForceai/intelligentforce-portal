@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "wouter";
 import { useLang } from "@/contexts/LanguageContext";
 import AlexVideo from "@/components/AlexVideo";
+import { usePageTracker } from "@/hooks/usePageTracker";
 import { Check, ChevronDown, ChevronUp, ArrowRight } from "lucide-react";
 
 export default function Pricing() {
@@ -9,6 +10,7 @@ export default function Pricing() {
   const p = t.pricing;
   const [yearly, setYearly] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  usePageTracker("/pricing");
 
   const starterFeatures = [
     "Up to 3 AI Agents",

@@ -1,11 +1,13 @@
 import { Link } from "wouter";
 import { useLang } from "@/contexts/LanguageContext";
 import AlexVideo from "@/components/AlexVideo";
+import { usePageTracker } from "@/hooks/usePageTracker";
 import { ArrowRight, User } from "lucide-react";
 
 export default function About() {
   const { t } = useLang();
   const a = t.about;
+  usePageTracker("/about");
 
   const values = [
     { title: a.v1Title, desc: a.v1Desc, icon: "🤝" },

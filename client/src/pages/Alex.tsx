@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "wouter";
 import { useLang } from "@/contexts/LanguageContext";
 import AlexVideo from "@/components/AlexVideo";
+import { usePageTracker } from "@/hooks/usePageTracker";
 import { Clock, Globe, ArrowRight } from "lucide-react";
 
 const agents = [
@@ -21,6 +22,7 @@ export default function Alex() {
   const a = t.alex;
   const isNo = lang === "no";
   const [hoveredAgent, setHoveredAgent] = useState<string | null>(null);
+  usePageTracker("/alex");
 
   return (
     <div className="min-h-screen pt-16">

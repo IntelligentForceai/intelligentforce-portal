@@ -14,8 +14,21 @@ import About from "./pages/About";
 import Blog from "./pages/Blog";
 import Contact from "./pages/Contact";
 import Alex from "./pages/Alex";
+import AdminLogin from "./pages/AdminLogin";
+import AdminDashboard from "./pages/AdminDashboard";
 
-function Router() {
+// Admin routes render without the public Navbar/Footer
+function AdminRouter() {
+  return (
+    <Switch>
+      <Route path="/admin" component={AdminLogin} />
+      <Route path="/admin/dashboard" component={AdminDashboard} />
+    </Switch>
+  );
+}
+
+// Public portal routes with Navbar + Footer
+function PublicRouter() {
   return (
     <Switch>
       <Route path="/" component={Home} />
@@ -32,19 +45,28 @@ function Router() {
 }
 
 function App() {
+  // Determine if we're on an admin route
+  const isAdminRoute =
+    typeof window !== "undefined" &&
+    window.location.pathname.startsWith("/admin");
+
   return (
     <ErrorBoundary>
       <ThemeProvider defaultTheme="dark">
         <LanguageProvider>
           <TooltipProvider>
             <Toaster />
-            <div className="min-h-screen flex flex-col bg-background">
-              <Navbar />
-              <main className="flex-1">
-                <Router />
-              </main>
-              <Footer />
-            </div>
+            {isAdminRoute ? (
+              <AdminRouter />
+            ) : (
+              <div className="min-h-screen flex flex-col bg-background">
+                <Navbar />
+                <main className="flex-1">
+                  <PublicRouter />
+                </main>
+                <Footer />
+              </div>
+            )}
           </TooltipProvider>
         </LanguageProvider>
       </ThemeProvider>

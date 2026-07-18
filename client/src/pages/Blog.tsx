@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "wouter";
 import { useLang } from "@/contexts/LanguageContext";
 import AlexVideo from "@/components/AlexVideo";
+import { usePageTracker } from "@/hooks/usePageTracker";
 import { Clock, ArrowRight, Mail } from "lucide-react";
 
 export default function Blog() {
@@ -10,6 +11,7 @@ export default function Blog() {
   const [activeCategory, setActiveCategory] = useState(b.categories[0]);
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
+  usePageTracker("/blog");
 
   const filtered =
     activeCategory === b.categories[0]

@@ -1,6 +1,7 @@
 import { useLang } from "@/contexts/LanguageContext";
 import { Link } from "wouter";
 import AlexVideo from "@/components/AlexVideo";
+import { usePageTracker } from "@/hooks/usePageTracker";
 import { ArrowRight, CheckCircle2, Zap, BarChart3, Shield, Users, Clock, Star, TrendingUp, Globe, Award } from "lucide-react";
 
 const whyIcons = [
@@ -18,6 +19,7 @@ const clientLogos = [
 
 export default function Home() {
   const { t } = useLang();
+  usePageTracker("/");
 
   const whyItems = [
     { title: t.home.w1Title, desc: t.home.w1Desc },

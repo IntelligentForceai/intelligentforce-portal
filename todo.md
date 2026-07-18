@@ -48,12 +48,24 @@
 - [x] Komprimere og laste opp ALEX-videoer fra HeyGen
 - [x] Koble videoer til riktige sider i portalen
 
-## Phase 8: GitHub sync og Admin-panel
-- [ ] Pushe alle siste endringer til GitHub
-- [ ] Bygge admin-panel med sikker innlogging (kun Valdi)
-- [ ] Live statusrapport med automatisk oppdatering hvert 5. minutt
-- [ ] Portalhelse-oversikt (sider oppe, responstid)
-- [ ] Besøksstatistikk (siste 24t, 7 dager)
-- [ ] Kontaktskjema-oversikt (nye henvendelser)
-- [ ] Agentaktivitet (mest besøkte agenter)
-- [ ] Systemstatus-indikatorer (grønn/gul/rød)
+## Phase 8: Admin-panel og statistikk
+- [x] Nytt databaseskjema: admin_credentials, contact_submissions, page_views, agent_views
+- [x] Backend: adminRouter med password-login, portalhelse, dashbord-statistikk
+- [x] Backend: portalRouter med kontaktskjema-lagring og sidevisnings-tracking
+- [x] Frontend: AdminLogin-side (/admin) med sikker innlogging
+- [x] Frontend: AdminDashboard (/admin/dashboard) med 5 faner
+  - [x] Oversikt: nøkkeltall (besøk 24t/7d, uleste henvendelser, agenter)
+  - [x] Portalhelse: alle 7 sider med responstid og statuskode
+  - [x] Besøksstatistikk: daglig søylediagram + side-breakdown
+  - [x] Agentaktivitet: topp-agenter med antall visninger
+  - [x] Kontakthenvendelser: liste med utvidbar visning + merk-som-lest
+- [x] Auto-refresh hvert 5. minutt i dashbordet
+- [x] Sidevisnings-tracking på alle 7 offentlige sider
+- [x] Agentvisnings-tracking på Funksjoner-siden
+- [x] Kontaktskjema koblet til database via tRPC
+- [x] Admin-ruter isolert fra public Navbar/Footer
+
+## Neste steg
+- [ ] Pushe alle endringer til GitHub (branch: main)
+- [ ] Kjøre db:push for å opprette nye tabeller i produksjonsdatabasen
+- [ ] Verifisere admin-innlogging på live portal
