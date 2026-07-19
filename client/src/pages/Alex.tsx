@@ -98,17 +98,17 @@ export default function Alex() {
         </div>
       </section>
 
-      {/* 9 Expert Specialists Section */}
+      {/* 9 Agents Section */}
       <section className="py-20 bg-card/10">
         <div className="container">
           <div className="text-center mb-12">
             <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-4">
-              {isNo ? "ALEX koordinerer 9 spesialiserte eksperter" : "ALEX Coordinates 9 Specialized Experts"}
+              {isNo ? "ALEX koordinerer 9 spesialiserte agenter" : "ALEX Coordinates 9 Specialized Agents"}
             </h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
               {isNo
-                ? "Hver ekspert er spesialist på sitt felt. ALEX sikrer at riktig spesialist håndterer hvert oppdrag – automatisk og øyeblikkelig."
-                : "Each expert is a specialist in their field. ALEX ensures the right specialist handles every assignment – automatically and instantly."}
+                ? "Hver agent er ekspert på sitt felt. ALEX sikrer at riktig agent håndterer hvert spørsmål – automatisk og øyeblikkelig."
+                : "Each agent is an expert in their field. ALEX ensures the right agent handles every request – automatically and instantly."}
             </p>
           </div>
 
