@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Link } from "wouter";
 import { useLang } from "@/contexts/LanguageContext";
 import AlexVideo from "@/components/AlexVideo";
+import { investorsCaptions } from "@/lib/alexCaptions";
 import { usePageTracker } from "@/hooks/usePageTracker";
 import {
   ArrowRight,
@@ -61,6 +62,7 @@ export default function Investors() {
             <AlexVideo
               videoSrc="/manus-storage/alex-investors-compressed.mp4"
               className="w-full"
+              captions={investorsCaptions}
             />
           </div>
 

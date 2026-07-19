@@ -1,16 +1,10 @@
 import { useLang } from "@/contexts/LanguageContext";
 import { Link } from "wouter";
-import AlexVideo, { Caption } from "@/components/AlexVideo";
+import AlexVideo from "@/components/AlexVideo";
 import { usePageTracker } from "@/hooks/usePageTracker";
 import { ArrowRight, CheckCircle2, Zap, BarChart3, Shield, Users, Clock, Star, TrendingUp, Globe, Award } from "lucide-react";
+import { homeCaptions } from "@/lib/alexCaptions";
 
-const homeCaptions: Caption[] = [
-  { time: 0,  text: "Welcome to IntelligentForce." },
-  { time: 3,  text: "We automate business operations with AI." },
-  { time: 7,  text: "Reduce costs by up to 60%. Go live in 2 weeks." },
-  { time: 12, text: "9 specialized AI agents, ready to work for you." },
-  { time: 16, text: "Let's transform your business together." },
-];
 
 const whyIcons = [
   <Globe className="w-6 h-6 text-cyan-400" />,

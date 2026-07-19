@@ -1,14 +1,9 @@
 import { useState } from "react";
 import { Link } from "wouter";
 import { useLang } from "@/contexts/LanguageContext";
-import AlexVideo, { Caption } from "@/components/AlexVideo";
+import AlexVideo from "@/components/AlexVideo";
+import { featuresCaptions } from "@/lib/alexCaptions";
 
-const featuresCaptions: Caption[] = [
-  { time: 0,  text: "Meet the 9 AI agents that power IntelligentForce." },
-  { time: 5,  text: "Each agent is a specialist in their domain." },
-  { time: 9,  text: "I coordinate them all, so you don't have to." },
-  { time: 13, text: "Together, we automate what slows your business down." },
-];
 import { trpc } from "@/lib/trpc";
 import { usePageTracker } from "@/hooks/usePageTracker";
 import { BarChart2, Headphones, Zap, Shield, Brain, Plug, ArrowRight, ChevronDown } from "lucide-react";

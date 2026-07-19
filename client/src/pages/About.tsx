@@ -1,13 +1,8 @@
 import { Link } from "wouter";
 import { useLang } from "@/contexts/LanguageContext";
-import AlexVideo, { Caption } from "@/components/AlexVideo";
+import AlexVideo from "@/components/AlexVideo";
+import { aboutCaptions } from "@/lib/alexCaptions";
 
-const aboutCaptions: Caption[] = [
-  { time: 0,  text: "IntelligentForce was founded with one mission:" },
-  { time: 4,  text: "To make enterprise-grade AI accessible to every business." },
-  { time: 9,  text: "We are a team of AI specialists, business consultants, and engineers." },
-  { time: 14, text: "Building the future of work, together." },
-];
 import { usePageTracker } from "@/hooks/usePageTracker";
 import { ArrowRight, User } from "lucide-react";
 

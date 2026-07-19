@@ -1,10 +1,10 @@
 import { useState, useRef, useEffect } from "react";
 import { Play, Volume2, VolumeX } from "lucide-react";
-import { useLang } from "@/contexts/LanguageContext";
 
-// Caption type: array of { time (seconds), text }
+// Caption type: array of { time (seconds), end (seconds), text }
 export interface Caption {
   time: number;
+  end?: number;
   text: string;
 }
 
@@ -19,12 +19,12 @@ interface AlexVideoProps {
 }
 
 export default function AlexVideo({ videoSrc, posterSrc, className = "", captions }: AlexVideoProps) {
-  const { t } = useLang();
   const videoRef = useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = useState(false);
   const [muted, setMuted] = useState(false);
   const [currentCaption, setCurrentCaption] = useState<string>("");
   const [captionVisible, setCaptionVisible] = useState(false);
+  const prevCaptionRef = useRef<string>("");
 
   const handlePlay = () => {
     if (videoRef.current) {
@@ -42,8 +42,8 @@ export default function AlexVideo({ videoSrc, posterSrc, className = "", caption
 
   const handleEnded = () => {
     setPlaying(false);
-    setCurrentCaption("");
     setCaptionVisible(false);
+    setTimeout(() => setCurrentCaption(""), 400);
   };
 
   // Caption sync via timeupdate
@@ -54,21 +54,27 @@ export default function AlexVideo({ videoSrc, posterSrc, className = "", caption
 
     const handleTimeUpdate = () => {
       const t = video.currentTime;
-      // Find the most recent caption whose time <= current time
+
+      // Find active caption: time <= t < end (or next caption's time)
       let active = "";
-      for (let i = captions.length - 1; i >= 0; i--) {
-        if (t >= captions[i].time) {
-          active = captions[i].text;
+      for (let i = 0; i < captions.length; i++) {
+        const cap = captions[i];
+        const capEnd = cap.end ?? (captions[i + 1]?.time ?? cap.time + 4);
+        if (t >= cap.time && t < capEnd) {
+          active = cap.text;
           break;
         }
       }
-      if (active !== currentCaption) {
+
+      if (active !== prevCaptionRef.current) {
+        prevCaptionRef.current = active;
         if (active) {
+          // Fade out old, fade in new
           setCaptionVisible(false);
           setTimeout(() => {
             setCurrentCaption(active);
             setCaptionVisible(true);
-          }, 150);
+          }, 120);
         } else {
           setCaptionVisible(false);
           setTimeout(() => setCurrentCaption(""), 300);
@@ -78,7 +84,7 @@ export default function AlexVideo({ videoSrc, posterSrc, className = "", caption
 
     video.addEventListener("timeupdate", handleTimeUpdate);
     return () => video.removeEventListener("timeupdate", handleTimeUpdate);
-  }, [captions, currentCaption]);
+  }, [captions]);
 
   // Default poster – ALEX image from existing site
   const defaultPoster =
@@ -98,17 +104,18 @@ export default function AlexVideo({ videoSrc, posterSrc, className = "", caption
             className="w-full h-full object-cover"
           />
 
-          {/* Captions overlay – bottom of video */}
-          {captions && captions.length > 0 && playing && currentCaption && (
+          {/* Captions overlay – bottom of video, fades in/out */}
+          {captions && captions.length > 0 && playing && (
             <div
-              className={`absolute bottom-0 left-0 right-0 px-3 pb-3 pt-8 transition-opacity duration-300 ${
-                captionVisible ? "opacity-100" : "opacity-0"
-              }`}
+              className="absolute bottom-0 left-0 right-0 px-3 pb-3 pt-10 pointer-events-none"
               style={{
-                background: "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 70%, transparent 100%)",
+                background: "linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.45) 65%, transparent 100%)",
               }}
             >
-              <p className="text-white text-center text-sm font-medium leading-snug drop-shadow-lg">
+              <p
+                className="text-white text-center text-sm font-semibold leading-snug drop-shadow-lg min-h-[2.5rem] transition-opacity duration-200"
+                style={{ opacity: captionVisible ? 1 : 0 }}
+              >
                 {currentCaption}
               </p>
             </div>
