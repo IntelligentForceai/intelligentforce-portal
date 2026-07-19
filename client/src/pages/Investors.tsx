@@ -82,8 +82,8 @@ export default function Investors() {
             </h1>
             <p className="text-slate-300 text-xl leading-relaxed">
               {isNo
-                ? "IntelligentForce er ikke et softwareprodukt. Det er en profesjonell tjenesteplattform drevet av AI-ekspertise – bygget for å levere målbare resultater til mellomstore og store bedrifter i Europa."
-                : "IntelligentForce is not a software product. It is a professional services platform powered by AI expertise – built to deliver measurable results to mid-market and enterprise clients across Europe."}
+                ? "IntelligentForce er ikke et softwareprodukt. Det er en profesjonell tjenesteplattform drevet av AI-ekspertise – bygget for å levere målbare resultater til mellomstore og store bedrifter globalt."
+                : "IntelligentForce is not a software product. It is a professional services platform powered by AI expertise – built to deliver measurable results to mid-market and enterprise clients worldwide."}
             </p>
           </div>
 
@@ -153,18 +153,18 @@ export default function Investors() {
                 icon: <Globe size={28} className="text-cyan-400" />,
                 value: "$500B+",
                 label: isNo ? "Global markedsstørrelse" : "Global Market Size",
-                sub: isNo ? "AI i forretningsprosesser innen 2028" : "AI in business processes by 2028",
+                sub: isNo ? "AI i forretningsprosesser globalt innen 2028" : "AI in business processes globally by 2028",
               },
               {
                 icon: <TrendingUp size={28} className="text-green-400" />,
                 value: "38%",
                 label: isNo ? "Årlig vekstrate (CAGR)" : "Annual Growth Rate (CAGR)",
-                sub: isNo ? "Raskest voksende segment i enterprise-software" : "Fastest growing segment in enterprise software",
+                sub: isNo ? "Raskest voksende segment i global enterprise-software" : "Fastest growing segment in global enterprise software",
               },
               {
                 icon: <Building2 size={28} className="text-purple-400" />,
                 value: "€2.4T",
-                label: isNo ? "Europeisk bedriftsmarked" : "European Enterprise Market",
+                label: isNo ? "Globalt bedriftsmarked" : "Global Enterprise Market",
                 sub: isNo ? "Underservert av eksisterende AI-løsninger" : "Underserved by existing AI solutions",
               },
             ].map((item, i) => (
@@ -182,8 +182,8 @@ export default function Investors() {
           <div className="bg-gradient-to-r from-cyan-900/30 to-blue-900/30 border border-cyan-500/20 rounded-2xl p-8">
             <p className="text-slate-300 text-base leading-relaxed text-center max-w-3xl mx-auto">
               {isNo
-                ? "De fleste AI-løsninger på markedet er enten generiske verktøy uten bransjespesifikk dybde, eller kostbare enterprise-systemer som tar måneder å implementere. IntelligentForce fyller dette gapet – med profesjonell ekspertise, rask implementering og dokumentert ROI."
-                : "Most AI solutions on the market are either generic tools without industry-specific depth, or expensive enterprise systems that take months to deploy. IntelligentForce fills this gap – with professional expertise, rapid implementation, and documented ROI."}
+                ? "De fleste AI-løsninger på markedet er enten generiske verktøy uten bransjespesifikk dybde, eller kostbare enterprise-systemer som tar måneder å implementere. IntelligentForce fyller dette gapet – globalt – med profesjonell ekspertise, rask implementering og dokumentert ROI."
+                : "Most AI solutions on the market are either generic tools without industry-specific depth, or expensive enterprise systems that take months to deploy. IntelligentForce fills this gap – globally – with professional expertise, rapid implementation, and documented ROI."}
             </p>
           </div>
         </div>
@@ -230,8 +230,8 @@ export default function Investors() {
                 icon: <Globe size={22} className="text-blue-400" />,
                 title: isNo ? "Partnernettverk" : "Partner Network",
                 desc: isNo
-                  ? "Et voksende nettverk av sertifiserte implementeringspartnere i Europa muliggjør skalering uten proporsjonal økning i direkte kostnader."
-                  : "A growing network of certified implementation partners across Europe enables scaling without proportional increase in direct costs.",
+                  ? "Et voksende nettverk av sertifiserte implementeringspartnere globalt muliggjør skalering uten proporsjonal økning i direkte kostnader."
+                  : "A growing network of certified implementation partners worldwide enables scaling without proportional increase in direct costs.",
               },
             ].map((item, i) => (
               <div key={i} className="bg-card border border-border rounded-2xl p-7 flex gap-5">
@@ -356,8 +356,8 @@ export default function Investors() {
                 icon: <Shield size={18} className="text-cyan-400" />,
                 title: isNo ? "Enterprise-grade infrastruktur" : "Enterprise-Grade Infrastructure",
                 desc: isNo
-                  ? "Bygget på skalerbar skyinfrastruktur med full redundans, sikkerhet og compliance-støtte for europeiske bedrifter."
-                  : "Built on scalable cloud infrastructure with full redundancy, security, and compliance support for European enterprises.",
+                  ? "Bygget på skalerbar skyinfrastruktur med full redundans, sikkerhet og compliance-støtte for bedrifter globalt."
+                  : "Built on scalable cloud infrastructure with full redundancy, security, and compliance support for enterprises worldwide.",
               },
               {
                 icon: <Zap size={18} className="text-yellow-400" />,
@@ -412,14 +412,14 @@ export default function Investors() {
               {
                 label: isNo ? "Operasjonell kompetanse" : "Operational Expertise",
                 desc: isNo
-                  ? "Erfaring fra skalering av B2B SaaS eller profesjonelle tjenesteselskaper fra tidlig fase til vekst."
-                  : "Experience scaling B2B SaaS or professional services companies from early stage to growth.",
+                  ? "Erfaring fra skalering av B2B SaaS eller profesjonelle tjenesteselskaper fra tidlig fase til internasjonal vekst."
+                  : "Experience scaling B2B SaaS or professional services companies from early stage to international growth.",
               },
               {
-                label: isNo ? "Europeisk forankring" : "European Anchoring",
+                label: isNo ? "Internasjonal forankring" : "International Reach",
                 desc: isNo
-                  ? "Forståelse for det europeiske regulatoriske landskapet, GDPR og enterprise-salgssykluser i Norden og kontinental-Europa."
-                  : "Understanding of the European regulatory landscape, GDPR, and enterprise sales cycles in the Nordics and continental Europe.",
+                  ? "Forståelse for internasjonale regulatoriske krav, GDPR og enterprise-salgssykluser på tvers av markeder globalt."
+                  : "Understanding of international regulatory requirements, GDPR, and enterprise sales cycles across global markets.",
               },
             ].map((item, i) => (
               <div key={i} className="bg-card border border-border rounded-2xl p-6 flex items-start gap-4">
