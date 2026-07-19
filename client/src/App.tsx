@@ -17,6 +17,7 @@ import Alex from "./pages/Alex";
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 import HealthCheck from "./pages/HealthCheck";
+import BackgroundCanvas from "./components/BackgroundCanvas";
 
 // Admin routes render without the public Navbar/Footer
 function AdminRouter() {
@@ -62,6 +63,7 @@ function App() {
               <AdminRouter />
             ) : (
               <div className="min-h-screen flex flex-col bg-background">
+                <BackgroundCanvas />
                 <Navbar />
                 <main className="flex-1">
                   <PublicRouter />

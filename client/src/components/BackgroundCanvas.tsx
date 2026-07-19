@@ -119,10 +119,6 @@ export default function BackgroundCanvas() {
 
       ctx!.clearRect(0, 0, W, H);
 
-      // Subtle dark overlay – does NOT cover hero image (hero is in Home.tsx)
-      ctx!.fillStyle = "rgba(5,10,20,0.45)";
-      ctx!.fillRect(0, 0, W, H);
-
       // Grid + connections + particles
       drawGrid(t);
       drawConnections();
