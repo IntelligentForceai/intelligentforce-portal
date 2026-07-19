@@ -60,7 +60,7 @@ export default function Investors() {
           <div className="max-w-sm mx-auto mb-14">
             <AlexVideo
               videoSrc="/manus-storage/alex-investors-compressed.mp4"
-              className="w-full aspect-square-override"
+              className="w-full"
             />
           </div>
 
