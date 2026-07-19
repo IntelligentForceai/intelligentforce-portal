@@ -1,7 +1,13 @@
 import { useState } from "react";
 import { Link } from "wouter";
 import { useLang } from "@/contexts/LanguageContext";
-import AlexVideo from "@/components/AlexVideo";
+import AlexVideo, { Caption } from "@/components/AlexVideo";
+
+const blogCaptions: Caption[] = [
+  { time: 0,  text: "Stay informed with the latest AI insights." },
+  { time: 4,  text: "Our blog covers automation, AI trends, and business strategy." },
+  { time: 9,  text: "Written by our team of experts for business leaders like you." },
+];
 import { usePageTracker } from "@/hooks/usePageTracker";
 import { Clock, ArrowRight, Mail } from "lucide-react";
 
@@ -52,7 +58,7 @@ export default function Blog() {
       {/* ALEX video */}
       <section className="pb-8 bg-background">
         <div className="container flex justify-center">
-          <AlexVideo videoSrc="/videos/alex-video-blog_9514bfdb.mp4" className="w-full max-w-sm" />
+          <AlexVideo videoSrc="/videos/alex-video-blog_9514bfdb.mp4" className="w-full max-w-sm" captions={blogCaptions} />
         </div>
       </section>
 

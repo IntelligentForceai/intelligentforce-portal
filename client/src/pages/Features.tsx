@@ -1,7 +1,14 @@
 import { useState } from "react";
 import { Link } from "wouter";
 import { useLang } from "@/contexts/LanguageContext";
-import AlexVideo from "@/components/AlexVideo";
+import AlexVideo, { Caption } from "@/components/AlexVideo";
+
+const featuresCaptions: Caption[] = [
+  { time: 0,  text: "Meet the 9 AI agents that power IntelligentForce." },
+  { time: 5,  text: "Each agent is a specialist in their domain." },
+  { time: 9,  text: "I coordinate them all, so you don't have to." },
+  { time: 13, text: "Together, we automate what slows your business down." },
+];
 import { trpc } from "@/lib/trpc";
 import { usePageTracker } from "@/hooks/usePageTracker";
 import { BarChart2, Headphones, Zap, Shield, Brain, Plug, ArrowRight, ChevronDown } from "lucide-react";
@@ -174,7 +181,7 @@ export default function Features() {
         <div className="container">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
             <div className="flex justify-center">
-              <AlexVideo videoSrc="/videos/alex-video-features_344f7073.mp4" className="w-full max-w-sm" />
+              <AlexVideo videoSrc="/videos/alex-video-features_344f7073.mp4" className="w-full max-w-sm" captions={featuresCaptions} />
             </div>
             <div>
               <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4">{f.coreTitle}</h2>

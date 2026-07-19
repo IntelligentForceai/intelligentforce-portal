@@ -1,6 +1,13 @@
 import { Link } from "wouter";
 import { useLang } from "@/contexts/LanguageContext";
-import AlexVideo from "@/components/AlexVideo";
+import AlexVideo, { Caption } from "@/components/AlexVideo";
+
+const aboutCaptions: Caption[] = [
+  { time: 0,  text: "IntelligentForce was founded with one mission:" },
+  { time: 4,  text: "To make enterprise-grade AI accessible to every business." },
+  { time: 9,  text: "We are a team of AI specialists, business consultants, and engineers." },
+  { time: 14, text: "Building the future of work, together." },
+];
 import { usePageTracker } from "@/hooks/usePageTracker";
 import { ArrowRight, User } from "lucide-react";
 
@@ -31,7 +38,7 @@ export default function About() {
         <div className="container">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="flex justify-center">
-              <AlexVideo videoSrc="/videos/alex-video-about_3f7aa3ba.mp4" className="w-full max-w-sm" />
+              <AlexVideo videoSrc="/videos/alex-video-about_3f7aa3ba.mp4" className="w-full max-w-sm" captions={aboutCaptions} />
             </div>
             <div>
               <h2 className="text-3xl font-bold text-white mb-6">{a.storyTitle}</h2>
@@ -98,7 +105,7 @@ export default function About() {
           <div className="bg-gradient-to-r from-blue-950/80 to-cyan-950/60 border border-cyan-500/30 rounded-2xl overflow-hidden flex flex-col lg:flex-row gap-0 items-stretch shadow-lg shadow-cyan-900/20">
             {/* ALEX Visual */}
             <div className="lg:w-72 shrink-0 relative flex items-center justify-center bg-gradient-to-b from-blue-900/40 to-cyan-900/20 p-6">
-              <AlexVideo videoSrc="/videos/alex-video-about_3f7aa3ba.mp4" className="w-full max-w-sm" />
+              <AlexVideo videoSrc="/videos/alex-video-about_3f7aa3ba.mp4" className="w-full max-w-sm" captions={aboutCaptions} />
               <div className="absolute top-4 left-4 bg-gradient-to-r from-cyan-500 to-blue-500 text-white text-xs px-3 py-1 rounded-full font-bold shadow-lg">
                 AI Partner
               </div>

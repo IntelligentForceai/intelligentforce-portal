@@ -1,7 +1,14 @@
 import { useState } from "react";
 import { Link } from "wouter";
 import { useLang } from "@/contexts/LanguageContext";
-import AlexVideo from "@/components/AlexVideo";
+import AlexVideo, { Caption } from "@/components/AlexVideo";
+
+const pricingCaptions: Caption[] = [
+  { time: 0,  text: "Transparent pricing. No surprises." },
+  { time: 4,  text: "Choose the plan that fits your business needs." },
+  { time: 8,  text: "Most clients see ROI within the first month." },
+  { time: 12, text: "Questions? I'm here to help you choose." },
+];
 import { usePageTracker } from "@/hooks/usePageTracker";
 import { Check, ChevronDown, ChevronUp, ArrowRight } from "lucide-react";
 
@@ -99,7 +106,7 @@ export default function Pricing() {
       {/* ALEX video */}
       <section className="pb-4 bg-background">
         <div className="container flex justify-center">
-          <AlexVideo videoSrc="/videos/alex-video-pricing_dc17766c.mp4" className="w-full max-w-sm" />
+          <AlexVideo videoSrc="/videos/alex-video-pricing_dc17766c.mp4" className="w-full max-w-sm" captions={pricingCaptions} />
         </div>
       </section>
 

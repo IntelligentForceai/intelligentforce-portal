@@ -1,9 +1,19 @@
 import { useState } from "react";
 import { Link } from "wouter";
 import { useLang } from "@/contexts/LanguageContext";
-import AlexVideo from "@/components/AlexVideo";
+import AlexVideo, { Caption } from "@/components/AlexVideo";
 import { usePageTracker } from "@/hooks/usePageTracker";
 import { Clock, Globe, ArrowRight } from "lucide-react";
+
+const alexCaptions: Caption[] = [
+  { time: 0,   text: "Hi, I'm ALEX – your AI partner at IntelligentForce." },
+  { time: 4,   text: "I help businesses automate operations and reduce costs." },
+  { time: 8,   text: "I coordinate 9 specialized AI agents – each an expert in their field." },
+  { time: 13,  text: "From data analysis to customer service, finance to HR." },
+  { time: 17,  text: "Most clients go live within 2 weeks." },
+  { time: 20,  text: "Ready to see what's possible for your business?" },
+  { time: 24,  text: "Let's talk. I'm always here." },
+];
 
 const agents = [
   { id: "data-analyst", name: "Data Analyst", nameNo: "Dataanalytiker", color: "bg-blue-500/20 border-blue-500/40 text-blue-300", img: "https://d2xsxph8kpxj0f.cloudfront.net/310519663514335084/37gsm9ZJmAXwwkBHHCppPv/agent-data-analyst-J48SW4YK2wujbGbyqBgbpd.webp", roiEn: "40+ hrs/month", roiNo: "40+ timer/mnd" },
@@ -65,7 +75,7 @@ export default function Alex() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start max-w-5xl mx-auto">
             {/* Video */}
             <div className="flex justify-center">
-              <AlexVideo videoSrc="/videos/alex-video-alex_72e1beba.mp4" className="w-full max-w-sm" />
+              <AlexVideo videoSrc="/videos/alex-video-alex_72e1beba.mp4" className="w-full max-w-sm" captions={alexCaptions} />
             </div>
 
             {/* Info panel */}

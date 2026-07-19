@@ -1,6 +1,12 @@
 import { useState } from "react";
 import { useLang } from "@/contexts/LanguageContext";
-import AlexVideo from "@/components/AlexVideo";
+import AlexVideo, { Caption } from "@/components/AlexVideo";
+
+const contactCaptions: Caption[] = [
+  { time: 0,  text: "I'm here to help you get started." },
+  { time: 4,  text: "Reach out and I'll respond within 24 hours." },
+  { time: 8,  text: "Let's find the right solution for your business." },
+];
 import { trpc } from "@/lib/trpc";
 import { usePageTracker } from "@/hooks/usePageTracker";
 import { Mail, MapPin, MessageCircle, FileText, Users, Activity, ChevronDown, ChevronUp, CheckCircle2 } from "lucide-react";
@@ -60,7 +66,7 @@ export default function Contact() {
             {/* Left: Info + ALEX */}
             <div className="flex flex-col gap-6">
               {/* ALEX video */}
-              <AlexVideo videoSrc="/videos/alex-video-contact_2eb64fa2.mp4" className="w-full max-w-sm mx-auto" />
+              <AlexVideo videoSrc="/videos/alex-video-contact_2eb64fa2.mp4" className="w-full max-w-sm mx-auto" captions={contactCaptions} />
 
               {/* Contact info */}
               <div className="bg-card border border-border rounded-2xl p-6">

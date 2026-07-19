@@ -1,8 +1,16 @@
 import { useLang } from "@/contexts/LanguageContext";
 import { Link } from "wouter";
-import AlexVideo from "@/components/AlexVideo";
+import AlexVideo, { Caption } from "@/components/AlexVideo";
 import { usePageTracker } from "@/hooks/usePageTracker";
 import { ArrowRight, CheckCircle2, Zap, BarChart3, Shield, Users, Clock, Star, TrendingUp, Globe, Award } from "lucide-react";
+
+const homeCaptions: Caption[] = [
+  { time: 0,  text: "Welcome to IntelligentForce." },
+  { time: 3,  text: "We automate business operations with AI." },
+  { time: 7,  text: "Reduce costs by up to 60%. Go live in 2 weeks." },
+  { time: 12, text: "9 specialized AI agents, ready to work for you." },
+  { time: 16, text: "Let's transform your business together." },
+];
 
 const whyIcons = [
   <Globe className="w-6 h-6 text-cyan-400" />,
@@ -224,7 +232,7 @@ export default function Home() {
         <div className="container mx-auto px-4 relative z-10">
           <div className="grid md:grid-cols-2 gap-12 items-center max-w-5xl mx-auto">
             <div>
-              <AlexVideo videoSrc="/videos/alex-video-main_a07cc531.mp4" />
+              <AlexVideo videoSrc="/videos/alex-video-main_a07cc531.mp4" captions={homeCaptions} />
             </div>
             <div>
               <div className="inline-flex items-center gap-2 bg-cyan-500/10 border border-cyan-500/30 rounded-full px-3 py-1 mb-6">
