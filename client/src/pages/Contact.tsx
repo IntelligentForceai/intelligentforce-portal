@@ -44,7 +44,7 @@ export default function Contact() {
   return (
     <div className="min-h-screen pt-16">
       {/* Hero */}
-      <section className="py-20 bg-gradient-to-b from-card/40 to-background">
+      <section className="py-10 bg-gradient-to-b from-card/40 to-background">
         <div className="container text-center">
           <h1 className="text-4xl sm:text-5xl font-extrabold text-white mb-4">
             {c.hero1} <span className="gradient-text">{c.hero2}</span>

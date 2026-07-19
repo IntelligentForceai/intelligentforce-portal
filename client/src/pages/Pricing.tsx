@@ -66,7 +66,7 @@ export default function Pricing() {
   return (
     <div className="min-h-screen pt-16">
       {/* Hero */}
-      <section className="py-20 bg-gradient-to-b from-card/40 to-background">
+      <section className="py-10 bg-gradient-to-b from-card/40 to-background">
         <div className="container text-center">
           <h1 className="text-4xl sm:text-5xl font-extrabold text-white mb-4">{p.hero}</h1>
           <p className="text-muted-foreground text-xl mb-8">{p.heroSub}</p>
