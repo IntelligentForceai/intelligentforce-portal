@@ -147,7 +147,7 @@ export default function About() {
           <div className="relative rounded-3xl overflow-hidden bg-gradient-to-r from-blue-900/60 to-purple-900/60 border border-white/10 p-10 sm:p-16 text-center">
             <h2 className="text-3xl font-bold text-white mb-4">{a.ctaTitle}</h2>
             <p className="text-white/70 text-lg mb-8 max-w-xl mx-auto">{a.ctaSub}</p>
-            <Link href="/contact" className="btn-gradient inline-flex items-center gap-2 px-10 py-4 rounded-full font-bold text-white text-lg">
+            <Link href="/health-check" className="btn-gradient inline-flex items-center gap-2 px-10 py-4 rounded-full font-bold text-white text-lg">
               {a.ctaBtn} <ArrowRight size={20} />
             </Link>
           </div>

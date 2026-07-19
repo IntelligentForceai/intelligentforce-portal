@@ -13,7 +13,7 @@ export default function Pricing() {
   usePageTracker("/pricing");
 
   const starterFeatures = [
-    "Up to 3 AI Agents",
+    "Up to 3 Expert Specialists",
     "10 hours consulting/month",
     "Basic automation workflows",
     "Email & Slack integration",
@@ -24,7 +24,7 @@ export default function Pricing() {
   ];
 
   const proFeatures = [
-    "Up to 10 AI Agents",
+    "Up to 10 Expert Specialists",
     "30 hours consulting/month",
     "Advanced automation workflows",
     "500+ integrations",
@@ -36,7 +36,7 @@ export default function Pricing() {
   ];
 
   const entFeatures = [
-    "Unlimited AI Agents",
+    "Unlimited Expert Specialists",
     "Unlimited consulting",
     "Custom automation solutions",
     "Dedicated account manager",
@@ -215,7 +215,7 @@ export default function Pricing() {
           <div className="relative rounded-3xl overflow-hidden bg-gradient-to-r from-blue-900/60 to-purple-900/60 border border-white/10 p-10 sm:p-16 text-center">
             <h2 className="text-3xl font-bold text-white mb-4">{p.ctaTitle}</h2>
             <p className="text-white/70 text-lg mb-8 max-w-xl mx-auto">{p.ctaSub}</p>
-            <Link href="/contact" className="btn-gradient inline-flex items-center gap-2 px-10 py-4 rounded-full font-bold text-white text-lg">
+            <Link href="/health-check" className="btn-gradient inline-flex items-center gap-2 px-10 py-4 rounded-full font-bold text-white text-lg">
               {p.ctaBtn} <ArrowRight size={20} />
             </Link>
           </div>
