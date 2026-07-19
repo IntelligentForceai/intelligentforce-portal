@@ -19,8 +19,16 @@ export default function Navbar() {
     setMenuOpen(false);
   }, [location]);
 
-  // Main nav links shown in desktop row
-  const navLinks = [
+  // Only the most important links shown in the desktop bar
+  const desktopLinks = [
+    { href: "/features", label: t.nav.features },
+    { href: "/pricing", label: t.nav.pricing },
+    { href: "/about", label: t.nav.about },
+    { href: "/contact", label: t.nav.contact },
+  ];
+
+  // All links for mobile menu
+  const allLinks = [
     { href: "/", label: t.nav.home },
     { href: "/features", label: t.nav.features },
     { href: "/pricing", label: t.nav.pricing },
@@ -43,7 +51,7 @@ export default function Navbar() {
       }`}
     >
       <div className="container">
-        <div className="flex items-center h-16 gap-4">
+        <div className="flex items-center h-16 gap-3">
 
           {/* ── Logo ── */}
           <Link href="/" className="flex items-center gap-2 shrink-0">
@@ -57,10 +65,9 @@ export default function Navbar() {
             </span>
           </Link>
 
-          {/* ── Desktop nav – takes remaining space, centered ── */}
-          {/* Shown from lg (1024px). Uses flex-1 so it fills available space */}
-          <div className="hidden lg:flex flex-1 items-center justify-center gap-1">
-            {navLinks.map((link) => (
+          {/* ── Desktop nav links (4 links only, from lg) ── */}
+          <div className="hidden lg:flex items-center gap-1 flex-1 justify-center">
+            {desktopLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
@@ -73,22 +80,11 @@ export default function Navbar() {
                 {link.label}
               </Link>
             ))}
-            {/* Investors link – amber tint */}
-            <Link
-              href="/investors"
-              className={`flex items-center gap-1.5 px-3 py-2 rounded-md text-sm font-semibold transition-colors whitespace-nowrap ${
-                isInvestors
-                  ? "text-amber-300"
-                  : "text-amber-400/80 hover:text-amber-300"
-              }`}
-            >
-              <TrendingUp size={13} />
-              {lang === "no" ? "Investorer" : "Investors"}
-            </Link>
           </div>
 
-          {/* ── Right side – language + CTA + hamburger ── */}
+          {/* ── Right side ── */}
           <div className="flex items-center gap-2 ml-auto lg:ml-0 shrink-0">
+
             {/* Language toggle */}
             <div className="flex items-center gap-0.5 bg-white/10 rounded-full px-1 py-1">
               <button
@@ -111,7 +107,20 @@ export default function Navbar() {
               </button>
             </div>
 
-            {/* Meet ALEX – shown from sm */}
+            {/* Investors button (from lg) */}
+            <Link
+              href="/investors"
+              className={`hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-semibold border transition-all whitespace-nowrap ${
+                isInvestors
+                  ? "bg-amber-500/30 border-amber-400/60 text-amber-300"
+                  : "bg-amber-500/10 border-amber-500/30 text-amber-400 hover:bg-amber-500/20 hover:text-amber-300"
+              }`}
+            >
+              <TrendingUp size={13} />
+              {lang === "no" ? "Investorer" : "Investors"}
+            </Link>
+
+            {/* Meet ALEX (from sm) */}
             <Link
               href="/alex"
               className="hidden sm:flex items-center gap-1.5 btn-gradient px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap"
@@ -119,7 +128,7 @@ export default function Navbar() {
               {t.nav.meetAlex}
             </Link>
 
-            {/* Hamburger – hidden on lg+ */}
+            {/* Hamburger (hidden on lg+) */}
             <button
               onClick={() => setMenuOpen(!menuOpen)}
               className="lg:hidden p-2 text-white/80 hover:text-white"
@@ -130,11 +139,11 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* ── Mobile / tablet dropdown menu ── */}
+        {/* ── Mobile / tablet dropdown ── */}
         {menuOpen && (
           <div className="lg:hidden mobile-menu-enter pb-4 border-t border-border mt-0">
             <div className="flex flex-col gap-1 pt-3">
-              {navLinks.map((link) => (
+              {allLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
