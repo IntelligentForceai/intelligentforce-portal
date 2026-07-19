@@ -48,53 +48,53 @@ export default function BackgroundCanvas() {
       const vy = H * 0.38;
       const cols = 14;
       const rows = 18;
-      const offset = (t * 0.00014) % (1 / rows);
-      const gridAlpha = 0.43;
+      const spread = W * 1.1;
+      const depth = H * 0.55;
+      const speed = (t * 0.18) % (depth / rows);
 
-      for (let i = 0; i <= cols; i++) {
-        const bx = (i / cols) * W;
-        const alpha = gridAlpha * (0.055 + 0.035 * Math.sin((i / cols) * Math.PI));
+      ctx!.save();
+      // Horizontal lines
+      for (let r = 0; r <= rows; r++) {
+        const progress = r / rows;
+        const y = vy + progress * depth + speed;
+        if (y > H + 10) continue;
+        const alpha = progress * 0.13;
+        const x0 = vx - (spread / 2) * progress;
+        const x1 = vx + (spread / 2) * progress;
         ctx!.beginPath();
-        ctx!.moveTo(vx, vy);
-        ctx!.lineTo(bx, H);
-        ctx!.strokeStyle = `rgba(56,189,248,${alpha})`;
-        ctx!.lineWidth = 0.6;
-        ctx!.stroke();
-      }
-
-      for (let j = 0; j <= rows; j++) {
-        const tv = ((j / rows) + offset) % 1;
-        const y = vy + (H - vy) * tv;
-        const xLeft = vx - vx * tv;
-        const xRight = vx + (W - vx) * tv;
-        const alpha = gridAlpha * tv * 0.10;
-        ctx!.beginPath();
-        ctx!.moveTo(xLeft, y);
-        ctx!.lineTo(xRight, y);
+        ctx!.moveTo(x0, y);
+        ctx!.lineTo(x1, y);
         ctx!.strokeStyle = `rgba(56,189,248,${alpha})`;
         ctx!.lineWidth = 0.5;
         ctx!.stroke();
       }
-
-      const grd = ctx!.createRadialGradient(vx, vy, 0, vx, vy, 220);
-      grd.addColorStop(0, `rgba(96,165,250,${gridAlpha * 0.10})`);
-      grd.addColorStop(1, "rgba(96,165,250,0)");
-      ctx!.fillStyle = grd;
-      ctx!.beginPath();
-      ctx!.arc(vx, vy, 220, 0, Math.PI * 2);
-      ctx!.fill();
+      // Vertical lines
+      for (let c = 0; c <= cols; c++) {
+        const progress = c / cols;
+        const xNear = vx + (progress - 0.5) * spread * 0.05;
+        const xFar  = vx + (progress - 0.5) * spread;
+        const yNear = vy + speed;
+        const yFar  = vy + depth + speed;
+        ctx!.beginPath();
+        ctx!.moveTo(xNear, yNear);
+        ctx!.lineTo(xFar, yFar);
+        ctx!.strokeStyle = `rgba(96,165,250,0.07)`;
+        ctx!.lineWidth = 0.4;
+        ctx!.stroke();
+      }
+      ctx!.restore();
     }
 
     // ── CONNECTIONS ─────────────────────────────────────────
     function drawConnections() {
-      const partAlpha = 0.53;
+      const MAX_DIST = 120;
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
           const dx = particles[i].x - particles[j].x;
           const dy = particles[i].y - particles[j].y;
           const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 110) {
-            const alpha = partAlpha * (1 - dist / 110) * 0.07;
+          if (dist < MAX_DIST) {
+            const alpha = (1 - dist / MAX_DIST) * 0.08;
             ctx!.beginPath();
             ctx!.moveTo(particles[i].x, particles[i].y);
             ctx!.lineTo(particles[j].x, particles[j].y);
@@ -119,19 +119,14 @@ export default function BackgroundCanvas() {
 
       ctx!.clearRect(0, 0, W, H);
 
-      // 1. Very light overlay so hero image shows through clearly
-      const overlay = ctx!.createLinearGradient(0, 0, 0, H);
-      overlay.addColorStop(0, "rgba(8,12,20,0.30)");
-      overlay.addColorStop(0.5, "rgba(6,18,35,0.22)");
-      overlay.addColorStop(1, "rgba(8,12,20,0.35)");
-      ctx!.fillStyle = overlay;
+      // Subtle dark overlay – does NOT cover hero image (hero is in Home.tsx)
+      ctx!.fillStyle = "rgba(5,10,20,0.45)";
       ctx!.fillRect(0, 0, W, H);
 
-      // 4. Grid + particles
+      // Grid + connections + particles
       drawGrid(t);
       drawConnections();
 
-      const partAlpha = 0.53;
       for (const p of particles) {
         p.y -= p.speed;
         if (p.y < -10) {
@@ -139,7 +134,7 @@ export default function BackgroundCanvas() {
         }
         ctx!.beginPath();
         ctx!.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx!.fillStyle = `rgba(${p.color},${p.opacity * partAlpha})`;
+        ctx!.fillStyle = `rgba(${p.color},${p.opacity * 0.53})`;
         ctx!.fill();
       }
 
