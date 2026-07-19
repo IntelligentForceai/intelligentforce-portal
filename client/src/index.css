@@ -85,8 +85,14 @@
   overflow: hidden;
   aspect-ratio: 9/16;
   max-width: 360px;
+  width: 100%;
   margin: 0 auto;
   border: 1px solid oklch(0.22 0.02 250);
+}
+
+/* Full-width override for investor page */
+.alex-video-container.w-full.max-w-none {
+  max-width: 100%;
 }
 
 .alex-video-container video {

@@ -89,11 +89,11 @@ export default function Investors() {
 
           {/* ALEX Video + Intro Panel */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start max-w-5xl mx-auto">
-            {/* Video */}
+            {/* Video – full width in its column */}
             <div className="flex justify-center">
               <AlexVideo
-                videoSrc="/manus-storage/alex-intro-compressed.mp4"
-                className="w-full max-w-sm"
+                videoSrc="/manus-storage/alex-investors-compressed.mp4"
+                className="w-full max-w-none"
               />
             </div>
 
