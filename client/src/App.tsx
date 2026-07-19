@@ -16,6 +16,7 @@ import Contact from "./pages/Contact";
 import Alex from "./pages/Alex";
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
+import HealthCheck from "./pages/HealthCheck";
 
 // Admin routes render without the public Navbar/Footer
 function AdminRouter() {
@@ -38,6 +39,7 @@ function PublicRouter() {
       <Route path="/blog" component={Blog} />
       <Route path="/contact" component={Contact} />
       <Route path="/alex" component={Alex} />
+      <Route path="/health-check" component={HealthCheck} />
       <Route path="/404" component={NotFound} />
       <Route component={NotFound} />
     </Switch>
