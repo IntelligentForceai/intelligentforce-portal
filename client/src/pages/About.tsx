@@ -64,32 +64,31 @@ export default function About() {
 
       {/* Team */}
       <section className="py-16 bg-background">
-        <div className="container max-w-3xl">
+        <div className="container max-w-4xl">
           <h2 className="text-3xl font-bold text-white text-center mb-12">{a.teamTitle}</h2>
-          <div className="bg-card border border-border rounded-2xl p-8 flex flex-col sm:flex-row gap-6 items-center">
-            {/* Photo placeholder */}
-            <div className="w-28 h-28 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center shrink-0 relative">
-              <User size={40} className="text-white/60" />
-              {/* TODO: Erstatt med ekte bilde */}
-              <div className="absolute -bottom-1 -right-1 bg-cyan-500 text-white text-xs px-2 py-0.5 rounded-full font-bold">
-                CEO
+          <div className="bg-card border border-border rounded-2xl overflow-hidden flex flex-col lg:flex-row gap-0 items-stretch">
+            {/* CEO Photo */}
+            <div className="lg:w-72 shrink-0 relative">
+              <img
+                src="/images/ceo-founder.png"
+                alt="Founder & CEO – IntelligentForce"
+                className="w-full h-80 lg:h-full object-cover object-top"
+              />
+              <div className="absolute top-4 left-4 bg-cyan-500 text-white text-xs px-3 py-1 rounded-full font-bold shadow-lg">
+                CEO & Founder
               </div>
             </div>
-            <div className="text-center sm:text-left">
-              {/* TODO: Erstatt [NAVN] med ekte navn */}
-              <h3 className="text-xl font-bold text-white mb-0.5">{a.founderName}</h3>
-              <p className="text-cyan-400 text-sm font-medium mb-1">{a.founderTitle}</p>
-              <p className="text-muted-foreground text-xs mb-3">{a.founderRole}</p>
-              <p className="text-muted-foreground text-sm mb-4">{a.founderBio}</p>
-              <blockquote className="border-l-2 border-cyan-500 pl-4 italic text-white/70 text-sm">
+            {/* CEO Info */}
+            <div className="flex-1 p-8 flex flex-col justify-center">
+              <h3 className="text-2xl font-bold text-white mb-1">{a.founderName}</h3>
+              <p className="text-cyan-400 text-sm font-semibold mb-1 uppercase tracking-wider">{a.founderTitle}</p>
+              <p className="text-muted-foreground text-xs mb-4">{a.founderRole}</p>
+              <p className="text-muted-foreground text-sm leading-relaxed mb-6">{a.founderBio}</p>
+              <blockquote className="border-l-2 border-cyan-500 pl-4 italic text-white/80 text-sm">
                 "{a.founderQuote}"
               </blockquote>
             </div>
           </div>
-          <p className="text-center text-xs text-muted-foreground mt-3">
-            📸 {/* TODO: Erstatt plassholder-bilde med ekte foto */}
-            Erstatt sirkel-ikonet over med ekte profilbilde
-          </p>
         </div>
       </section>
 
