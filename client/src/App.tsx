@@ -18,6 +18,7 @@ import Alex from "./pages/Alex";
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 import HealthCheck from "./pages/HealthCheck";
+import Investors from "./pages/Investors";
 import BackgroundCanvas from "./components/BackgroundCanvas";
 
 // Scroll to top on every route change (except hash-anchor navigation)
@@ -54,6 +55,7 @@ function PublicRouter() {
       <Route path="/contact" component={Contact} />
       <Route path="/alex" component={Alex} />
       <Route path="/health-check" component={HealthCheck} />
+      <Route path="/investors" component={Investors} />
       <Route path="/404" component={NotFound} />
       <Route component={NotFound} />
     </Switch>

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { useLang } from "@/contexts/LanguageContext";
-import { Menu, X } from "lucide-react";
+import { Menu, X, TrendingUp } from "lucide-react";
 
 export default function Navbar() {
   const { t, lang, setLang } = useLang();
@@ -30,6 +30,8 @@ export default function Navbar() {
 
   const isActive = (href: string) =>
     href === "/" ? location === "/" : location.startsWith(href);
+
+  const isInvestors = location.startsWith("/investors");
 
   return (
     <nav
@@ -94,6 +96,19 @@ export default function Navbar() {
               </button>
             </div>
 
+            {/* Investors button – subtle gold/amber styling to signal exclusivity */}
+            <Link
+              href="/investors"
+              className={`hidden md:flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200 ${
+                isInvestors
+                  ? "bg-amber-500/30 border border-amber-400/60 text-amber-300"
+                  : "bg-amber-500/10 border border-amber-500/30 text-amber-400 hover:bg-amber-500/20 hover:border-amber-400/50 hover:text-amber-300"
+              }`}
+            >
+              <TrendingUp size={14} />
+              {lang === "no" ? "Investorer" : "Investors"}
+            </Link>
+
             {/* Meet ALEX button */}
             <Link
               href="/alex"
@@ -130,6 +145,18 @@ export default function Navbar() {
                   {link.label}
                 </Link>
               ))}
+              {/* Investors – mobile */}
+              <Link
+                href="/investors"
+                className={`px-4 py-3 text-sm rounded-md transition-colors flex items-center gap-2 ${
+                  isInvestors
+                    ? "text-amber-300 font-medium bg-amber-500/10"
+                    : "text-amber-400 hover:text-amber-300 hover:bg-amber-500/5"
+                }`}
+              >
+                <TrendingUp size={14} />
+                {lang === "no" ? "Investorer" : "Investors"}
+              </Link>
               <Link
                 href="/alex"
                 className="mx-4 mt-2 btn-gradient px-4 py-3 rounded-full text-sm font-medium text-center"
