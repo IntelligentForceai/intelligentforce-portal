@@ -135,7 +135,7 @@ export default function Home() {
             {[
               { num: "01", title: t.home.step1Title, desc: t.home.step1Desc, icon: <BarChart3 className="w-8 h-8" />, href: "/health-check", cta: "→ Start your diagnosis" },
               { num: "02", title: t.home.step2Title, desc: t.home.step2Desc, icon: <TrendingUp className="w-8 h-8" />, href: "/health-check", cta: "→ See your ROI" },
-              { num: "03", title: t.home.step3Title, desc: t.home.step3Desc, icon: <Zap className="w-8 h-8" />, href: "/contact", cta: "→ Book a demo" },
+              { num: "03", title: t.home.step3Title, desc: t.home.step3Desc, icon: <Zap className="w-8 h-8" />, href: "/alex#chat", cta: "→ Chat with ALEX" },
             ].map((step, i) => (
               <Link key={i} href={step.href}>
                 <div className="relative group cursor-pointer h-full">
