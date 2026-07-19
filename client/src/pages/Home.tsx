@@ -133,20 +133,23 @@ export default function Home() {
 
           <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             {[
-              { num: "01", title: t.home.step1Title, desc: t.home.step1Desc, icon: <BarChart3 className="w-8 h-8" /> },
-              { num: "02", title: t.home.step2Title, desc: t.home.step2Desc, icon: <TrendingUp className="w-8 h-8" /> },
-              { num: "03", title: t.home.step3Title, desc: t.home.step3Desc, icon: <Zap className="w-8 h-8" /> },
+              { num: "01", title: t.home.step1Title, desc: t.home.step1Desc, icon: <BarChart3 className="w-8 h-8" />, href: "/health-check", cta: "→ Start your diagnosis" },
+              { num: "02", title: t.home.step2Title, desc: t.home.step2Desc, icon: <TrendingUp className="w-8 h-8" />, href: "/health-check", cta: "→ See your ROI" },
+              { num: "03", title: t.home.step3Title, desc: t.home.step3Desc, icon: <Zap className="w-8 h-8" />, href: "/contact", cta: "→ Book a demo" },
             ].map((step, i) => (
-              <div key={i} className="relative group">
-                <div className="bg-gradient-to-b from-slate-800/60 to-slate-900/60 border border-white/10 rounded-2xl p-8 hover:border-cyan-500/30 transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/10 group-hover:-translate-y-1">
-                  <div className="flex items-center gap-4 mb-6">
-                    <span className="text-5xl font-black text-cyan-500/20 leading-none">{step.num}</span>
-                    <div className="text-cyan-400">{step.icon}</div>
+              <Link key={i} href={step.href}>
+                <div className="relative group cursor-pointer h-full">
+                  <div className="h-full bg-gradient-to-b from-slate-800/60 to-slate-900/60 border border-white/10 rounded-2xl p-8 hover:border-cyan-500/50 transition-all duration-300 hover:shadow-xl hover:shadow-cyan-500/15 group-hover:-translate-y-2">
+                    <div className="flex items-center gap-4 mb-6">
+                      <span className="text-5xl font-black text-cyan-500/20 leading-none">{step.num}</span>
+                      <div className="text-cyan-400">{step.icon}</div>
+                    </div>
+                    <h3 className="text-2xl font-bold mb-3">{step.title}</h3>
+                    <p className="text-slate-400 leading-relaxed mb-6">{step.desc}</p>
+                    <span className="text-cyan-400 text-sm font-semibold group-hover:text-cyan-300 transition-colors">{step.cta}</span>
                   </div>
-                  <h3 className="text-2xl font-bold mb-3">{step.title}</h3>
-                  <p className="text-slate-400 leading-relaxed">{step.desc}</p>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
