@@ -19,6 +19,7 @@ import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 import HealthCheck from "./pages/HealthCheck";
 import Investors from "./pages/Investors";
+import BlogPost from "./pages/BlogPost";
 import BackgroundCanvas from "./components/BackgroundCanvas";
 
 // Scroll to top on every route change (except hash-anchor navigation)
@@ -52,6 +53,7 @@ function PublicRouter() {
       <Route path="/pricing" component={Pricing} />
       <Route path="/about" component={About} />
       <Route path="/blog" component={Blog} />
+      <Route path="/blog/:slug" component={BlogPost} />
       <Route path="/contact" component={Contact} />
       <Route path="/alex" component={Alex} />
       <Route path="/health-check" component={HealthCheck} />
