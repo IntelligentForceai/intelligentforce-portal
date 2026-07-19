@@ -32,16 +32,13 @@ export default function AlexVideo({ videoSrc, posterSrc, className = "" }: AlexV
 
   const handleEnded = () => setPlaying(false);
 
-  // Default poster – ALEX image
+  // Default poster – ALEX image from existing site
   const defaultPoster =
     posterSrc ||
     "https://files.manuscdn.com/user_upload_by_module/session_file/310519663514335084/QGFVPTlLwNCwfnql.png";
 
   return (
-    <div
-      className={`alex-video-container glow-blue ${className}`}
-      style={{ position: "relative", overflow: "hidden", borderRadius: "inherit" }}
-    >
+    <div className={`alex-video-container glow-blue ${className}`}>
       {videoSrc ? (
         <>
           <video
@@ -50,28 +47,11 @@ export default function AlexVideo({ videoSrc, posterSrc, className = "" }: AlexV
             poster={defaultPoster}
             playsInline
             onEnded={handleEnded}
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              objectPosition: "center top",
-            }}
+            className="w-full h-full object-cover"
           />
           {/* Controls overlay */}
           {!playing && (
-            <div
-              style={{
-                position: "absolute",
-                inset: 0,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                background: "rgba(0,0,0,0.35)",
-              }}
-            >
+            <div className="absolute inset-0 flex items-center justify-center bg-black/40">
               <button
                 onClick={handlePlay}
                 className="flex items-center gap-2 btn-gradient px-6 py-3 rounded-full font-semibold text-white shadow-lg hover:scale-105 transition-transform"
@@ -85,17 +65,7 @@ export default function AlexVideo({ videoSrc, posterSrc, className = "" }: AlexV
           {playing && (
             <button
               onClick={toggleMute}
-              style={{
-                position: "absolute",
-                bottom: "1rem",
-                right: "1rem",
-                padding: "0.5rem",
-                background: "rgba(0,0,0,0.5)",
-                borderRadius: "9999px",
-                color: "white",
-                border: "none",
-                cursor: "pointer",
-              }}
+              className="absolute bottom-4 right-4 p-2 bg-black/50 rounded-full text-white hover:bg-black/70 transition-colors"
               aria-label={muted ? "Unmute" : "Mute"}
             >
               {muted ? <VolumeX size={16} /> : <Volume2 size={16} />}
@@ -103,35 +73,22 @@ export default function AlexVideo({ videoSrc, posterSrc, className = "" }: AlexV
           )}
         </>
       ) : (
-        /* Placeholder */
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
+        /* Placeholder – ready for HeyGen MP4 upload */
+        <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-b from-card to-background p-6">
           <img
             src={defaultPoster}
             alt="ALEX – IntelligentForce AI Assistant"
-            style={{
-              position: "absolute",
-              inset: 0,
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              objectPosition: "center top",
-              opacity: 0.85,
-            }}
+            className="w-full h-full object-cover absolute inset-0 opacity-80"
           />
-          <div style={{ position: "relative", zIndex: 10, display: "flex", flexDirection: "column", alignItems: "center", gap: "0.75rem", textAlign: "center" }}>
+          <div className="relative z-10 flex flex-col items-center gap-3 text-center">
             <div className="w-16 h-16 rounded-full btn-gradient flex items-center justify-center shadow-lg">
               <Play size={28} fill="white" className="ml-1" />
             </div>
             <p className="text-white font-semibold text-sm drop-shadow">{t.alex.playBtn}</p>
+            <p className="text-white/60 text-xs drop-shadow">
+              {/* Placeholder notice – visible only in dev */}
+              {import.meta.env.DEV && "📹 HeyGen MP4 goes here"}
+            </p>
           </div>
         </div>
       )}
