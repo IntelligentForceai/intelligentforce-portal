@@ -60,14 +60,7 @@ export default function Footer() {
             <ul className="space-y-2">
               <li><Link href="/features" className="text-sm text-muted-foreground hover:text-white transition-colors">{t.footer.solutions}</Link></li>
               <li><Link href="/pricing" className="text-sm text-muted-foreground hover:text-white transition-colors">{t.footer.pricing}</Link></li>
-              <li>
-                <button
-                  onClick={() => alert("Dokumentasjon kommer snart!")}
-                  className="text-sm text-muted-foreground hover:text-white transition-colors"
-                >
-                  {t.footer.documentation}
-                </button>
-              </li>
+              <li><Link href="/health-check" className="text-sm text-muted-foreground hover:text-white transition-colors">Business Health Check</Link></li>
             </ul>
           </div>
 
@@ -77,14 +70,7 @@ export default function Footer() {
             <ul className="space-y-2">
               <li><Link href="/about" className="text-sm text-muted-foreground hover:text-white transition-colors">{t.footer.about}</Link></li>
               <li><Link href="/blog" className="text-sm text-muted-foreground hover:text-white transition-colors">{t.footer.blog}</Link></li>
-              <li>
-                <button
-                  onClick={() => alert("Karrieresiden kommer snart!")}
-                  className="text-sm text-muted-foreground hover:text-white transition-colors"
-                >
-                  {t.footer.careers}
-                </button>
-              </li>
+              <li><Link href="/contact" className="text-sm text-muted-foreground hover:text-white transition-colors">{t.footer.careers}</Link></li>
             </ul>
           </div>
 
@@ -92,21 +78,9 @@ export default function Footer() {
           <div>
             <h4 className="text-sm font-semibold text-white mb-3">{t.footer.legal}</h4>
             <ul className="space-y-2">
-              <li>
-                <button onClick={() => alert("Personvernside kommer snart!")} className="text-sm text-muted-foreground hover:text-white transition-colors">
-                  {t.footer.privacy}
-                </button>
-              </li>
-              <li>
-                <button onClick={() => alert("Vilkårside kommer snart!")} className="text-sm text-muted-foreground hover:text-white transition-colors">
-                  {t.footer.terms}
-                </button>
-              </li>
-              <li>
-                <button onClick={() => alert("Cookieside kommer snart!")} className="text-sm text-muted-foreground hover:text-white transition-colors">
-                  {t.footer.cookies}
-                </button>
-              </li>
+              <li><Link href="/contact" className="text-sm text-muted-foreground hover:text-white transition-colors">{t.footer.privacy}</Link></li>
+              <li><Link href="/contact" className="text-sm text-muted-foreground hover:text-white transition-colors">{t.footer.terms}</Link></li>
+              <li><Link href="/contact" className="text-sm text-muted-foreground hover:text-white transition-colors">{t.footer.cookies}</Link></li>
             </ul>
           </div>
 
