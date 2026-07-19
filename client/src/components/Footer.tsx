@@ -70,7 +70,7 @@ export default function Footer() {
             <ul className="space-y-2">
               <li><Link href="/about" className="text-sm text-muted-foreground hover:text-white transition-colors">{t.footer.about}</Link></li>
               <li><Link href="/blog" className="text-sm text-muted-foreground hover:text-white transition-colors">{t.footer.blog}</Link></li>
-              <li><Link href="/contact" className="text-sm text-muted-foreground hover:text-white transition-colors">{t.footer.careers}</Link></li>
+              <li><Link href="/careers" className="text-sm text-muted-foreground hover:text-white transition-colors">{t.footer.careers}</Link></li>
             </ul>
           </div>
 
@@ -78,9 +78,10 @@ export default function Footer() {
           <div>
             <h4 className="text-sm font-semibold text-white mb-3">{t.footer.legal}</h4>
             <ul className="space-y-2">
-              <li><Link href="/contact" className="text-sm text-muted-foreground hover:text-white transition-colors">{t.footer.privacy}</Link></li>
-              <li><Link href="/contact" className="text-sm text-muted-foreground hover:text-white transition-colors">{t.footer.terms}</Link></li>
-              <li><Link href="/contact" className="text-sm text-muted-foreground hover:text-white transition-colors">{t.footer.cookies}</Link></li>
+              <li><Link href="/privacy" className="text-sm text-muted-foreground hover:text-white transition-colors">{t.footer.privacy}</Link></li>
+              <li><Link href="/terms" className="text-sm text-muted-foreground hover:text-white transition-colors">{t.footer.terms}</Link></li>
+              <li><Link href="/cookies" className="text-sm text-muted-foreground hover:text-white transition-colors">{t.footer.cookies}</Link></li>
+              <li><Link href="/legal" className="text-sm text-muted-foreground hover:text-white transition-colors">Legal</Link></li>
             </ul>
           </div>
 

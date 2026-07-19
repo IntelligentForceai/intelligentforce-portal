@@ -20,6 +20,11 @@ import AdminDashboard from "./pages/AdminDashboard";
 import HealthCheck from "./pages/HealthCheck";
 import Investors from "./pages/Investors";
 import BlogPost from "./pages/BlogPost";
+import Careers from "./pages/Careers";
+import Privacy from "./pages/Privacy";
+import Terms from "./pages/Terms";
+import Cookies from "./pages/Cookies";
+import Legal from "./pages/Legal";
 import BackgroundCanvas from "./components/BackgroundCanvas";
 
 // Scroll to top on every route change (except hash-anchor navigation)
@@ -58,6 +63,11 @@ function PublicRouter() {
       <Route path="/alex" component={Alex} />
       <Route path="/health-check" component={HealthCheck} />
       <Route path="/investors" component={Investors} />
+      <Route path="/careers" component={Careers} />
+      <Route path="/privacy" component={Privacy} />
+      <Route path="/terms" component={Terms} />
+      <Route path="/cookies" component={Cookies} />
+      <Route path="/legal" component={Legal} />
       <Route path="/404" component={NotFound} />
       <Route component={NotFound} />
     </Switch>
