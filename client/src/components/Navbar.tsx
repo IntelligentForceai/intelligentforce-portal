@@ -72,25 +72,29 @@ export default function Navbar() {
 
           {/* Right side */}
           <div className="flex items-center gap-2">
-            {/* Language toggle */}
-            <div className="flex items-center gap-1 bg-white/10 rounded-full p-1">
-              <button
-                onClick={() => setLang("no")}
-                title="Bytt til norsk"
-                className={`text-base px-2 py-0.5 rounded-full transition-all ${
-                  lang === "no" ? "bg-white/20 scale-110" : "opacity-60 hover:opacity-100"
-                }`}
-              >
-                🇳🇴
-              </button>
+            {/* Language toggle – EN primary (left), NO secondary (right) */}
+            <div className="flex items-center gap-1 bg-white/10 rounded-full px-1.5 py-1">
               <button
                 onClick={() => setLang("en")}
                 title="Switch to English"
-                className={`text-base px-2 py-0.5 rounded-full transition-all ${
-                  lang === "en" ? "bg-white/20 scale-110" : "opacity-60 hover:opacity-100"
+                className={`text-xl px-1.5 py-0.5 rounded-full transition-all duration-200 ${
+                  lang === "en"
+                    ? "bg-white/25 scale-110 shadow-sm"
+                    : "opacity-50 hover:opacity-90 hover:scale-105"
                 }`}
               >
                 🇬🇧
+              </button>
+              <button
+                onClick={() => setLang("no")}
+                title="Bytt til norsk"
+                className={`text-xl px-1.5 py-0.5 rounded-full transition-all duration-200 ${
+                  lang === "no"
+                    ? "bg-white/25 scale-110 shadow-sm"
+                    : "opacity-50 hover:opacity-90 hover:scale-105"
+                }`}
+              >
+                🇳🇴
               </button>
             </div>
 
