@@ -13,7 +13,7 @@ export default function Pricing() {
   usePageTracker("/pricing");
 
   const starterFeatures = [
-    "Up to 3 AI Agents",
+    "Up to 3 Expert Specialists",
     "10 hours consulting/month",
     "Basic automation workflows",
     "Email & Slack integration",
@@ -24,7 +24,7 @@ export default function Pricing() {
   ];
 
   const proFeatures = [
-    "Up to 10 AI Agents",
+    "Up to 10 Expert Specialists",
     "30 hours consulting/month",
     "Advanced automation workflows",
     "500+ integrations",
@@ -36,7 +36,7 @@ export default function Pricing() {
   ];
 
   const entFeatures = [
-    "Unlimited AI Agents",
+    "Unlimited Expert Specialists",
     "Unlimited consulting",
     "Custom automation solutions",
     "Dedicated account manager",

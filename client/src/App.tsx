@@ -14,6 +14,7 @@ import About from "./pages/About";
 import Blog from "./pages/Blog";
 import Contact from "./pages/Contact";
 import Alex from "./pages/Alex";
+import HealthCheck from "./pages/HealthCheck";
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 import BackgroundCanvas from "./components/BackgroundCanvas";
@@ -39,6 +40,7 @@ function PublicRouter() {
       <Route path="/blog" component={Blog} />
       <Route path="/contact" component={Contact} />
       <Route path="/alex" component={Alex} />
+      <Route path="/health-check" component={HealthCheck} />
       <Route path="/404" component={NotFound} />
       <Route component={NotFound} />
     </Switch>

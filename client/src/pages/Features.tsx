@@ -195,7 +195,7 @@ export default function Features() {
         </div>
       </section>
 
-      {/* 9 AI Agents Section */}
+      {/* 9 Expert Specialists Section */}
       <section className="py-20 bg-card/10">
         <div className="container">
           <div className="text-center mb-14">
@@ -205,12 +205,12 @@ export default function Features() {
               </span>
             </div>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-4">
-              {isNo ? "9 Spesialiserte AI-agenter" : "9 Specialized AI Agents"}
+              {isNo ? "9 Spesialiserte eksperter" : "9 Specialized Experts"}
             </h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
               {isNo
-                ? "ALEX koordinerer alle 9 agenter og sørger for at riktig ekspert håndterer hvert spørsmål. Klikk på en agent for å lære mer."
-                : "ALEX coordinates all 9 agents, ensuring the right expert handles every request. Click an agent to learn more."}
+                ? "ALEX koordinerer alle 9 eksperter og sørger for at riktig spesialist håndterer hvert oppdrag. Klikk på en ekspert for å lære mer."
+                : "ALEX coordinates all 9 experts, ensuring the right specialist handles every assignment. Click an expert to learn more."}
             </p>
           </div>
 
@@ -265,8 +265,8 @@ export default function Features() {
             <div className="inline-block bg-gradient-to-r from-blue-900/60 to-purple-900/60 border border-white/10 rounded-2xl px-8 py-6 max-w-2xl">
               <p className="text-white/90 text-base">
                 {isNo
-                  ? "✨ ALEX mottar alle henvendelser og videresender dem til riktig agent – automatisk, øyeblikkelig og alltid tilgjengelig 24/7."
-                  : "✨ ALEX receives all requests and routes them to the right agent – automatically, instantly, and always available 24/7."}
+                  ? "✨ ALEX mottar alle henvendelser og kobler deg med riktig ekspert – automatisk, øyeblikkelig og alltid tilgjengelig 24/7."
+                  : "✨ ALEX receives all requests and connects you with the right expert – automatically, instantly, and always available 24/7."}
               </p>
             </div>
           </div>
