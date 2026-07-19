@@ -63,6 +63,20 @@ function App() {
               <AdminRouter />
             ) : (
               <div className="min-h-screen flex flex-col bg-background">
+                {/* Global watermark – AI team image, very subtle behind all pages */}
+                <div
+                  style={{
+                    position: "fixed",
+                    inset: 0,
+                    zIndex: 0,
+                    backgroundImage: "url('https://d2xsxph8kpxj0f.cloudfront.net/310519663514335084/37gsm9ZJmAXwwkBHHCppPv/hero-new-PBvKy65j8D37XDeAUauevf.webp')",
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                    backgroundRepeat: "no-repeat",
+                    opacity: 0.07,
+                    pointerEvents: "none",
+                  }}
+                />
                 <BackgroundCanvas />
                 <Navbar />
                 <main className="flex-1">
