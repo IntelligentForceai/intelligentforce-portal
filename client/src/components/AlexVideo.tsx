@@ -49,17 +49,15 @@ export default function AlexVideo({ videoSrc, posterSrc, className = "" }: AlexV
             onEnded={handleEnded}
             className="w-full h-full object-cover"
           />
-          {/* Controls overlay */}
+          {/* Click anywhere on video to play */}
           {!playing && (
-            <div className="absolute inset-0 flex items-center justify-center bg-black/40">
-              <button
-                onClick={handlePlay}
-                className="flex items-center gap-2 btn-gradient px-6 py-3 rounded-full font-semibold text-white shadow-lg hover:scale-105 transition-transform"
-                aria-label={t.alex.playBtn}
-              >
-                <Play size={20} fill="white" />
-                {t.alex.playBtn}
-              </button>
+            <div
+              className="absolute inset-0 flex items-center justify-center bg-black/30 cursor-pointer"
+              onClick={handlePlay}
+            >
+              <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center hover:bg-white/30 transition-colors">
+                <Play size={28} fill="white" className="ml-1" />
+              </div>
             </div>
           )}
 
