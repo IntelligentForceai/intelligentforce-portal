@@ -24,14 +24,15 @@ export default function Legal() {
             <div className="bg-amber-500/10 border border-amber-500/30 rounded-xl p-5 mb-5">
               <p className="text-amber-400 font-semibold text-sm mb-1">Registration Notice</p>
               <p className="text-muted-foreground text-base leading-relaxed">
-                IntelligentForce is currently in the process of formal company registration in Norway. The legal entity <strong className="text-white">IntelligentForce AS</strong> is pending registration with the Norwegian Register of Business Enterprises (Brønnøysundregistrene). All commercial activities are conducted in anticipation of and in preparation for the completion of this registration. The operator of this website and platform is the founding individual behind IntelligentForce, acting in a pre-incorporation capacity. Upon completion of registration, all rights, obligations, and agreements entered into during this period will be assumed by the registered entity.
+                <strong className="text-white">IntelligentForce AS</strong> is currently pending registration with the Norwegian Register of Business Enterprises (Brønnøysundregistrene). The platform intelligentforce.ai is operated by and on behalf of <strong className="text-white">VJ Invest LTD</strong>, a company registered in England and Wales (Companies House), which is the current holding entity and owner of IntelligentForce. Upon completion of the Norwegian registration, IntelligentForce AS will operate as a subsidiary under VJ Invest LTD. All rights, obligations, and agreements entered into during this period are held by VJ Invest LTD.
               </p>
             </div>
             <div className="bg-card border border-border rounded-xl p-6 space-y-3">
               {[
                 ["Trading name", "IntelligentForce"],
                 ["Legal entity", "IntelligentForce AS (registration pending)"],
-                ["Country", "Norway"],
+                ["Holding company", "VJ Invest LTD (registered in England & Wales)"],
+                ["Country of operation", "Norway / International"],
                 ["Registered office", "Oslo, Norway"],
                 ["Website", "intelligentforce.ai"],
                 ["General enquiries", "hello@intelligentforce.ai"],

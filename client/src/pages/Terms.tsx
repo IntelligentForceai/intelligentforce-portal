@@ -25,7 +25,7 @@ export default function Terms() {
             },
             {
               title: "2. Description of Services",
-              body: `IntelligentForce is a business operating under the trading name IntelligentForce, with the legal entity IntelligentForce AS pending registration with the Norwegian Register of Business Enterprises (Brønnøysundregistrene). IntelligentForce provides AI-powered business automation services, including the deployment of specialised AI agents, business process analysis, integration services, and the Business Health Check assessment tool. The specific scope of services provided to each client is defined in a separate service agreement or statement of work.`,
+              body: `IntelligentForce is a trading name operated by VJ Invest LTD, a company registered in England and Wales (Companies House). The Norwegian entity IntelligentForce AS is pending registration with Brønnøysundregistrene and will, upon registration, operate as a subsidiary of VJ Invest LTD. IntelligentForce provides AI-powered business automation services, including the deployment of specialised AI agents, business process analysis, integration services, and the Business Health Check assessment tool. The specific scope of services provided to each client is defined in a separate service agreement or statement of work.`,
             },
             {
               title: "3. Account Registration",

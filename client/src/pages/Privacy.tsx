@@ -21,7 +21,7 @@ export default function Privacy() {
           {[
             {
               title: "1. Who We Are",
-              body: `IntelligentForce is a business operating under the trading name IntelligentForce, with the legal entity IntelligentForce AS currently pending registration with the Norwegian Register of Business Enterprises (Brønnøysundregistrene). We operate the intelligentforce.ai website and provide AI-driven business automation services to mid-market and enterprise clients worldwide. For questions about this policy, contact us at hello@intelligentforce.ai.`,
+              body: `IntelligentForce is a trading name operated by VJ Invest LTD, a company registered in England and Wales. The Norwegian entity IntelligentForce AS is currently pending registration with Brønnøysundregistrene and will, upon registration, operate as a subsidiary of VJ Invest LTD. We operate the intelligentforce.ai website and provide AI-driven business automation services to mid-market and enterprise clients worldwide. For questions about this policy, contact us at hello@intelligentforce.ai.`,
             },
             {
               title: "2. What Data We Collect",
