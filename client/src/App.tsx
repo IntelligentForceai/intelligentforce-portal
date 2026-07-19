@@ -1,7 +1,8 @@
+import { useEffect } from "react";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
-import { Route, Switch } from "wouter";
+import { Route, Switch, useLocation } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { LanguageProvider } from "./contexts/LanguageContext";
@@ -18,6 +19,18 @@ import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 import HealthCheck from "./pages/HealthCheck";
 import BackgroundCanvas from "./components/BackgroundCanvas";
+
+// Scroll to top on every route change (except hash-anchor navigation)
+function ScrollToTop() {
+  const [location] = useLocation();
+  useEffect(() => {
+    // Don't reset scroll if the URL contains a hash anchor (e.g. /alex#chat)
+    if (!window.location.hash) {
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    }
+  }, [location]);
+  return null;
+}
 
 // Admin routes render without the public Navbar/Footer
 function AdminRouter() {
@@ -63,6 +76,8 @@ function App() {
               <AdminRouter />
             ) : (
               <div className="min-h-screen flex flex-col bg-background">
+                {/* Reset scroll position on every route change */}
+                <ScrollToTop />
                 {/* Global watermark – AI team image, very subtle behind all pages */}
                 <div
                   style={{

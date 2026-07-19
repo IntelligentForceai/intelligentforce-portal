@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useLang } from "@/contexts/LanguageContext";
 import { usePageTracker } from "@/hooks/usePageTracker";
 import BusinessHealthCheck from "@/components/BusinessHealthCheck";
@@ -8,6 +9,11 @@ export default function HealthCheck() {
   const { lang } = useLang();
   const isNo = lang === "no";
   usePageTracker("/health-check");
+
+  // Always start at the top of the page when navigating here
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+  }, []);
 
   return (
     <div className="min-h-screen pt-16">
