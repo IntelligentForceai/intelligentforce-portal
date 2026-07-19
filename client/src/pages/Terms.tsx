@@ -14,7 +14,7 @@ export default function Terms() {
           </div>
         </div>
         <p className="text-muted-foreground text-lg leading-relaxed mb-4 border-l-4 border-cyan-500 pl-5">
-          These Terms of Service ("Terms") govern your access to and use of the IntelligentForce website and platform. By accessing or using our services, you agree to be bound by these Terms. Please read them carefully.
+          These Terms of Service ("Terms") govern your access to and use of the IntelligentForce website and platform. By accessing or using our services, you agree to be bound by these Terms. Please read them carefully. IntelligentForce is currently operating under a pre-incorporation structure while the legal entity IntelligentForce AS is pending registration in Norway.
         </p>
 
         <div className="space-y-10 mt-10">
@@ -25,7 +25,7 @@ export default function Terms() {
             },
             {
               title: "2. Description of Services",
-              body: `IntelligentForce provides AI-powered business automation services, including the deployment of specialised AI agents, business process analysis, integration services, and the Business Health Check assessment tool. The specific scope of services provided to each client is defined in a separate service agreement or statement of work.`,
+              body: `IntelligentForce is a business operating under the trading name IntelligentForce, with the legal entity IntelligentForce AS pending registration with the Norwegian Register of Business Enterprises (Brønnøysundregistrene). IntelligentForce provides AI-powered business automation services, including the deployment of specialised AI agents, business process analysis, integration services, and the Business Health Check assessment tool. The specific scope of services provided to each client is defined in a separate service agreement or statement of work.`,
             },
             {
               title: "3. Account Registration",

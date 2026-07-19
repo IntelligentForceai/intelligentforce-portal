@@ -14,14 +14,14 @@ export default function Privacy() {
           </div>
         </div>
         <p className="text-muted-foreground text-lg leading-relaxed mb-4 border-l-4 border-cyan-500 pl-5">
-          IntelligentForce AS ("IntelligentForce", "we", "us", or "our") is committed to protecting your personal data. This Privacy Policy explains how we collect, use, store, and share information when you use our website at intelligentforce.ai and our AI-powered business automation platform.
+          IntelligentForce ("IntelligentForce", "we", "us", or "our") is committed to protecting your personal data. This Privacy Policy explains how we collect, use, store, and share information when you use our website at intelligentforce.ai and our AI-powered business automation platform.
         </p>
 
         <div className="space-y-10 mt-10">
           {[
             {
               title: "1. Who We Are",
-              body: `IntelligentForce AS is a company registered in Norway. We operate the intelligentforce.ai website and provide AI-driven business automation services to mid-market and enterprise clients worldwide. For questions about this policy, contact us at hello@intelligentforce.ai.`,
+              body: `IntelligentForce is a business operating under the trading name IntelligentForce, with the legal entity IntelligentForce AS currently pending registration with the Norwegian Register of Business Enterprises (Brønnøysundregistrene). We operate the intelligentforce.ai website and provide AI-driven business automation services to mid-market and enterprise clients worldwide. For questions about this policy, contact us at hello@intelligentforce.ai.`,
             },
             {
               title: "2. What Data We Collect",
