@@ -224,7 +224,7 @@ export default function Home() {
         <div className="container mx-auto px-4 relative z-10">
           <div className="grid md:grid-cols-2 gap-12 items-center max-w-5xl mx-auto">
             <div>
-              <AlexVideo videoSrc="/manus-storage/alex-video-main_a07cc531.mp4" />
+              <AlexVideo videoSrc="/videos/alex-video-main_a07cc531.mp4" />
             </div>
             <div>
               <div className="inline-flex items-center gap-2 bg-cyan-500/10 border border-cyan-500/30 rounded-full px-3 py-1 mb-6">
