@@ -87,47 +87,59 @@ export default function Investors() {
             </p>
           </div>
 
-          {/* ALEX Video + Intro Panel */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start max-w-5xl mx-auto">
-            {/* Video – full width in its column */}
-            <div className="flex justify-center">
-              <AlexVideo
-                videoSrc="/manus-storage/alex-investors-compressed.mp4"
-                className="w-full max-w-none"
-              />
-            </div>
+          {/* ALEX Video – full width, prominent */}
+          <div className="max-w-sm mx-auto mb-14">
+            <AlexVideo
+              videoSrc="/manus-storage/alex-investors-compressed.mp4"
+              className="w-full"
+            />
+          </div>
 
-            {/* Intro text */}
-            <div className="flex flex-col gap-6 justify-center">
-              <div className="bg-card border border-border rounded-2xl p-7">
-                <h2 className="text-xl font-bold text-white mb-4">
-                  {isNo ? "Et ord fra ALEX" : "A Message from ALEX"}
-                </h2>
-                <blockquote className="text-slate-300 leading-relaxed text-base italic border-l-2 border-cyan-500/50 pl-4">
-                  {isNo
-                    ? "\"Du er her fordi du ser det vi ser: det neste tiåret tilhører bedrifter som opererer med intelligens i kjernen. IntelligentForce er plattformen som gjør det mulig – og vi inviterer nå selektivt strategiske partnere til å bli med oss i å skalere dette til sitt fulle potensial.\""
-                    : "\"You are here because you see what we see: the next decade belongs to businesses that operate with intelligence at their core. IntelligentForce is the platform that makes that possible – and we are now selectively inviting strategic partners to join us in scaling this to its full potential.\""}
-                </blockquote>
-                <div className="mt-5 flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center shrink-0">
-                    <span className="text-white font-black text-sm">A</span>
-                  </div>
-                  <div>
-                    <div className="text-white font-semibold text-sm">ALEX</div>
-                    <div className="text-cyan-400 text-xs">Chief Operations Partner</div>
-                  </div>
+          {/* Intro cards – two columns below video */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+            {/* ALEX quote */}
+            <div className="bg-card border border-border rounded-2xl p-7">
+              <h2 className="text-xl font-bold text-white mb-4">
+                {isNo ? "Et ord fra ALEX" : "A Message from ALEX"}
+              </h2>
+              <blockquote className="text-slate-300 leading-relaxed text-base italic border-l-2 border-cyan-500/50 pl-4">
+                {isNo
+                  ? "\'Du er her fordi du ser det vi ser: det neste tiåret tilhører bedrifter som opererer med intelligens i kjernen. IntelligentForce er plattformen som gjør det mulig – og vi inviterer nå selektivt strategiske partnere til å bli med oss i å skalere dette til sitt fulle potensial.\'"
+                  : "\'You are here because you see what we see: the next decade belongs to businesses that operate with intelligence at their core. IntelligentForce is the platform that makes that possible – and we are now selectively inviting strategic partners to join us in scaling this to its full potential.\'"}
+              </blockquote>
+              <div className="mt-5 flex items-center gap-3">
+                <div className="w-9 h-9 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center shrink-0">
+                  <span className="text-white font-black text-sm">A</span>
+                </div>
+                <div>
+                  <div className="text-white font-semibold text-sm">ALEX</div>
+                  <div className="text-cyan-400 text-xs">Chief Operations Partner</div>
                 </div>
               </div>
+            </div>
 
-              {/* Confidentiality note */}
-              <div className="bg-amber-900/20 border border-amber-500/30 rounded-2xl p-5 flex items-start gap-3">
-                <Shield size={18} className="text-amber-400 shrink-0 mt-0.5" />
-                <p className="text-amber-200/80 text-sm leading-relaxed">
-                  {isNo
-                    ? "Finansielle detaljer, betingelser og vekstprognoser deles utelukkende under NDA. Kontakt ALEX for å starte en konfidensiell dialog."
-                    : "Financial details, terms, and growth projections are shared exclusively under NDA. Contact ALEX to initiate a confidential dialogue."}
-                </p>
+            {/* Confidentiality note */}
+            <div className="bg-amber-900/20 border border-amber-500/30 rounded-2xl p-7 flex flex-col justify-center gap-4">
+              <div className="flex items-start gap-3">
+                <Shield size={20} className="text-amber-400 shrink-0 mt-0.5" />
+                <div>
+                  <div className="text-amber-300 font-semibold text-sm mb-2">
+                    {isNo ? "Strengt konfidensielt" : "Strictly Confidential"}
+                  </div>
+                  <p className="text-amber-200/80 text-sm leading-relaxed">
+                    {isNo
+                      ? "Finansielle detaljer, betingelser og vekstprognoser deles utelukkende under NDA. Kontakt ALEX for å starte en konfidensiell dialog."
+                      : "Financial details, terms, and growth projections are shared exclusively under NDA. Contact ALEX to initiate a confidential dialogue."}
+                  </p>
+                </div>
               </div>
+              <a
+                href="mailto:alex@intelligentforce.ai?subject=Investor%20Enquiry%20%E2%80%93%20IntelligentForce"
+                className="inline-flex items-center gap-2 bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 text-amber-300 font-semibold px-5 py-3 rounded-xl text-sm transition-all"
+              >
+                <Mail size={15} />
+                alex@intelligentforce.ai
+              </a>
             </div>
           </div>
         </div>

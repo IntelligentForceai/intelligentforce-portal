@@ -55,8 +55,8 @@ export default function Navbar() {
             </span>
           </Link>
 
-          {/* Desktop nav */}
-          <div className="hidden lg:flex items-center gap-1">
+          {/* Desktop nav – regular links */}
+          <div className="hidden xl:flex items-center gap-1">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
@@ -70,11 +70,23 @@ export default function Navbar() {
                 {link.label}
               </Link>
             ))}
+            {/* Investors – in nav row, amber styled */}
+            <Link
+              href="/investors"
+              className={`flex items-center gap-1.5 px-3 py-2 rounded-md text-sm font-semibold transition-colors ${
+                isInvestors
+                  ? "text-amber-300 font-medium"
+                  : "text-amber-400/80 hover:text-amber-300"
+              }`}
+            >
+              <TrendingUp size={13} />
+              {lang === "no" ? "Investorer" : "Investors"}
+            </Link>
           </div>
 
           {/* Right side */}
           <div className="flex items-center gap-2">
-            {/* Language toggle – EN primary (left), NO secondary (right) */}
+            {/* Language toggle */}
             <div className="flex items-center gap-1 bg-white/10 rounded-full p-1">
               <button
                 onClick={() => setLang("en")}
@@ -96,23 +108,10 @@ export default function Navbar() {
               </button>
             </div>
 
-            {/* Investors button – subtle gold/amber styling to signal exclusivity */}
-            <Link
-              href="/investors"
-              className={`hidden md:flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200 ${
-                isInvestors
-                  ? "bg-amber-500/30 border border-amber-400/60 text-amber-300"
-                  : "bg-amber-500/10 border border-amber-500/30 text-amber-400 hover:bg-amber-500/20 hover:border-amber-400/50 hover:text-amber-300"
-              }`}
-            >
-              <TrendingUp size={14} />
-              {lang === "no" ? "Investorer" : "Investors"}
-            </Link>
-
             {/* Meet ALEX button */}
             <Link
               href="/alex"
-              className="hidden sm:flex items-center gap-1.5 btn-gradient px-4 py-2 rounded-full text-sm font-medium"
+              className="hidden sm:flex items-center gap-1.5 btn-gradient px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap"
             >
               {t.nav.meetAlex}
             </Link>
@@ -120,7 +119,7 @@ export default function Navbar() {
             {/* Mobile hamburger */}
             <button
               onClick={() => setMenuOpen(!menuOpen)}
-              className="lg:hidden p-2 text-white/80 hover:text-white"
+              className="xl:hidden p-2 text-white/80 hover:text-white"
               aria-label="Toggle menu"
             >
               {menuOpen ? <X size={22} /> : <Menu size={22} />}
@@ -130,7 +129,7 @@ export default function Navbar() {
 
         {/* Mobile menu */}
         {menuOpen && (
-          <div className="lg:hidden mobile-menu-enter pb-4 border-t border-border mt-0">
+          <div className="xl:hidden mobile-menu-enter pb-4 border-t border-border mt-0">
             <div className="flex flex-col gap-1 pt-3">
               {navLinks.map((link) => (
                 <Link
