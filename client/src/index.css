@@ -91,6 +91,11 @@
   max-width: 100%;
 }
 
+/* Square aspect ratio for investor video (cropped 1:1) */
+.alex-video-container.aspect-square-override {
+  aspect-ratio: 1/1;
+}
+
 .alex-video-container video {
   width: 100%;
   height: 100%;

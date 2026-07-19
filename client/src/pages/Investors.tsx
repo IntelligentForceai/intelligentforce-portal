@@ -58,12 +58,10 @@ export default function Investors() {
 
           {/* ALEX Video – full width, prominent */}
           <div className="max-w-sm mx-auto mb-14">
-            <div className="rounded-2xl overflow-hidden bg-black shadow-2xl shadow-cyan-500/20 border border-cyan-500/20">
-              <AlexVideo
-                videoSrc="/manus-storage/alex-investors-compressed.mp4"
-                className="w-full"
-              />
-            </div>
+            <AlexVideo
+              videoSrc="/manus-storage/alex-investors-compressed.mp4"
+              className="w-full aspect-square-override"
+            />
           </div>
 
           {/* Intro cards – two columns below video */}
