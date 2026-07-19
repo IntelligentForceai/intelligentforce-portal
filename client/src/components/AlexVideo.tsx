@@ -74,11 +74,6 @@ export default function AlexVideo({ videoSrc, posterSrc, className = "" }: AlexV
             <div className="w-16 h-16 rounded-full btn-gradient flex items-center justify-center shadow-lg">
               <Play size={28} fill="white" className="ml-1" />
             </div>
-            <p className="text-white font-semibold text-sm drop-shadow">{t.alex.playBtn}</p>
-            <p className="text-white/60 text-xs drop-shadow">
-              {/* Placeholder notice – visible only in dev */}
-              {import.meta.env.DEV && "📹 HeyGen MP4 goes here"}
-            </p>
           </div>
         </div>
       )}
