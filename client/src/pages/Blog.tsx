@@ -76,33 +76,31 @@ export default function Blog() {
           </div>
 
           {/* Articles grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {filtered.map((article) => (
-              <article key={article.id} className="bg-card border border-border rounded-2xl overflow-hidden card-hover flex flex-col">
-                {/* Article image placeholder */}
-                <div className="h-44 bg-gradient-to-br from-blue-900/40 to-purple-900/40 flex items-center justify-center">
-                  <span className="text-5xl">
+              <article key={article.id} className="bg-card border border-border rounded-xl overflow-hidden card-hover flex flex-col">
+                {/* Article icon header */}
+                <div className="h-16 bg-gradient-to-br from-blue-900/40 to-purple-900/40 flex items-center px-4 gap-3">
+                  <span className="text-2xl">
                     {article.category.includes("Bransje") || article.category.includes("Industry") ? "📊" :
                      article.category.includes("Raske") || article.category.includes("Quick") ? "⚡" :
                      article.category.includes("Implementer") || article.category.includes("Implement") ? "🛠️" :
                      article.category.includes("Team") ? "👥" : "🔄"}
                   </span>
+                  <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${categoryColors[article.category] || "text-white/60 bg-white/10"}`}>
+                    {article.category}
+                  </span>
+                  <span className="flex items-center gap-1 text-xs text-muted-foreground ml-auto">
+                    <Clock size={10} /> {article.readTime} {b.minRead}
+                  </span>
                 </div>
-                <div className="p-6 flex flex-col flex-1">
-                  <div className="flex items-center gap-2 mb-3">
-                    <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${categoryColors[article.category] || "text-white/60 bg-white/10"}`}>
-                      {article.category}
-                    </span>
-                    <span className="flex items-center gap-1 text-xs text-muted-foreground">
-                      <Clock size={11} /> {article.readTime} {b.minRead}
-                    </span>
-                  </div>
-                  <h3 className="text-lg font-bold text-white mb-2 leading-snug">{article.title}</h3>
-                  <p className="text-muted-foreground text-sm mb-4 flex-1 leading-relaxed">{article.excerpt}</p>
+                <div className="p-4 flex flex-col flex-1">
+                  <h3 className="text-sm font-bold text-white mb-1.5 leading-snug">{article.title}</h3>
+                  <p className="text-muted-foreground text-xs mb-3 flex-1 leading-relaxed">{article.excerpt}</p>
                   <div className="flex items-center justify-between mt-auto">
                     <span className="text-xs text-muted-foreground">{article.date}</span>
-                    <button className="flex items-center gap-1 text-cyan-400 text-sm font-medium hover:gap-2 transition-all">
-                      {b.readMore} <ArrowRight size={14} />
+                    <button className="flex items-center gap-1 text-cyan-400 text-xs font-medium hover:gap-2 transition-all">
+                      {b.readMore} <ArrowRight size={12} />
                     </button>
                   </div>
                 </div>
