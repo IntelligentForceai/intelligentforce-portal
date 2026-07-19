@@ -26,6 +26,34 @@ export default function Alex() {
 
   return (
     <div className="min-h-screen pt-16">
+      {/* Professional Identity Banner */}
+      <section className="py-6 bg-gradient-to-r from-blue-950/90 to-cyan-950/70 border-b border-cyan-500/20">
+        <div className="container">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 max-w-5xl mx-auto">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center shrink-0 shadow-lg shadow-cyan-500/30">
+                <span className="text-white font-black text-lg">A</span>
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="text-white font-bold text-lg">ALEX</span>
+                  <span className="inline-flex items-center gap-1 bg-cyan-500/20 border border-cyan-500/40 text-cyan-400 text-xs px-2 py-0.5 rounded-full font-medium">
+                    <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
+                    Always Online
+                  </span>
+                </div>
+                <p className="text-cyan-400 text-xs font-semibold uppercase tracking-wider">Chief Operations Partner · IntelligentForce</p>
+              </div>
+            </div>
+            <div className="bg-blue-950/60 border border-cyan-500/20 rounded-xl px-4 py-2 max-w-md">
+              <p className="text-cyan-300/80 text-xs text-center sm:text-left">
+                ALEX is a dedicated business automation partner. She operates exclusively within the IntelligentForce platform and does not engage in general conversation or topics outside her professional scope.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Hero */}
       <section className="py-16 bg-gradient-to-b from-card/50 to-background">
         <div className="container">
@@ -103,12 +131,12 @@ export default function Alex() {
         <div className="container">
           <div className="text-center mb-12">
             <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-4">
-              {isNo ? "ALEX koordinerer 9 spesialiserte agenter" : "ALEX Coordinates 9 Specialized Agents"}
+              {isNo ? "ALEX koordinerer 9 spesialiserte eksperter" : "ALEX Coordinates 9 Expert Specialists"}
             </h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
               {isNo
-                ? "Hver agent er ekspert på sitt felt. ALEX sikrer at riktig agent håndterer hvert spørsmål – automatisk og øyeblikkelig."
-                : "Each agent is an expert in their field. ALEX ensures the right agent handles every request – automatically and instantly."}
+                ? "Hver ekspert er spesialist på sitt felt. ALEX sikrer at riktig ekspert håndterer hvert oppdrag – automatisk og øyeblikkelig."
+                : "Each specialist is an expert in their field. ALEX ensures the right expert handles every assignment – automatically and instantly."}
             </p>
           </div>
 
