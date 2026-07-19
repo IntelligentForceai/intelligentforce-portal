@@ -138,9 +138,6 @@ export default function Home() {
               { num: "03", title: t.home.step3Title, desc: t.home.step3Desc, icon: <Zap className="w-8 h-8" /> },
             ].map((step, i) => (
               <div key={i} className="relative group">
-                {i < 2 && (
-                  <div className="hidden md:block absolute top-12 left-full w-full h-px bg-gradient-to-r from-cyan-500/50 to-transparent z-10" />
-                )}
                 <div className="bg-gradient-to-b from-slate-800/60 to-slate-900/60 border border-white/10 rounded-2xl p-8 hover:border-cyan-500/30 transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/10 group-hover:-translate-y-1">
                   <div className="flex items-center gap-4 mb-6">
                     <span className="text-5xl font-black text-cyan-500/20 leading-none">{step.num}</span>
