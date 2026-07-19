@@ -62,15 +62,7 @@ export default function AlexVideo({ videoSrc, posterSrc, className = "" }: AlexV
               </button>
             </div>
           )}
-          {playing && (
-            <button
-              onClick={toggleMute}
-              className="absolute bottom-4 right-4 p-2 bg-black/50 rounded-full text-white hover:bg-black/70 transition-colors"
-              aria-label={muted ? "Unmute" : "Mute"}
-            >
-              {muted ? <VolumeX size={16} /> : <Volume2 size={16} />}
-            </button>
-          )}
+
         </>
       ) : (
         /* Placeholder – ready for HeyGen MP4 upload */

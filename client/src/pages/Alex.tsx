@@ -55,7 +55,7 @@ export default function Alex() {
       </section>
 
       {/* Hero */}
-      <section className="py-16 bg-gradient-to-b from-card/50 to-background">
+      <section id="chat" className="py-16 bg-gradient-to-b from-card/50 to-background">
         <div className="container">
           <div className="text-center mb-12">
             <h1 className="text-4xl sm:text-5xl font-extrabold text-white mb-3">{a.hero}</h1>

@@ -97,8 +97,8 @@ export default function About() {
         <div className="container max-w-4xl">
           <div className="bg-gradient-to-r from-blue-950/80 to-cyan-950/60 border border-cyan-500/30 rounded-2xl overflow-hidden flex flex-col lg:flex-row gap-0 items-stretch shadow-lg shadow-cyan-900/20">
             {/* ALEX Visual */}
-            <div className="lg:w-64 shrink-0 relative flex items-center justify-center bg-gradient-to-b from-blue-900/40 to-cyan-900/20 p-6">
-              <AlexVideo videoSrc="/manus-storage/alex-video-about_3f7aa3ba.mp4" className="w-40 h-40" />
+            <div className="lg:w-72 shrink-0 relative flex items-center justify-center bg-gradient-to-b from-blue-900/40 to-cyan-900/20 p-6">
+              <AlexVideo videoSrc="/manus-storage/alex-video-about_3f7aa3ba.mp4" className="w-64 h-64" />
               <div className="absolute top-4 left-4 bg-gradient-to-r from-cyan-500 to-blue-500 text-white text-xs px-3 py-1 rounded-full font-bold shadow-lg">
                 AI Partner
               </div>
@@ -122,9 +122,9 @@ export default function About() {
                   Note: ALEX specializes exclusively in IntelligentForce services and business automation. She does not engage in general conversation or topics outside the platform's scope.
                 </p>
               </div>
-              <Link href="/alex" className="inline-flex items-center gap-2 text-cyan-400 hover:text-cyan-300 text-sm font-semibold transition-colors">
-                Meet ALEX <ArrowRight size={14} />
-              </Link>
+              <a href="/alex#chat" className="inline-flex items-center gap-2 text-cyan-400 hover:text-cyan-300 text-sm font-semibold transition-colors">
+                Chat with ALEX <ArrowRight size={14} />
+              </a>
             </div>
           </div>
         </div>
