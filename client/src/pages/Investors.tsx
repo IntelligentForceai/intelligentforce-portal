@@ -31,37 +31,6 @@ export default function Investors() {
   return (
     <div className="min-h-screen pt-16">
 
-      {/* ── ALEX Identity Banner ─────────────────────────────────────── */}
-      <section className="py-5 bg-gradient-to-r from-blue-950/90 to-cyan-950/70 border-b border-cyan-500/20">
-        <div className="container">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 max-w-5xl mx-auto">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center shrink-0 shadow-lg shadow-cyan-500/30">
-                <span className="text-white font-black text-lg">A</span>
-              </div>
-              <div>
-                <div className="flex items-center gap-2">
-                  <span className="text-white font-bold text-lg">ALEX</span>
-                  <span className="inline-flex items-center gap-1 bg-cyan-500/20 border border-cyan-500/40 text-cyan-400 text-xs px-2 py-0.5 rounded-full font-medium">
-                    <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
-                    {isNo ? "Alltid tilgjengelig" : "Always Available"}
-                  </span>
-                </div>
-                <p className="text-cyan-400 text-xs font-semibold uppercase tracking-wider">
-                  Chief Operations Partner · IntelligentForce
-                </p>
-              </div>
-            </div>
-            <div className="bg-blue-950/60 border border-cyan-500/20 rounded-xl px-4 py-2 max-w-md">
-              <p className="text-cyan-300/80 text-xs text-center sm:text-left">
-                {isNo
-                  ? "Denne siden er forbeholdt seriøse investorer og strategiske partnere. All henvendelse behandles konfidensielt."
-                  : "This page is reserved for serious investors and strategic partners. All enquiries are handled with full confidentiality."}
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* ── HERO ─────────────────────────────────────────────────────── */}
       <section className="py-16 bg-gradient-to-b from-card/50 to-background">
@@ -89,10 +58,12 @@ export default function Investors() {
 
           {/* ALEX Video – full width, prominent */}
           <div className="max-w-sm mx-auto mb-14">
-            <AlexVideo
-              videoSrc="/manus-storage/alex-investors-compressed.mp4"
-              className="w-full"
-            />
+            <div className="rounded-2xl overflow-hidden bg-black shadow-2xl shadow-cyan-500/20 border border-cyan-500/20">
+              <AlexVideo
+                videoSrc="/manus-storage/alex-investors-compressed.mp4"
+                className="w-full"
+              />
+            </div>
           </div>
 
           {/* Intro cards – two columns below video */}
