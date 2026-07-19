@@ -9,18 +9,19 @@ export default function BackgroundCanvas() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    let W = 0, H = 0;
+    let W = window.innerWidth;
+    let H = window.innerHeight;
     let animId: number;
 
     function resize() {
       W = canvas!.width = window.innerWidth;
-      H = canvas!.height = document.documentElement.scrollHeight;
+      H = canvas!.height = window.innerHeight;
     }
     resize();
     window.addEventListener("resize", resize);
 
     // ── PARTICLES ──────────────────────────────────────────
-    const PARTICLE_COUNT = 85;
+    const PARTICLE_COUNT = 80;
 
     interface Particle {
       x: number; y: number; z: number;
@@ -35,12 +36,15 @@ export default function BackgroundCanvas() {
         z,
         r: z * 2.0,
         speed: z * 0.30 + 0.07,
-        opacity: z * 0.50 + 0.08,
+        opacity: z * 0.55 + 0.10,
         color: Math.random() > 0.5 ? "96,165,250" : "56,189,248",
       };
     }
 
-    const particles: Particle[] = Array.from({ length: PARTICLE_COUNT }, () => makeParticle(true));
+    const particles: Particle[] = Array.from(
+      { length: PARTICLE_COUNT },
+      () => makeParticle(true)
+    );
 
     // ── PERSPECTIVE GRID ────────────────────────────────────
     function drawGrid(t: number) {
@@ -53,7 +57,6 @@ export default function BackgroundCanvas() {
       const speed = (t * 0.18) % (depth / rows);
 
       ctx!.save();
-      // Horizontal lines
       for (let r = 0; r <= rows; r++) {
         const progress = r / rows;
         const y = vy + progress * depth + speed;
@@ -68,7 +71,6 @@ export default function BackgroundCanvas() {
         ctx!.lineWidth = 0.5;
         ctx!.stroke();
       }
-      // Vertical lines
       for (let c = 0; c <= cols; c++) {
         const progress = c / cols;
         const xNear = vx + (progress - 0.5) * spread * 0.05;
@@ -94,7 +96,7 @@ export default function BackgroundCanvas() {
           const dy = particles[i].y - particles[j].y;
           const dist = Math.sqrt(dx * dx + dy * dy);
           if (dist < MAX_DIST) {
-            const alpha = (1 - dist / MAX_DIST) * 0.08;
+            const alpha = (1 - dist / MAX_DIST) * 0.09;
             ctx!.beginPath();
             ctx!.moveTo(particles[i].x, particles[i].y);
             ctx!.lineTo(particles[j].x, particles[j].y);
@@ -110,16 +112,7 @@ export default function BackgroundCanvas() {
     let t = 0;
     function render() {
       t++;
-
-      const pageH = document.documentElement.scrollHeight;
-      if (canvas!.height !== pageH) {
-        canvas!.height = pageH;
-        H = pageH;
-      }
-
       ctx!.clearRect(0, 0, W, H);
-
-      // Grid + connections + particles
       drawGrid(t);
       drawConnections();
 
@@ -130,7 +123,7 @@ export default function BackgroundCanvas() {
         }
         ctx!.beginPath();
         ctx!.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx!.fillStyle = `rgba(${p.color},${p.opacity * 0.53})`;
+        ctx!.fillStyle = `rgba(${p.color},${p.opacity})`;
         ctx!.fill();
       }
 
