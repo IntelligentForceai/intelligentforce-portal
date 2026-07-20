@@ -1,31 +1,17 @@
 import { useEffect, useRef } from "react";
-import { trpc } from "@/lib/trpc";
-
-// Generate or retrieve a session ID for this browser session
-function getSessionId(): string {
-  const key = "if_session_id";
-  let id = sessionStorage.getItem(key);
-  if (!id) {
-    id = Math.random().toString(36).slice(2) + Date.now().toString(36);
-    sessionStorage.setItem(key, id);
-  }
-  return id;
-}
 
 /**
  * Tracks a page view when the component mounts.
- * Call this once per page component.
+ * Currently a no-op as the backend API is not available on static hosting.
+ * Can be replaced with a client-side analytics solution (e.g. Google Analytics).
  */
-export function usePageTracker(page: string) {
-  const trackMutation = trpc.portal.trackPageView.useMutation();
+export function usePageTracker(_page: string) {
   const tracked = useRef(false);
 
   useEffect(() => {
     if (tracked.current) return;
     tracked.current = true;
-    trackMutation.mutate({
-      page,
-      sessionId: getSessionId(),
-    });
-  }, [page]);
+    // Page tracking disabled — no backend API available on static hosting
+    // To enable analytics, integrate Google Analytics or similar here
+  }, [_page]);
 }

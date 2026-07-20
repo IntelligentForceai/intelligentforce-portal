@@ -4,7 +4,6 @@ import { useLang } from "@/contexts/LanguageContext";
 import AlexVideo from "@/components/AlexVideo";
 import { investorsCaptions } from "@/lib/alexCaptions";
 import { usePageTracker } from "@/hooks/usePageTracker";
-import { trpc } from "@/lib/trpc";
 import {
   ArrowRight,
   TrendingUp,
@@ -28,22 +27,31 @@ export default function Investors() {
 
   const [form, setForm] = useState({ name: '', email: '', company: '', message: '' });
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
 
-  const submitMutation = trpc.portal.submitContact.useMutation({
-    onSuccess: () => setSent(true),
-    onError: () => setSent(true),
-  });
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.name || !form.email) return;
-    submitMutation.mutate({
-      name: form.name,
-      email: form.email,
-      company: form.company || undefined,
-      category: 'investor',
-      message: form.message || `Investor enquiry from ${form.name}${form.company ? ' at ' + form.company : ''}. Please treat as confidential.`,
-    });
+    setSending(true);
+    try {
+      await fetch('https://formspree.io/f/mpqvrnld', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          company: form.company,
+          message: form.message || `Investor enquiry from ${form.name}${form.company ? ' at ' + form.company : ''}. Please treat as confidential.`,
+          _subject: `🔒 INVESTOR ENQUIRY: ${form.name}${form.company ? ' – ' + form.company : ''}`,
+          type: 'INVESTOR',
+        }),
+      });
+      setSent(true);
+    } catch {
+      setSent(true);
+    } finally {
+      setSending(false);
+    }
   };
 
   useEffect(() => {

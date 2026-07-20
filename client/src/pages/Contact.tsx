@@ -3,7 +3,6 @@ import { useLang } from "@/contexts/LanguageContext";
 import AlexVideo from "@/components/AlexVideo";
 import { contactCaptions } from "@/lib/alexCaptions";
 
-import { trpc } from "@/lib/trpc";
 import { usePageTracker } from "@/hooks/usePageTracker";
 import { Mail, MapPin, MessageCircle, FileText, Users, Activity, ChevronDown, ChevronUp, CheckCircle2 } from "lucide-react";
 
@@ -14,12 +13,8 @@ export default function Contact() {
 
   const [form, setForm] = useState({ name: "", email: "", category: "", company: "", message: "" });
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
-
-  const submitMutation = trpc.portal.submitContact.useMutation({
-    onSuccess: () => setSent(true),
-    onError: () => setSent(true),
-  });
 
   const faqs = [
     { q: c.faq1Q, a: c.faq1A },
@@ -28,16 +23,29 @@ export default function Contact() {
     { q: c.faq4Q, a: c.faq4A },
   ];
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.name || !form.email || !form.message) return;
-    submitMutation.mutate({
-      name: form.name,
-      email: form.email,
-      company: form.company || undefined,
-      category: form.category || undefined,
-      message: form.message,
-    });
+    setSending(true);
+    try {
+      await fetch('https://formspree.io/f/mpqvrnld', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          company: form.company,
+          category: form.category || 'General Enquiry',
+          message: form.message,
+          _subject: `New Contact: ${form.name} – ${form.category || 'General'}`,
+        }),
+      });
+      setSent(true);
+    } catch {
+      setSent(true);
+    } finally {
+      setSending(false);
+    }
   };
 
   const inputClass =
@@ -162,10 +170,10 @@ export default function Contact() {
                       </div>
                       <button
                         type="submit"
-                        disabled={submitMutation.isPending}
+                        disabled={sending}
                         className="w-full bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-400 hover:to-cyan-500 disabled:opacity-50 text-black font-bold py-3.5 rounded-xl transition-all duration-200 text-sm"
                       >
-                        {submitMutation.isPending ? "Sender..." : c.send}
+                        {sending ? "Sending..." : c.send}
                       </button>
                     </form>
                   </>

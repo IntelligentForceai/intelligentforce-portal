@@ -4,7 +4,6 @@ import { useLang } from "@/contexts/LanguageContext";
 import AlexVideo from "@/components/AlexVideo";
 import { featuresCaptions } from "@/lib/alexCaptions";
 
-import { trpc } from "@/lib/trpc";
 import { usePageTracker } from "@/hooks/usePageTracker";
 import { BarChart2, Headphones, Zap, Shield, Brain, Plug, ArrowRight, ChevronDown } from "lucide-react";
 
@@ -143,8 +142,6 @@ export default function Features() {
   const isNo = lang === "no";
   const [activeAgent, setActiveAgent] = useState<string | null>(null);
   usePageTracker("/features");
-  const trackAgentMutation = trpc.portal.trackAgentView.useMutation();
-
   const coreFeatures = [
     { icon: <BarChart2 size={28} className="text-cyan-400" />, title: f.f1Title, desc: f.f1Desc },
     { icon: <Headphones size={28} className="text-blue-400" />, title: f.f2Title, desc: f.f2Desc },
@@ -226,7 +223,7 @@ export default function Features() {
                   className={`bg-gradient-to-br ${agent.color} border ${agent.border} rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 shadow-lg ${agent.glow} hover:scale-[1.02] hover:shadow-xl`}
                   onClick={() => {
                     if (!isActive) {
-                      trackAgentMutation.mutate({ agentId: agent.id, agentName: isNo ? agent.nameNo : agent.name });
+                      // Agent view tracking disabled — no backend API on static hosting
                     }
                     setActiveAgent(isActive ? null : agent.id);
                   }}

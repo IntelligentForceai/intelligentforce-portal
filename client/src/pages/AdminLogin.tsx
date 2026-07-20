@@ -1,34 +1,6 @@
-import { useState } from "react";
-import { trpc } from "@/lib/trpc";
-import { useLocation } from "wouter";
-import { Lock, User, Eye, EyeOff, Shield } from "lucide-react";
+import { Shield, ExternalLink, Mail, BarChart2 } from "lucide-react";
 
 export default function AdminLogin() {
-  const [, navigate] = useLocation();
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState("");
-
-  const loginMutation = trpc.admin.login.useMutation({
-    onSuccess: () => {
-      navigate("/admin/dashboard");
-    },
-    onError: (err) => {
-      setError(err.message || "Innlogging feilet. Prøv igjen.");
-    },
-  });
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
-    if (!username.trim() || !password.trim()) {
-      setError("Fyll inn brukernavn og passord.");
-      return;
-    }
-    loginMutation.mutate({ username: username.trim(), password });
-  };
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-background px-4">
       {/* Background glow */}
@@ -46,76 +18,55 @@ export default function AdminLogin() {
           <h1 className="text-2xl font-extrabold text-white">
             IntelligentForce
           </h1>
-          <p className="text-muted-foreground text-sm mt-1">Admin-panel · Kun autorisert tilgang</p>
+          <p className="text-muted-foreground text-sm mt-1">Admin · Kun autorisert tilgang</p>
         </div>
 
-        {/* Login card */}
-        <div className="bg-card border border-border rounded-2xl p-8 shadow-2xl">
-          <h2 className="text-lg font-bold text-white mb-6 flex items-center gap-2">
-            <Lock size={18} className="text-cyan-400" />
-            Logg inn
-          </h2>
+        {/* Info card */}
+        <div className="bg-card border border-border rounded-2xl p-8 shadow-2xl space-y-6">
+          <div className="bg-cyan-500/10 border border-cyan-500/30 rounded-xl p-4">
+            <p className="text-cyan-300 text-sm leading-relaxed">
+              Alle innsendte skjemaer (kontakt, investorer, health check) sendes til{" "}
+              <strong className="text-white">hello@intelligentforce.ai</strong> via Formspree.
+            </p>
+          </div>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
-            {/* Username */}
-            <div>
-              <label className="block text-xs text-muted-foreground mb-1.5 font-medium">
-                Brukernavn
-              </label>
-              <div className="relative">
-                <User size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-                <input
-                  type="text"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  placeholder="valdi"
-                  autoComplete="username"
-                  className="w-full bg-background border border-border rounded-xl pl-9 pr-4 py-3 text-white placeholder:text-muted-foreground focus:outline-none focus:border-cyan-500 text-sm transition-colors"
-                />
-              </div>
-            </div>
+          <div className="space-y-3">
+            <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
+              Administrer innsendte skjemaer
+            </h2>
 
-            {/* Password */}
-            <div>
-              <label className="block text-xs text-muted-foreground mb-1.5 font-medium">
-                Passord
-              </label>
-              <div className="relative">
-                <Lock size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-                <input
-                  type={showPassword ? "text" : "password"}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••••••"
-                  autoComplete="current-password"
-                  className="w-full bg-background border border-border rounded-xl pl-9 pr-10 py-3 text-white placeholder:text-muted-foreground focus:outline-none focus:border-cyan-500 text-sm transition-colors"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-white transition-colors"
-                >
-                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-                </button>
-              </div>
-            </div>
-
-            {/* Error */}
-            {error && (
-              <div className="bg-red-500/10 border border-red-500/30 rounded-xl px-4 py-3 text-red-400 text-sm">
-                {error}
-              </div>
-            )}
-
-            {/* Submit */}
-            <button
-              type="submit"
-              disabled={loginMutation.isPending}
-              className="w-full bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-400 hover:to-cyan-500 disabled:opacity-50 disabled:cursor-not-allowed text-black font-bold py-3 rounded-xl transition-all duration-200 text-sm"
+            <a
+              href="https://formspree.io/login"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-between w-full bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-400 hover:to-cyan-500 text-black font-bold py-3 px-5 rounded-xl transition-all duration-200 text-sm"
             >
-              {loginMutation.isPending ? "Logger inn..." : "Logg inn"}
-            </button>
-          </form>
+              <span className="flex items-center gap-2">
+                <BarChart2 size={16} />
+                Åpne Formspree Dashboard
+              </span>
+              <ExternalLink size={14} />
+            </a>
+
+            <a
+              href="mailto:hello@intelligentforce.ai"
+              className="flex items-center justify-between w-full bg-card border border-border hover:border-cyan-500/50 text-white font-medium py-3 px-5 rounded-xl transition-all duration-200 text-sm"
+            >
+              <span className="flex items-center gap-2">
+                <Mail size={16} className="text-cyan-400" />
+                hello@intelligentforce.ai
+              </span>
+              <ExternalLink size={14} className="text-muted-foreground" />
+            </a>
+          </div>
+
+          <div className="border-t border-border pt-4">
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              Logg inn på <strong className="text-white">formspree.io</strong> med kontoen knyttet til{" "}
+              <strong className="text-white">hello@intelligentforce.ai</strong> for å se alle innsendte skjemaer,
+              eksportere leads og konfigurere varsler.
+            </p>
+          </div>
         </div>
 
         <p className="text-center text-xs text-muted-foreground mt-6">

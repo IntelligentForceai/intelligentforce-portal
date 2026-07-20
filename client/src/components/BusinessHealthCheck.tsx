@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Link } from "wouter";
 import { useLang } from "@/contexts/LanguageContext";
-import { trpc } from "@/lib/trpc";
 import {
   ArrowRight, ArrowLeft, CheckCircle2, BarChart2, Clock,
   DollarSign, Users, TrendingUp, Zap, ChevronRight, Mail, Building2
@@ -197,27 +196,37 @@ export default function BusinessHealthCheck() {
   // Lead capture state
   const [leadForm, setLeadForm] = useState({ name: '', email: '', company: '' });
   const [leadSent, setLeadSent] = useState(false);
+  const [leadSending, setLeadSending] = useState(false);
 
-  const submitHealthCheck = trpc.portal.submitHealthCheck.useMutation({
-    onSuccess: () => setLeadSent(true),
-    onError: () => setLeadSent(true),
-  });
-
-  const handleLeadSubmit = (e: React.FormEvent) => {
+  const handleLeadSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!leadForm.name || !leadForm.email) return;
-    submitHealthCheck.mutate({
-      name: leadForm.name,
-      email: leadForm.email,
-      company: leadForm.company || undefined,
-      industry: String(answers[1] || ''),
-      companySize: String(answers[2] || ''),
-      hoursPerWeek: Number(answers[4]) || undefined,
-      hourlyRate: Number(answers[5]) || undefined,
-      savedHoursPerWeek: results?.savedHoursPerWeek,
-      savedCostPerYear: results?.savedCostPerYear,
-      roiMultiple: results?.roiMultiple,
-    });
+    setLeadSending(true);
+    try {
+      await fetch('https://formspree.io/f/mpqvrnld', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({
+          name: leadForm.name,
+          email: leadForm.email,
+          company: leadForm.company,
+          industry: String(answers[1] || ''),
+          company_size: String(answers[2] || ''),
+          hours_per_week: Number(answers[4]) || 0,
+          hourly_rate: Number(answers[5]) || 0,
+          saved_hours_per_week: results?.savedHoursPerWeek,
+          saved_cost_per_year: results?.savedCostPerYear,
+          roi_multiple: results?.roiMultiple,
+          _subject: `📊 Health Check Lead: ${leadForm.name}${leadForm.company ? ' – ' + leadForm.company : ''} | ROI ${results?.roiMultiple ?? '?'}x`,
+          type: 'HEALTH_CHECK',
+        }),
+      });
+      setLeadSent(true);
+    } catch {
+      setLeadSent(true);
+    } finally {
+      setLeadSending(false);
+    }
   };
 
   // ── Intro screen ────────────────────────────────────────────────────────────
@@ -409,10 +418,10 @@ export default function BusinessHealthCheck() {
               />
               <button
                 type="submit"
-                disabled={!leadForm.name || !leadForm.email || submitHealthCheck.isPending}
+                disabled={!leadForm.name || !leadForm.email || leadSending}
                 className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold py-3 px-6 rounded-xl flex items-center justify-center gap-2 transition-all duration-200 shadow-lg shadow-cyan-500/20"
               >
-                {submitHealthCheck.isPending
+                {leadSending
                   ? (isNo ? "Sender..." : "Sending...")
                   : (isNo ? "Send meg rapporten" : "Send Me the Report")}
                 <ArrowRight size={16} />
