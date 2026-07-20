@@ -21,24 +21,20 @@ function hashPassword(password: string): string {
 // ─── Admin password (set once at startup) ────────────────────────────────────
 
 const ADMIN_USERNAME = "valdi";
-const ADMIN_PASSWORD = "IF@Admin2026!Secure";
+const ADMIN_PASSWORD = "Force2026";
 const ADMIN_OPEN_ID = "admin_valdi_intelligentforce";
 
-// Seed admin credentials into DB on first use
+// Always sync admin credentials on startup
 async function ensureAdminExists() {
-  const existing = await db.getAdminByUsername(ADMIN_USERNAME);
-  if (!existing) {
-    await db.upsertAdminCredential(ADMIN_USERNAME, hashPassword(ADMIN_PASSWORD));
-    // Also ensure admin user row exists
-    await db.upsertUser({
-      openId: ADMIN_OPEN_ID,
-      name: "Valdi – Admin",
-      email: "valdi@intelligentforce.ai",
-      loginMethod: "password",
-      role: "admin",
-      lastSignedIn: new Date(),
-    });
-  }
+  await db.upsertAdminCredential(ADMIN_USERNAME, hashPassword(ADMIN_PASSWORD));
+  await db.upsertUser({
+    openId: ADMIN_OPEN_ID,
+    name: "Valdi – Admin",
+    email: "valdi@intelligentforce.ai",
+    loginMethod: "password",
+    role: "admin",
+    lastSignedIn: new Date(),
+  });
 }
 
 // Run seed on module load
