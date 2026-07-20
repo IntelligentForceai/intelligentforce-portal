@@ -530,10 +530,10 @@ export default function Investors() {
               </div>
               <button
                 type="submit"
-                disabled={!form.name || !form.email || submitMutation.isPending}
+                disabled={!form.name || !form.email || sending}
                 className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold py-4 px-6 rounded-xl flex items-center justify-center gap-2 transition-all duration-200 shadow-lg shadow-cyan-500/20 text-base"
               >
-                {submitMutation.isPending
+                {sending
                   ? (isNo ? "Sender..." : "Sending...")
                   : (isNo ? "Send konfidensiell henvendelse" : "Send Confidential Enquiry")}
                 <ArrowRight size={18} />
