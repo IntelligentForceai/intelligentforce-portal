@@ -62,6 +62,17 @@ const articles = [
     image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80",
     excerpt: "Most businesses are losing significant revenue to inefficiencies they cannot see. Not because the inefficiencies are hidden — but because no one has looked at the right data in the right way.",
   },
+  {
+    id: "ai-automation-norway",
+    slug: "ai-automation-norway-nordic-business-case",
+    title: "AI Automation in Norway: The Business Case for Nordic Companies",
+    subtitle: "Why Norwegian businesses are uniquely positioned to lead in AI automation — and how to get started.",
+    date: "July 20, 2026",
+    readTime: "8 min read",
+    category: "Business Strategy",
+    image: "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=800&q=80",
+    excerpt: "Norwegian and Nordic businesses face a unique combination of high labour costs, strong digital infrastructure, and a culture of trust that makes AI automation not just viable — but strategically essential. Here is why the time to act is now.",
+  },
 ];
 
 const categories = ["All", "Business Strategy", "Platform Deep Dive", "Implementation", "Future of Work", "Tools & Resources"];

@@ -114,6 +114,29 @@ export default function Alex() {
                 </Link>
               </div>
 
+              {/* Suggested follow-ups */}
+              <div className="bg-card border border-border rounded-2xl p-6">
+                <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">
+                  {isNo ? "Spør ALEX om" : "Ask ALEX About"}
+                </h3>
+                <div className="flex flex-col gap-2">
+                  {[
+                    { label: isNo ? "Hvor mye kan vi spare med AI?" : "How much could we save with AI?", href: "/health-check" },
+                    { label: isNo ? "Hvilke prosesser kan automatiseres?" : "Which processes can be automated?", href: "/features" },
+                    { label: isNo ? "Hva koster det og hva er ROI?" : "What does it cost and what's the ROI?", href: "/pricing" },
+                    { label: isNo ? "Hvordan fungerer implementeringen?" : "How does the 14-day implementation work?", href: "/contact" },
+                    { label: isNo ? "Hvilke bransjer passer best?" : "Which industries are the best fit?", href: "/features" },
+                  ].map((item, i) => (
+                    <Link key={i} href={item.href} className="flex items-center gap-2 text-white/80 hover:text-white hover:translate-x-1 transition-all text-sm group">
+                      <span className="w-5 h-5 rounded-full bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center shrink-0 group-hover:bg-cyan-500/30 transition-colors">
+                        <ArrowRight size={10} className="text-cyan-400" />
+                      </span>
+                      {item.label}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+
               {/* Quick links */}
               <div className="bg-card border border-border rounded-2xl p-6">
                 <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">

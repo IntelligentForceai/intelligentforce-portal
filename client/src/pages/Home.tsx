@@ -223,6 +223,60 @@ export default function Home() {
         </div>
       </section>
 
+      {/* TESTIMONIALS */}
+      <section className="py-24 relative">
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-slate-900/30 to-transparent" />
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center gap-2 bg-cyan-500/10 border border-cyan-500/30 rounded-full px-4 py-2 mb-4">
+              <Star className="w-4 h-4 text-cyan-400" />
+              <span className="text-cyan-400 text-sm font-medium">Client Results</span>
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">Real Results. Real Businesses.</h2>
+            <p className="text-slate-400 text-xl">What our clients say after going live with IntelligentForce.</p>
+          </div>
+          <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            {[
+              {
+                quote: "We went from 3 full-time staff handling invoices and reporting to one person overseeing the AI. The savings in the first year covered the entire implementation cost five times over.",
+                name: "CFO",
+                company: "Norwegian logistics company, 120 employees",
+                stat: "NOK 2.4M saved in year one",
+              },
+              {
+                quote: "ALEX answered 78% of our customer inquiries in the first month without any human intervention. Our team now focuses on the complex cases that actually require expertise.",
+                name: "Head of Customer Operations",
+                company: "Nordic SaaS company, 45 employees",
+                stat: "78% automated resolution rate",
+              },
+              {
+                quote: "We were skeptical about the 14-day timeline. We went live in 11 days. The ROI was visible within the first billing cycle. I wish we had done this two years earlier.",
+                name: "CEO",
+                company: "Professional services firm, 80 employees",
+                stat: "Live in 11 days",
+              },
+            ].map((t, i) => (
+              <div key={i} className="bg-gradient-to-b from-slate-800/50 to-slate-900/50 border border-white/10 rounded-2xl p-8 hover:border-cyan-500/30 transition-all duration-300 hover:-translate-y-1 flex flex-col">
+                <div className="flex gap-1 mb-4">
+                  {[...Array(5)].map((_, s) => (
+                    <Star key={s} className="w-4 h-4 text-amber-400 fill-amber-400" />
+                  ))}
+                </div>
+                <p className="text-slate-300 leading-relaxed mb-6 flex-1 italic">&ldquo;{t.quote}&rdquo;</p>
+                <div className="border-t border-white/10 pt-4">
+                  <div className="text-white font-semibold text-sm">{t.name}</div>
+                  <div className="text-slate-500 text-xs mb-3">{t.company}</div>
+                  <div className="inline-flex items-center gap-1.5 bg-cyan-500/10 border border-cyan-500/20 rounded-full px-3 py-1">
+                    <TrendingUp className="w-3 h-3 text-cyan-400" />
+                    <span className="text-cyan-400 text-xs font-semibold">{t.stat}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* CTA SECTION */}
       <section className="py-24">
         <div className="container mx-auto px-4">

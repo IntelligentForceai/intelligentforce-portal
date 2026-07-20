@@ -259,7 +259,7 @@ export const translations = {
       faq4Q: "Kan dere integrere med eksisterende verktøy?",
       faq4A: "Ja! Vi integrerer med 500+ forretningsverktøy inkludert Salesforce, HubSpot, SAP og mer.",
       ctaBtn: "Bestill en Demo",
-      suggestedPrompts: ["Hva er IntelligentForce?", "Hvordan fungerer systemet?", "Hva er sikkerheten?", "Hvor er dataene lagret?"],
+      suggestedPrompts: ["Hvor mye kan vi spare med AI?", "Hvilke prosesser kan automatiseres?", "Hva koster det og hva er ROI?", "Hvordan fungerer implementeringen på 14 dager?", "Hvilke bransjer passer best?"],
     },
     alex: {
       hero: "Møt ALEX",
@@ -563,7 +563,7 @@ export const translations = {
       faq4Q: "Can you integrate with our existing tools?",
       faq4A: "Yes! We integrate with 500+ business tools including Salesforce, HubSpot, SAP, and more.",
       ctaBtn: "Schedule a Demo",
-      suggestedPrompts: ["What is IntelligentForce?", "How does the system work?", "What about security?", "Where is data stored?"],
+      suggestedPrompts: ["How much could we save with AI?", "Which processes can be automated?", "What does it cost and what's the ROI?", "How does the 14-day implementation work?", "Which industries are the best fit?"],
     },
     alex: {
       hero: "Meet ALEX",

@@ -5,8 +5,84 @@ import AlexVideo from "@/components/AlexVideo";
 import { pricingCaptions } from "@/lib/alexCaptions";
 
 import { usePageTracker } from "@/hooks/usePageTracker";
-import { Check, ChevronDown, ChevronUp, ArrowRight } from "lucide-react";
+import { Check, ChevronDown, ChevronUp, ArrowRight, Calculator } from "lucide-react";
 import { useSEO } from "@/hooks/useSEO";
+
+function ROICalculator() {
+  const [employees, setEmployees] = useState(20);
+  const [avgSalary, setAvgSalary] = useState(600000);
+  const automationRate = 0.35;
+  const annualSavings = Math.round(employees * avgSalary * automationRate);
+  const monthlySavings = Math.round(annualSavings / 12);
+  const roi = Math.round((annualSavings / 1499 / 12) * 100);
+
+  return (
+    <div className="bg-card border border-border rounded-2xl p-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 mb-8">
+        <div>
+          <label className="block text-white font-semibold mb-3">
+            Number of employees: <span className="text-cyan-400">{employees}</span>
+          </label>
+          <input
+            type="range"
+            min={5}
+            max={500}
+            step={5}
+            value={employees}
+            onChange={(e) => setEmployees(Number(e.target.value))}
+            className="w-full accent-cyan-500"
+          />
+          <div className="flex justify-between text-xs text-muted-foreground mt-1">
+            <span>5</span><span>500</span>
+          </div>
+        </div>
+        <div>
+          <label className="block text-white font-semibold mb-3">
+            Avg. annual salary (NOK): <span className="text-cyan-400">{avgSalary.toLocaleString()}</span>
+          </label>
+          <input
+            type="range"
+            min={300000}
+            max={1500000}
+            step={50000}
+            value={avgSalary}
+            onChange={(e) => setAvgSalary(Number(e.target.value))}
+            className="w-full accent-cyan-500"
+          />
+          <div className="flex justify-between text-xs text-muted-foreground mt-1">
+            <span>300k</span><span>1.5M</span>
+          </div>
+        </div>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+        <div className="bg-background rounded-xl p-5 text-center border border-border">
+          <div className="text-3xl font-extrabold text-cyan-400 mb-1">
+            NOK {(annualSavings / 1000).toFixed(0)}k
+          </div>
+          <div className="text-muted-foreground text-sm">Estimated annual savings</div>
+        </div>
+        <div className="bg-background rounded-xl p-5 text-center border border-border">
+          <div className="text-3xl font-extrabold text-green-400 mb-1">
+            NOK {(monthlySavings / 1000).toFixed(0)}k
+          </div>
+          <div className="text-muted-foreground text-sm">Monthly savings</div>
+        </div>
+        <div className="bg-gradient-to-b from-blue-900/40 to-card rounded-xl p-5 text-center border border-cyan-500/30">
+          <div className="text-3xl font-extrabold text-white mb-1">{roi}x</div>
+          <div className="text-muted-foreground text-sm">ROI on Professional plan</div>
+        </div>
+      </div>
+      <p className="text-xs text-muted-foreground text-center mb-6">
+        Based on 35% automation of manual processes. Actual results vary by industry and implementation scope.
+      </p>
+      <div className="text-center">
+        <Link href="/health-check" className="btn-gradient inline-flex items-center gap-2 px-8 py-4 rounded-full font-bold text-white">
+          Get Your Precise ROI Estimate <ArrowRight size={18} />
+        </Link>
+      </div>
+    </div>
+  );
+}
 
 export default function Pricing() {
   useSEO({
@@ -187,6 +263,21 @@ export default function Pricing() {
           <p className="text-center text-muted-foreground text-sm mt-6">
             Spørsmål? Kontakt oss på <a href="mailto:hello@intelligentforce.ai" className="text-cyan-400 hover:text-cyan-300 transition-colors">hello@intelligentforce.ai</a> eller chat med <a href="/alex" className="text-cyan-400 hover:text-cyan-300 transition-colors">ALEX</a>.
           </p>
+        </div>
+      </section>
+
+      {/* ROI Calculator */}
+      <section className="py-16 bg-gradient-to-b from-slate-900/50 to-background">
+        <div className="container max-w-3xl">
+          <div className="text-center mb-10">
+            <div className="inline-flex items-center gap-2 bg-cyan-500/10 border border-cyan-500/30 rounded-full px-4 py-2 mb-4">
+              <Calculator size={16} className="text-cyan-400" />
+              <span className="text-cyan-400 text-sm font-medium">ROI Calculator</span>
+            </div>
+            <h2 className="text-3xl font-bold text-white mb-3">How Much Could You Save?</h2>
+            <p className="text-muted-foreground text-lg">Estimate your annual savings based on your team size.</p>
+          </div>
+          <ROICalculator />
         </div>
       </section>
 
