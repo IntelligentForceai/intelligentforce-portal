@@ -6,8 +6,16 @@ import { pricingCaptions } from "@/lib/alexCaptions";
 
 import { usePageTracker } from "@/hooks/usePageTracker";
 import { Check, ChevronDown, ChevronUp, ArrowRight } from "lucide-react";
+import { useSEO } from "@/hooks/useSEO";
 
 export default function Pricing() {
+  useSEO({
+    title: "Pricing Plans – IntelligentForce AI Automation",
+    description: "Transparent pricing for AI business automation. Choose from Starter, Professional, and Enterprise plans. Start with a free Business Health Check. No hidden fees.",
+    keywords: "AI automation pricing, business automation cost, AI SaaS pricing, IntelligentForce plans, enterprise AI pricing",
+    canonical: "https://intelligentforce.ai/pricing",
+    
+  });
   const { t } = useLang();
   const p = t.pricing;
   const [yearly, setYearly] = useState(false);

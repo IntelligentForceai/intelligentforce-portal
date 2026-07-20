@@ -1,6 +1,7 @@
 import { Link } from "wouter";
 import { usePageTracker } from "@/hooks/usePageTracker";
 import { MapPin, Clock, ArrowRight, Users, Zap, Globe, Heart } from "lucide-react";
+import { useSEO } from "@/hooks/useSEO";
 
 const openRoles = [
   {
@@ -94,6 +95,13 @@ const values = [
 ];
 
 export default function Careers() {
+  useSEO({
+    title: "Careers at IntelligentForce – Join the AI Revolution",
+    description: "Join IntelligentForce and help build the future of AI business automation. Open positions in engineering, sales, and operations. Based in Oslo, Norway.",
+    keywords: "IntelligentForce careers, AI jobs Norway, Oslo tech jobs, AI automation jobs, join AI company",
+    canonical: "https://intelligentforce.ai/careers",
+    
+  });
   usePageTracker("/careers");
 
   return (

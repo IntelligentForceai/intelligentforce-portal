@@ -4,8 +4,16 @@ import { usePageTracker } from "@/hooks/usePageTracker";
 import BusinessHealthCheck from "@/components/BusinessHealthCheck";
 import { Link } from "wouter";
 import { ArrowLeft, Shield, Clock, TrendingUp } from "lucide-react";
+import { useSEO } from "@/hooks/useSEO";
 
 export default function HealthCheck() {
+  useSEO({
+    title: "Free Business Health Check – AI Automation Assessment | IntelligentForce",
+    description: "Get a free AI-powered assessment of your business automation potential. Discover where AI can save you time and money. Takes only 5 minutes. Instant results.",
+    keywords: "business health check, AI automation assessment, free business analysis, automation potential, ROI calculator AI",
+    canonical: "https://intelligentforce.ai/health-check",
+    
+  });
   const { lang } = useLang();
   const isNo = lang === "no";
   usePageTracker("/health-check");

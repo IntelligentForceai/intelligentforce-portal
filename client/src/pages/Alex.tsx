@@ -5,6 +5,7 @@ import AlexVideo from "@/components/AlexVideo";
 import { alexCaptions } from "@/lib/alexCaptions";
 import { usePageTracker } from "@/hooks/usePageTracker";
 import { Clock, Globe, ArrowRight } from "lucide-react";
+import { useSEO } from "@/hooks/useSEO";
 
 
 const agents = [
@@ -20,6 +21,13 @@ const agents = [
 ];
 
 export default function Alex() {
+  useSEO({
+    title: "Meet ALEX – Your AI Operations Partner | IntelligentForce",
+    description: "ALEX is IntelligentForce's AI Operations Partner. Chat with ALEX to get instant answers about AI automation, business efficiency, and how IntelligentForce can transform your operations.",
+    keywords: "ALEX AI assistant, AI operations partner, chat with AI, business automation assistant, IntelligentForce ALEX",
+    canonical: "https://intelligentforce.ai/alex",
+    
+  });
   const { t, lang } = useLang();
   const a = t.alex;
   const isNo = lang === "no";

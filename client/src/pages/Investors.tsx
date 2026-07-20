@@ -4,6 +4,7 @@ import { useLang } from "@/contexts/LanguageContext";
 import AlexVideo from "@/components/AlexVideo";
 import { investorsCaptions } from "@/lib/alexCaptions";
 import { usePageTracker } from "@/hooks/usePageTracker";
+import { useSEO } from "@/hooks/useSEO";
 import {
   ArrowRight,
   TrendingUp,
@@ -21,6 +22,13 @@ import {
 } from "lucide-react";
 
 export default function Investors() {
+  useSEO({
+    title: "Investor Relations – IntelligentForce",
+    description: "IntelligentForce investor relations. Learn about our growth trajectory, market opportunity, and how to partner with us as we scale AI automation globally.",
+    keywords: "IntelligentForce investors, AI startup investment, business automation investment, AI company Norway",
+    canonical: "https://intelligentforce.ai/investors",
+    
+  });
   const { lang } = useLang();
   const isNo = lang === "no";
   usePageTracker("/investors");

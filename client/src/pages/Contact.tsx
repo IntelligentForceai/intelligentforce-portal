@@ -5,8 +5,16 @@ import { contactCaptions } from "@/lib/alexCaptions";
 
 import { usePageTracker } from "@/hooks/usePageTracker";
 import { Mail, MapPin, MessageCircle, FileText, Users, Activity, ChevronDown, ChevronUp, CheckCircle2 } from "lucide-react";
+import { useSEO } from "@/hooks/useSEO";
 
 export default function Contact() {
+  useSEO({
+    title: "Contact IntelligentForce – Get in Touch",
+    description: "Contact IntelligentForce for AI automation inquiries, demos, and support. Reach us at hello@intelligentforce.ai or chat with ALEX, our AI assistant.",
+    keywords: "contact IntelligentForce, AI automation demo, business automation inquiry, ALEX AI contact",
+    canonical: "https://intelligentforce.ai/contact",
+    
+  });
   const { t } = useLang();
   const c = t.contact;
   usePageTracker("/contact");

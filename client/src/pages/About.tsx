@@ -5,8 +5,16 @@ import { aboutCaptions } from "@/lib/alexCaptions";
 
 import { usePageTracker } from "@/hooks/usePageTracker";
 import { ArrowRight, User } from "lucide-react";
+import { useSEO } from "@/hooks/useSEO";
 
 export default function About() {
+  useSEO({
+    title: "About IntelligentForce – AI Business Automation Company",
+    description: "Learn about IntelligentForce, the AI-powered business automation company based in Oslo, Norway. Our mission is to make enterprise-grade AI accessible to every business.",
+    keywords: "IntelligentForce about, AI company Norway, Oslo AI startup, business automation company, AI team",
+    canonical: "https://intelligentforce.ai/about",
+    
+  });
   const { t } = useLang();
   const a = t.about;
   usePageTracker("/about");

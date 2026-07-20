@@ -3,15 +3,17 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
-
     <!-- Primary SEO -->
     <title>IntelligentForce – AI-Powered Business Automation</title>
     <meta name="description" content="IntelligentForce delivers AI-powered business automation for mid-market and enterprise companies worldwide. 9 specialised AI agents, 60% cost reduction, live in 2 weeks. Meet ALEX – your AI Operations Partner." />
-    <meta name="keywords" content="AI business automation, AI agents, business process automation, ALEX AI assistant, IntelligentForce, enterprise AI, workflow automation, AI consulting, SaaS AI platform, AI integration" />
+    <meta name="keywords" content="AI business automation, AI agents, business process automation, ALEX AI assistant, IntelligentForce, enterprise AI, workflow automation, AI consulting, SaaS AI platform, AI integration, forretningsautomatisering, kunstig intelligens, AI automatisering Norge" />
     <meta name="author" content="IntelligentForce" />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://intelligentforce.ai/" />
-
+    <!-- Hreflang for Norwegian and English -->
+    <link rel="alternate" hreflang="en" href="https://intelligentforce.ai/" />
+    <link rel="alternate" hreflang="no" href="https://intelligentforce.ai/" />
+    <link rel="alternate" hreflang="x-default" href="https://intelligentforce.ai/" />
     <!-- Open Graph (Facebook, LinkedIn) -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://intelligentforce.ai/" />
@@ -20,16 +22,17 @@
     <meta property="og:image" content="https://intelligentforce.ai/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="IntelligentForce – AI-Powered Business Automation Platform" />
     <meta property="og:site_name" content="IntelligentForce" />
     <meta property="og:locale" content="en_US" />
-
+    <meta property="og:locale:alternate" content="nb_NO" />
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@intelligentforce" />
     <meta name="twitter:url" content="https://intelligentforce.ai/" />
     <meta name="twitter:title" content="IntelligentForce – AI-Powered Business Automation" />
     <meta name="twitter:description" content="9 specialised AI agents that automate your business operations. 60% cost reduction. Live in 2 weeks." />
     <meta name="twitter:image" content="https://intelligentforce.ai/og-image.png" />
-
     <!-- Structured Data (JSON-LD) -->
     <script type="application/ld+json">
     {
@@ -37,14 +40,26 @@
       "@type": "Organization",
       "name": "IntelligentForce",
       "url": "https://intelligentforce.ai",
-      "logo": "https://intelligentforce.ai/og-image.png",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://intelligentforce.ai/og-image.png",
+        "width": 1200,
+        "height": 630
+      },
       "description": "AI-powered business automation platform for mid-market and enterprise companies worldwide. 9 specialised AI agents delivering measurable results.",
       "email": "hello@intelligentforce.ai",
       "foundingDate": "2026",
-      "areaServed": "Worldwide",
-      "serviceType": "AI Business Automation",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Oslo",
+        "addressCountry": "NO"
+      },
+      "areaServed": ["Worldwide", "Norway", "Scandinavia", "Europe"],
+      "serviceType": ["AI Business Automation", "Workflow Automation", "AI Consulting"],
       "sameAs": [
-        "https://intelligentforce.ai"
+        "https://linkedin.com/company/intelligentforce",
+        "https://instagram.com/intelligentforce.ai",
+        "https://facebook.com/intelligentforce"
       ],
       "hasOfferCatalog": {
         "@type": "OfferCatalog",
@@ -65,12 +80,33 @@
               "name": "Business Health Check",
               "description": "Free AI-powered assessment of your business automation potential"
             }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "ALEX AI Operations Partner",
+              "description": "24/7 AI operations partner for instant business automation support"
+            }
           }
         ]
       }
     }
     </script>
-
+    <!-- WebSite structured data for Sitelinks Searchbox -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "IntelligentForce",
+      "url": "https://intelligentforce.ai",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://intelligentforce.ai/blog?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

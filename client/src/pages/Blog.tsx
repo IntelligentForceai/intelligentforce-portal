@@ -4,6 +4,7 @@ import AlexVideo from "@/components/AlexVideo";
 import { blogCaptions } from "@/lib/alexCaptions";
 import { usePageTracker } from "@/hooks/usePageTracker";
 import { Clock, ArrowRight, Mail, ChevronRight } from "lucide-react";
+import { useSEO } from "@/hooks/useSEO";
 
 const articles = [
   {
@@ -74,6 +75,13 @@ const categoryColors: Record<string, string> = {
 };
 
 export default function Blog() {
+  useSEO({
+    title: "Blog – AI Automation Insights | IntelligentForce",
+    description: "Read the latest insights on AI business automation, digital transformation, and how AI agents are reshaping enterprise operations. Expert articles from IntelligentForce.",
+    keywords: "AI automation blog, business automation articles, AI insights, digital transformation, AI agents blog",
+    canonical: "https://intelligentforce.ai/blog",
+    
+  });
   const [activeCategory, setActiveCategory] = useState("All");
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);

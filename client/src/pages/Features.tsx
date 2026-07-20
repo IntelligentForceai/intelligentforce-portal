@@ -6,6 +6,7 @@ import { featuresCaptions } from "@/lib/alexCaptions";
 
 import { usePageTracker } from "@/hooks/usePageTracker";
 import { BarChart2, Headphones, Zap, Shield, Brain, Plug, ArrowRight, ChevronDown } from "lucide-react";
+import { useSEO } from "@/hooks/useSEO";
 
 const agents = [
   {
@@ -137,6 +138,13 @@ const agents = [
 ];
 
 export default function Features() {
+  useSEO({
+    title: "AI Features & Agents – IntelligentForce",
+    description: "Explore IntelligentForce's 9 specialised AI agents: Sales, Marketing, Finance, HR, Operations, Customer Service, Legal, IT, and Strategy. Each agent automates your core business processes.",
+    keywords: "AI agents, AI features, sales automation, marketing automation, finance AI, HR automation, customer service AI, business process automation",
+    canonical: "https://intelligentforce.ai/features",
+    
+  });
   const { t, lang } = useLang();
   const f = t.features;
   const isNo = lang === "no";

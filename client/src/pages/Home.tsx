@@ -2,6 +2,7 @@ import { useLang } from "@/contexts/LanguageContext";
 import { Link } from "wouter";
 import AlexVideo from "@/components/AlexVideo";
 import { usePageTracker } from "@/hooks/usePageTracker";
+import { useSEO } from "@/hooks/useSEO";
 import { ArrowRight, CheckCircle2, Zap, BarChart3, Shield, Users, Clock, Star, TrendingUp, Globe, Award } from "lucide-react";
 import { homeCaptions } from "@/lib/alexCaptions";
 
@@ -22,6 +23,29 @@ const clientLogos = [
 export default function Home() {
   const { t } = useLang();
   usePageTracker("/");
+  useSEO({
+    title: "IntelligentForce – AI-Powered Business Automation",
+    description: "IntelligentForce delivers AI-powered business automation for mid-market and enterprise companies worldwide. 9 specialised AI agents, 60% cost reduction, live in 2 weeks. Meet ALEX – your AI Operations Partner.",
+    keywords: "AI business automation, AI agents, business process automation, ALEX AI assistant, IntelligentForce, enterprise AI, workflow automation, AI consulting, SaaS AI platform, forretningsautomatisering, kunstig intelligens",
+    canonical: "https://intelligentforce.ai/",
+    jsonLd: {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "IntelligentForce",
+      "url": "https://intelligentforce.ai",
+      "logo": "https://intelligentforce.ai/og-image.png",
+      "description": "AI-powered business automation platform. 9 specialised AI agents delivering measurable results.",
+      "email": "hello@intelligentforce.ai",
+      "foundingDate": "2026",
+      "areaServed": ["Worldwide", "Norway", "Scandinavia"],
+      "serviceType": "AI Business Automation",
+      "sameAs": [
+        "https://linkedin.com/company/intelligentforce",
+        "https://instagram.com/intelligentforce.ai",
+        "https://facebook.com/intelligentforce"
+      ]
+    }
+  });
 
   const whyItems = [
     { title: t.home.w1Title, desc: t.home.w1Desc },
