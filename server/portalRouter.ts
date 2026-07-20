@@ -24,6 +24,47 @@ export const portalRouter = router({
       return { success: true };
     }),
 
+  // ── Submit Health Check lead ────────────────────────────────────────────────
+  submitHealthCheck: publicProcedure
+    .input(z.object({
+      name: z.string().min(1).max(256),
+      email: z.string().email().max(320),
+      company: z.string().max(256).optional(),
+      industry: z.string().max(64).optional(),
+      companySize: z.string().max(64).optional(),
+      hoursPerWeek: z.number().optional(),
+      hourlyRate: z.number().optional(),
+      savedHoursPerWeek: z.number().optional(),
+      savedCostPerYear: z.number().optional(),
+      roiMultiple: z.number().optional(),
+    }))
+    .mutation(async ({ input }) => {
+      const message = [
+        `🔍 Business Health Check Results`,
+        ``,
+        `Industry: ${input.industry ?? 'N/A'}`,
+        `Company size: ${input.companySize ?? 'N/A'}`,
+        `Manual hours/week: ${input.hoursPerWeek ?? 'N/A'}`,
+        `Hourly rate: $${input.hourlyRate ?? 'N/A'}`,
+        ``,
+        `📊 Estimated Results:`,
+        `Hours saved/week: ${input.savedHoursPerWeek ?? 'N/A'}+`,
+        `Annual savings: $${input.savedCostPerYear?.toLocaleString() ?? 'N/A'}`,
+        `ROI multiple: ${input.roiMultiple ?? 'N/A'}x`,
+        ``,
+        `💬 This lead came from the Business Health Check on intelligentforce.ai`,
+      ].join('\n');
+
+      await db.insertContactSubmission({
+        name: input.name,
+        email: input.email,
+        company: input.company ?? null,
+        category: 'health-check',
+        message,
+      });
+      return { success: true };
+    }),
+
   // ── Track page view ─────────────────────────────────────────────────────────
   trackPageView: publicProcedure
     .input(z.object({

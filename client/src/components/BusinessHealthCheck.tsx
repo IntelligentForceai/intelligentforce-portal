@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { Link } from "wouter";
 import { useLang } from "@/contexts/LanguageContext";
+import { trpc } from "@/lib/trpc";
 import {
   ArrowRight, ArrowLeft, CheckCircle2, BarChart2, Clock,
-  DollarSign, Users, TrendingUp, Zap, ChevronRight
+  DollarSign, Users, TrendingUp, Zap, ChevronRight, Mail, Building2
 } from "lucide-react";
 
 // ─── Types ──────────────────────────────────────────────────────────────────
@@ -193,6 +194,32 @@ export default function BusinessHealthCheck() {
 
   const results = showResults ? calculateROI(answers) : null;
 
+  // Lead capture state
+  const [leadForm, setLeadForm] = useState({ name: '', email: '', company: '' });
+  const [leadSent, setLeadSent] = useState(false);
+
+  const submitHealthCheck = trpc.portal.submitHealthCheck.useMutation({
+    onSuccess: () => setLeadSent(true),
+    onError: () => setLeadSent(true),
+  });
+
+  const handleLeadSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!leadForm.name || !leadForm.email) return;
+    submitHealthCheck.mutate({
+      name: leadForm.name,
+      email: leadForm.email,
+      company: leadForm.company || undefined,
+      industry: String(answers[1] || ''),
+      companySize: String(answers[2] || ''),
+      hoursPerWeek: Number(answers[4]) || undefined,
+      hourlyRate: Number(answers[5]) || undefined,
+      savedHoursPerWeek: results?.savedHoursPerWeek,
+      savedCostPerYear: results?.savedCostPerYear,
+      roiMultiple: results?.roiMultiple,
+    });
+  };
+
   // ── Intro screen ────────────────────────────────────────────────────────────
   if (currentStep === 0) {
     return (
@@ -342,6 +369,68 @@ export default function BusinessHealthCheck() {
             : "* Estimates are based on average results from comparable businesses. Actual results vary depending on implementation, processes, and organization. IntelligentForce does not guarantee specific savings without a thorough analysis of your business."}
         </p>
 
+        {/* Lead capture form */}
+        {!leadSent ? (
+          <div className="bg-gradient-to-br from-cyan-500/10 to-blue-600/10 border border-cyan-500/30 rounded-2xl p-6 mb-6">
+            <h3 className="text-white font-bold text-lg mb-1 flex items-center gap-2">
+              <Mail size={18} className="text-cyan-400" />
+              {isNo ? "Få din fulle rapport tilsendt" : "Get Your Full Report"}
+            </h3>
+            <p className="text-slate-400 text-sm mb-4">
+              {isNo
+                ? "ALEX sender deg en detaljert analyse og tar kontakt for å diskutere neste steg."
+                : "ALEX will send you a detailed analysis and reach out to discuss next steps."}
+            </p>
+            <form onSubmit={handleLeadSubmit} className="space-y-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <input
+                  type="text"
+                  placeholder={isNo ? "Ditt navn *" : "Your name *"}
+                  value={leadForm.name}
+                  onChange={e => setLeadForm(f => ({ ...f, name: e.target.value }))}
+                  required
+                  className="bg-slate-800/80 border border-slate-600/50 rounded-xl px-4 py-3 text-white placeholder:text-slate-500 focus:outline-none focus:border-cyan-500 text-sm transition-colors"
+                />
+                <input
+                  type="email"
+                  placeholder={isNo ? "E-postadresse *" : "Email address *"}
+                  value={leadForm.email}
+                  onChange={e => setLeadForm(f => ({ ...f, email: e.target.value }))}
+                  required
+                  className="bg-slate-800/80 border border-slate-600/50 rounded-xl px-4 py-3 text-white placeholder:text-slate-500 focus:outline-none focus:border-cyan-500 text-sm transition-colors"
+                />
+              </div>
+              <input
+                type="text"
+                placeholder={isNo ? "Bedriftsnavn (valgfritt)" : "Company name (optional)"}
+                value={leadForm.company}
+                onChange={e => setLeadForm(f => ({ ...f, company: e.target.value }))}
+                className="w-full bg-slate-800/80 border border-slate-600/50 rounded-xl px-4 py-3 text-white placeholder:text-slate-500 focus:outline-none focus:border-cyan-500 text-sm transition-colors"
+              />
+              <button
+                type="submit"
+                disabled={!leadForm.name || !leadForm.email || submitHealthCheck.isPending}
+                className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold py-3 px-6 rounded-xl flex items-center justify-center gap-2 transition-all duration-200 shadow-lg shadow-cyan-500/20"
+              >
+                {submitHealthCheck.isPending
+                  ? (isNo ? "Sender..." : "Sending...")
+                  : (isNo ? "Send meg rapporten" : "Send Me the Report")}
+                <ArrowRight size={16} />
+              </button>
+            </form>
+          </div>
+        ) : (
+          <div className="bg-green-500/10 border border-green-500/30 rounded-2xl p-5 mb-6 text-center">
+            <CheckCircle2 size={32} className="text-green-400 mx-auto mb-2" />
+            <p className="text-white font-semibold">
+              {isNo ? "Takk! ALEX tar kontakt med deg snart." : "Thank you! ALEX will be in touch shortly."}
+            </p>
+            <p className="text-slate-400 text-sm mt-1">
+              {isNo ? "Sjekk innboksen din innen 24 timer." : "Check your inbox within 24 hours."}
+            </p>
+          </div>
+        )}
+
         {/* CTAs */}
         <div className="flex flex-col sm:flex-row gap-3">
           <Link href="/contact" className="flex-1">
@@ -351,7 +440,7 @@ export default function BusinessHealthCheck() {
             </button>
           </Link>
           <button
-            onClick={() => { setCurrentStep(0); setAnswers({}); setMultiSelect([]); setShowResults(false); }}
+            onClick={() => { setCurrentStep(0); setAnswers({}); setMultiSelect([]); setShowResults(false); setLeadSent(false); setLeadForm({ name: '', email: '', company: '' }); }}
             className="flex-1 bg-slate-700/60 hover:bg-slate-700 text-slate-300 font-semibold py-4 px-6 rounded-2xl transition-all duration-200 border border-slate-600/50"
           >
             {isNo ? "Start på nytt" : "Start Over"}

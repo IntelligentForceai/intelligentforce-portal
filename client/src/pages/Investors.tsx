@@ -4,6 +4,7 @@ import { useLang } from "@/contexts/LanguageContext";
 import AlexVideo from "@/components/AlexVideo";
 import { investorsCaptions } from "@/lib/alexCaptions";
 import { usePageTracker } from "@/hooks/usePageTracker";
+import { trpc } from "@/lib/trpc";
 import {
   ArrowRight,
   TrendingUp,
@@ -24,6 +25,26 @@ export default function Investors() {
   const { lang } = useLang();
   const isNo = lang === "no";
   usePageTracker("/investors");
+
+  const [form, setForm] = useState({ name: '', email: '', company: '', message: '' });
+  const [sent, setSent] = useState(false);
+
+  const submitMutation = trpc.portal.submitContact.useMutation({
+    onSuccess: () => setSent(true),
+    onError: () => setSent(true),
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!form.name || !form.email) return;
+    submitMutation.mutate({
+      name: form.name,
+      email: form.email,
+      company: form.company || undefined,
+      category: 'investor',
+      message: form.message || `Investor enquiry from ${form.name}${form.company ? ' at ' + form.company : ''}. Please treat as confidential.`,
+    });
+  };
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "instant" });
@@ -427,18 +448,102 @@ export default function Investors() {
 
       {/* ── CONTACT / CTA ────────────────────────────────────────────── */}
       <section className="py-24 bg-background">
-        <div className="container max-w-3xl mx-auto text-center">
-          <div className="w-16 h-16 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center mx-auto mb-6 shadow-xl shadow-cyan-500/30">
-            <span className="text-white font-black text-2xl">A</span>
+        <div className="container max-w-3xl mx-auto">
+          <div className="text-center mb-10">
+            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center mx-auto mb-6 shadow-xl shadow-cyan-500/30">
+              <span className="text-white font-black text-2xl">A</span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-4">
+              {isNo ? "Start en konfidensiell dialog" : "Initiate a Confidential Dialogue"}
+            </h2>
+            <p className="text-slate-300 text-lg max-w-xl mx-auto leading-relaxed">
+              {isNo
+                ? "ALEX er ditt første kontaktpunkt. Hun kvalifiserer henvendelser og koordinerer videre dialog med ledelsen. Alle samtaler behandles med full konfidensialitet."
+                : "ALEX is your first point of contact. She qualifies enquiries and coordinates further dialogue with leadership. All conversations are handled with full confidentiality."}
+            </p>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-4">
-            {isNo ? "Start en konfidensiell dialog" : "Initiate a Confidential Dialogue"}
-          </h2>
-          <p className="text-slate-300 text-lg mb-10 max-w-xl mx-auto leading-relaxed">
-            {isNo
-              ? "ALEX er ditt første kontaktpunkt. Hun kvalifiserer henvendelser og koordinerer videre dialog med ledelsen. Alle samtaler behandles med full konfidensialitet."
-              : "ALEX is your first point of contact. She qualifies enquiries and coordinates further dialogue with leadership. All conversations are handled with full confidentiality."}
-          </p>
+
+          {/* Inline NDA contact form */}
+          {!sent ? (
+            <form onSubmit={handleSubmit} className="bg-card border border-border rounded-2xl p-8 space-y-4 mb-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-slate-400 text-sm mb-1.5">{isNo ? "Ditt navn *" : "Your name *"}</label>
+                  <input
+                    type="text"
+                    value={form.name}
+                    onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+                    required
+                    placeholder={isNo ? "Fullt navn" : "Full name"}
+                    className="w-full bg-background border border-border rounded-xl px-4 py-3 text-white placeholder:text-slate-600 focus:outline-none focus:border-cyan-500 text-base transition-colors"
+                  />
+                </div>
+                <div>
+                  <label className="block text-slate-400 text-sm mb-1.5">{isNo ? "E-postadresse *" : "Email address *"}</label>
+                  <input
+                    type="email"
+                    value={form.email}
+                    onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
+                    required
+                    placeholder="name@company.com"
+                    className="w-full bg-background border border-border rounded-xl px-4 py-3 text-white placeholder:text-slate-600 focus:outline-none focus:border-cyan-500 text-base transition-colors"
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="block text-slate-400 text-sm mb-1.5">{isNo ? "Selskap / organisasjon" : "Company / Organisation"}</label>
+                <input
+                  type="text"
+                  value={form.company}
+                  onChange={e => setForm(f => ({ ...f, company: e.target.value }))}
+                  placeholder={isNo ? "Ditt selskap" : "Your company"}
+                  className="w-full bg-background border border-border rounded-xl px-4 py-3 text-white placeholder:text-slate-600 focus:outline-none focus:border-cyan-500 text-base transition-colors"
+                />
+              </div>
+              <div>
+                <label className="block text-slate-400 text-sm mb-1.5">{isNo ? "Melding (valgfritt)" : "Message (optional)"}</label>
+                <textarea
+                  value={form.message}
+                  onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
+                  rows={4}
+                  placeholder={isNo
+                    ? "Fortell oss kort om din bakgrunn og hva du ser etter..."
+                    : "Tell us briefly about your background and what you are looking for..."}
+                  className="w-full bg-background border border-border rounded-xl px-4 py-3 text-white placeholder:text-slate-600 focus:outline-none focus:border-cyan-500 text-base transition-colors resize-none"
+                />
+              </div>
+              <div className="flex items-center gap-3 bg-amber-900/20 border border-amber-500/20 rounded-xl px-4 py-3">
+                <Shield size={15} className="text-amber-400 shrink-0" />
+                <p className="text-amber-200/70 text-sm">
+                  {isNo
+                    ? "Din henvendelse behandles strengt konfidensielt. Ingen informasjon deles uten din uttrykkelige tillatelse."
+                    : "Your enquiry is treated with strict confidentiality. No information is shared without your explicit consent."}
+                </p>
+              </div>
+              <button
+                type="submit"
+                disabled={!form.name || !form.email || submitMutation.isPending}
+                className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold py-4 px-6 rounded-xl flex items-center justify-center gap-2 transition-all duration-200 shadow-lg shadow-cyan-500/20 text-base"
+              >
+                {submitMutation.isPending
+                  ? (isNo ? "Sender..." : "Sending...")
+                  : (isNo ? "Send konfidensiell henvendelse" : "Send Confidential Enquiry")}
+                <ArrowRight size={18} />
+              </button>
+            </form>
+          ) : (
+            <div className="bg-green-500/10 border border-green-500/30 rounded-2xl p-10 text-center mb-8">
+              <Shield size={40} className="text-green-400 mx-auto mb-4" />
+              <h3 className="text-white font-bold text-xl mb-2">
+                {isNo ? "Henvendelse mottatt" : "Enquiry Received"}
+              </h3>
+              <p className="text-slate-300 text-base leading-relaxed">
+                {isNo
+                  ? "Takk. ALEX vil behandle din henvendelse med full konfidensialitet og ta kontakt innen 24 timer."
+                  : "Thank you. ALEX will handle your enquiry with full confidentiality and be in touch within 24 hours."}
+              </p>
+            </div>
+          )}
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10">
             <a
@@ -446,7 +551,7 @@ export default function Investors() {
               className="group inline-flex items-center gap-2 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold px-8 py-4 rounded-xl text-base transition-all duration-200 shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 hover:scale-105 active:scale-95"
             >
               <Mail size={18} />
-              {isNo ? "Send konfidensiell henvendelse" : "Send Confidential Enquiry"}
+              {isNo ? "Send e-post til ALEX" : "Email ALEX Directly"}
               <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
             </a>
             <Link
