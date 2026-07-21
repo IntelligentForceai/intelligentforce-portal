@@ -4,11 +4,13 @@ import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router } from "./_core/trpc";
 import { adminRouter } from "./adminRouter";
 import { portalRouter } from "./portalRouter";
+import { alexRouter } from "./alexRouter";
 
 export const appRouter = router({
   system: systemRouter,
   admin: adminRouter,
   portal: portalRouter,
+  alex: alexRouter,
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),
     logout: publicProcedure.mutation(({ ctx }) => {

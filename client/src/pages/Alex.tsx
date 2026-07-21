@@ -6,6 +6,7 @@ import { alexCaptions } from "@/lib/alexCaptions";
 import { usePageTracker } from "@/hooks/usePageTracker";
 import { Clock, Globe, ArrowRight } from "lucide-react";
 import { useSEO } from "@/hooks/useSEO";
+import ALEXChat from "@/components/ALEXChat";
 
 
 const agents = [
@@ -102,16 +103,12 @@ export default function Alex() {
                 </div>
               </div>
 
-              {/* Chat CTA */}
-              <div className="bg-gradient-to-r from-blue-900/40 to-purple-900/40 border border-white/10 rounded-2xl p-6">
-                <h3 className="text-lg font-bold text-white mb-2">{a.questionsTitle}</h3>
-                <p className="text-muted-foreground text-sm mb-4">{a.questionsDesc}</p>
-                <Link
-                  href="/contact"
-                  className="btn-gradient inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-white"
-                >
-                  💬 {a.chatBtn}
-                </Link>
+              {/* Live ALEX Chat */}
+              <div>
+                <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">
+                  {isNo ? "Chat med ALEX nå" : "Chat with ALEX Now"}
+                </h3>
+                <ALEXChat lang={isNo ? "no" : "en"} />
               </div>
 
               {/* Suggested follow-ups */}
