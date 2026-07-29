@@ -209,9 +209,14 @@ export default function Pricing() {
                   </li>
                 ))}
               </ul>
-              <Link href="/contact" className="btn-gradient px-6 py-3 rounded-full font-semibold text-white text-center">
+              <a
+                href="https://buy.stripe.com/starter-intelligentforce"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-gradient px-6 py-3 rounded-full font-semibold text-white text-center block"
+              >
                 {p.startTrial}
-              </Link>
+              </a>
             </div>
 
             {/* Professional – most popular */}
@@ -235,9 +240,14 @@ export default function Pricing() {
                   </li>
                 ))}
               </ul>
-              <Link href="/contact" className="btn-gradient px-6 py-3 rounded-full font-semibold text-white text-center">
+              <a
+                href="https://buy.stripe.com/professional-intelligentforce"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-gradient px-6 py-3 rounded-full font-semibold text-white text-center block"
+              >
                 {p.startTrial}
-              </Link>
+              </a>
             </div>
 
             {/* Enterprise */}
