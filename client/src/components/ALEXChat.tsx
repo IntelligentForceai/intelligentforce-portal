@@ -184,15 +184,34 @@ export default function ALEXChat({ lang = "en" }: ALEXChatProps) {
   const sendMessage = async (text: string) => {
     if (!text.trim() || isTyping) return;
     const userMsg: Message = { role: "user", content: text.trim() };
-    setMessages(prev => [...prev, userMsg]);
+    const updatedMessages = [...messages, userMsg];
+    setMessages(updatedMessages);
     setInput("");
     setIsTyping(true);
 
-    // Simulate typing delay
-    await new Promise(r => setTimeout(r, 600 + Math.random() * 800));
+    try {
+      const response = await fetch("https://alex-ai-worker.vladimir-joffcheff.workers.dev", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          messages: updatedMessages.map(m => ({ role: m.role, content: m.content }))
+        }),
+      });
 
-    const answer = findAnswer(text, lang);
-    setMessages(prev => [...prev, { role: "assistant", content: answer }]);
+      if (response.ok) {
+        const data = await response.json();
+        setMessages(prev => [...prev, { role: "assistant", content: data.reply }]);
+      } else {
+        // Fallback to local knowledge base if API fails
+        const answer = findAnswer(text, lang);
+        setMessages(prev => [...prev, { role: "assistant", content: answer }]);
+      }
+    } catch {
+      // Fallback to local knowledge base on network error
+      const answer = findAnswer(text, lang);
+      setMessages(prev => [...prev, { role: "assistant", content: answer }]);
+    }
+
     setIsTyping(false);
   };
 
