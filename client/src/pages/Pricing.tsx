@@ -210,7 +210,7 @@ export default function Pricing() {
                 ))}
               </ul>
               <a
-                href="https://buy.stripe.com/starter-intelligentforce"
+                href="https://buy.stripe.com/eVq6oIehC5KKgFDgZdaAw00"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-gradient px-6 py-3 rounded-full font-semibold text-white text-center block"
@@ -241,7 +241,7 @@ export default function Pricing() {
                 ))}
               </ul>
               <a
-                href="https://buy.stripe.com/professional-intelligentforce"
+                href="https://buy.stripe.com/8x2cN64H28WW753aAPaAw01"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-gradient px-6 py-3 rounded-full font-semibold text-white text-center block"
