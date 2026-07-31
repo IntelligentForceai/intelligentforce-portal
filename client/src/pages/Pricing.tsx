@@ -143,10 +143,19 @@ export default function Pricing() {
 
   const getPrice = (monthly: string, discount = 0.83) => {
     if (!yearly) return monthly;
-    const num = parseFloat(monthly.replace(/[^0-9.]/g, ""));
+    // Extract the full number (handles both "$499" and "kr 5 490" formats)
+    const numMatch = monthly.match(/(\d[\d\s,.]*)/);
+    if (!numMatch) return monthly;
+    const rawNum = numMatch[1].replace(/[\s,]/g, "");
+    const num = parseFloat(rawNum);
     if (isNaN(num)) return monthly;
     const discounted = Math.round(num * discount);
-    return monthly.replace(/\d+/, discounted.toString());
+    // Format with spaces for NOK (e.g. 4 557) or plain for USD
+    const isNOK = monthly.includes("kr");
+    const formattedNum = isNOK
+      ? discounted.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")
+      : discounted.toString();
+    return monthly.replace(numMatch[1].trim(), formattedNum);
   };
 
   return (
