@@ -2,7 +2,7 @@ import { Link } from "wouter";
 import { useLang } from "@/contexts/LanguageContext";
 import { usePageTracker } from "@/hooks/usePageTracker";
 import { useSEO } from "@/hooks/useSEO";
-import { BookOpen, Scale, Shield, Cookie, AlertTriangle } from "lucide-react";
+import { BookOpen, Scale, Shield, Cookie, AlertTriangle, Download, FileText } from "lucide-react";
 
 export default function Legal() {
   useSEO({
@@ -149,6 +149,44 @@ export default function Legal() {
               </section>
             </>
           )}
+        </div>
+
+        {/* DPA Download Section */}
+        <div className="mt-14 bg-card border border-cyan-500/20 rounded-2xl p-8">
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center flex-shrink-0">
+              <FileText className="w-6 h-6 text-cyan-400" />
+            </div>
+            <div className="flex-1">
+              <h3 className="text-white font-bold text-xl mb-2">
+                {isNo ? "Databehandleravtale (DPA)" : "Data Processing Agreement (DPA)"}
+              </h3>
+              <p className="text-muted-foreground text-sm mb-5">
+                {isNo
+                  ? "For bedrifter som behandler personopplysninger via IntelligentForce-plattformen, tilbyr vi en standard Databehandleravtale (DBA) i henhold til GDPR artikkel 28. Last ned, signer og returner til hello@intelligentforce.ai."
+                  : "For businesses processing personal data via the IntelligentForce platform, we provide a standard Data Processing Agreement (DPA) pursuant to GDPR Article 28. Download, sign and return to hello@intelligentforce.ai."}
+              </p>
+              <div className="flex flex-wrap gap-3">
+                <a
+                  href="/DPA_IntelligentForce_v1.0.pdf"
+                  download
+                  className="inline-flex items-center gap-2 bg-cyan-500 hover:bg-cyan-400 text-black font-semibold px-5 py-2.5 rounded-xl transition-colors text-sm"
+                >
+                  <Download size={16} />
+                  {isNo ? "Last ned DBA (PDF)" : "Download DPA (PDF)"}
+                </a>
+                <a
+                  href="mailto:hello@intelligentforce.ai?subject=DPA%20Request"
+                  className="inline-flex items-center gap-2 border border-border hover:border-cyan-500/40 text-white font-semibold px-5 py-2.5 rounded-xl transition-colors text-sm"
+                >
+                  {isNo ? "Kontakt oss for signering" : "Contact us to sign"}
+                </a>
+              </div>
+              <p className="text-muted-foreground text-xs mt-4">
+                {isNo ? "Versjon 1.0 — 31. juli 2026" : "Version 1.0 — 31 July 2026"}
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
