@@ -123,11 +123,27 @@ function renderMarkdown(text: string): React.ReactNode {
   return lines.map((line, i) => {
     // Bold
     line = line.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+    // Italic
+    line = line.replace(/(?<!\*)\*([^*]+)\*(?!\*)/g, "<em>$1</em>");
     // Links
     line = line.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-cyan-400 hover:text-cyan-300 underline">$1</a>');
 
-    if (line.startsWith("- ") || line.startsWith("1. ") || /^\d+\. /.test(line)) {
-      return <li key={i} className="ml-4" dangerouslySetInnerHTML={{ __html: line.replace(/^[-\d]+[.)]\s/, "") }} />;
+    // Headings — must be checked before list/paragraph patterns
+    if (line.startsWith("### ")) {
+      const headingText = line.slice(4);
+      return <h3 key={i} className="font-bold text-white text-base mt-3 mb-1" dangerouslySetInnerHTML={{ __html: headingText }} />;
+    }
+    if (line.startsWith("## ")) {
+      const headingText = line.slice(3);
+      return <h2 key={i} className="font-bold text-white text-lg mt-3 mb-1" dangerouslySetInnerHTML={{ __html: headingText }} />;
+    }
+    if (line.startsWith("# ")) {
+      const headingText = line.slice(2);
+      return <h1 key={i} className="font-bold text-white text-xl mt-3 mb-1" dangerouslySetInnerHTML={{ __html: headingText }} />;
+    }
+
+    if (line.startsWith("- ") || line.startsWith("* ") || /^\d+\. /.test(line)) {
+      return <li key={i} className="ml-4 leading-relaxed" dangerouslySetInnerHTML={{ __html: line.replace(/^[-*]\s|^\d+\.\s/, "") }} />;
     }
     if (line.startsWith("| ")) {
       // Table row
