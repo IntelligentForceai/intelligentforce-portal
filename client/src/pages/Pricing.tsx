@@ -14,7 +14,7 @@ function ROICalculator() {
   const automationRate = 0.35;
   const annualSavings = Math.round(employees * avgSalary * automationRate);
   const monthlySavings = Math.round(annualSavings / 12);
-  const roi = Math.round((annualSavings / 1499 / 12) * 100);
+  const roi = Math.round((annualSavings / 16490) * 100);
 
   return (
     <div className="bg-card border border-border rounded-2xl p-8">

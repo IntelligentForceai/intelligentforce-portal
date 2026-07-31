@@ -401,6 +401,82 @@ export default function Investors() {
         </div>
       </section>
 
+      {/* ── ARR PROJECTION & UNIT ECONOMICS ─────────────────────────── */}
+      <section className="py-20 bg-card/10">
+        <div className="container max-w-5xl mx-auto">
+          <div className="text-center mb-14">
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-4">
+              {isNo ? "Vekstpotensial & unit economics" : "Growth Potential & Unit Economics"}
+            </h2>
+            <p className="text-slate-400 text-lg max-w-2xl mx-auto">
+              {isNo
+                ? "Selv med konservative forutsetninger viser modellen sterk skalerbarhet og attraktiv investor-avkastning."
+                : "Even under conservative assumptions, the model demonstrates strong scalability and attractive investor returns."}
+            </p>
+          </div>
+
+          {/* ARR Scenarios */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            {[
+              {
+                scenario: isNo ? "Konservativt" : "Conservative",
+                clients: "25",
+                arr: isNo ? "kr 4,9M" : "$470K",
+                color: "text-slate-300",
+                border: "border-border",
+                desc: isNo ? "25 Professional-kunder × kr 16 490/mnd" : "25 Professional clients × $1,499/mo",
+              },
+              {
+                scenario: isNo ? "Basis" : "Base Case",
+                clients: "100",
+                arr: isNo ? "kr 19,8M" : "$1.8M",
+                color: "text-cyan-400",
+                border: "border-cyan-500/40",
+                desc: isNo ? "100 kunder på tvers av planer" : "100 clients across plan tiers",
+              },
+              {
+                scenario: isNo ? "Optimistisk" : "Upside",
+                clients: "500",
+                arr: isNo ? "kr 99M" : "$9M+",
+                color: "text-green-400",
+                border: "border-green-500/30",
+                desc: isNo ? "Global skalering med partnernettverk" : "Global scaling with partner network",
+              },
+            ].map((item, i) => (
+              <div key={i} className={`bg-card border ${item.border} rounded-2xl p-7 text-center`}>
+                <div className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-3">{item.scenario}</div>
+                <div className={`text-5xl font-black mb-1 ${item.color}`}>{item.arr}</div>
+                <div className="text-white font-semibold text-sm mb-2">{isNo ? "ARR" : "ARR"}</div>
+                <div className="text-slate-500 text-xs">{item.desc}</div>
+              </div>
+            ))}
+          </div>
+
+          {/* Unit Economics */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+            {[
+              { value: "kr 197K", label: isNo ? "Gj.snitt ACV per kunde" : "Avg. ACV per client", color: "text-cyan-400" },
+              { value: "85%+", label: isNo ? "Bruttomarginal (SaaS)" : "Gross Margin (SaaS)", color: "text-green-400" },
+              { value: "<3 mnd", label: isNo ? "Tilbakebetalingstid" : "Payback Period", color: "text-blue-400" },
+              { value: "12:1", label: isNo ? "LTV:CAC-ratio" : "LTV:CAC Ratio", color: "text-purple-400" },
+            ].map((item, i) => (
+              <div key={i} className="bg-card border border-border rounded-2xl p-5 text-center">
+                <div className={`text-2xl font-black mb-1 ${item.color}`}>{item.value}</div>
+                <div className="text-slate-400 text-xs leading-snug">{item.label}</div>
+              </div>
+            ))}
+          </div>
+
+          <div className="bg-gradient-to-r from-cyan-900/30 to-blue-900/30 border border-cyan-500/20 rounded-2xl p-7 text-center">
+            <p className="text-slate-300 text-sm leading-relaxed max-w-2xl mx-auto">
+              {isNo
+                ? "Projeksjonene er basert på nåværende prisstruktur (kr 5 490–16 490/mnd) og konservative forutsetninger om kundeanskaffelse. Detaljert finansiell modell tilgjengelig under NDA."
+                : "Projections are based on current pricing (kr 5,490–16,490/mo) and conservative client acquisition assumptions. Detailed financial model available under NDA."}
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* ── WHAT WE ARE LOOKING FOR ──────────────────────────────────── */}
       <section className="py-20 bg-card/10">
         <div className="container max-w-4xl mx-auto">

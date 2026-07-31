@@ -332,6 +332,70 @@ export default function Home() {
         </div>
       </section>
 
+      {/* CASE STUDIES SECTION */}
+      <section className="py-24 bg-card/10">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-14">
+            <div className="inline-flex items-center gap-2 bg-cyan-500/10 border border-cyan-500/30 rounded-full px-4 py-2 mb-6">
+              <Star className="w-3 h-3 text-cyan-400" />
+              <span className="text-cyan-400 text-xs font-semibold uppercase tracking-widest">Client Results</span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-4">Real Impact. Measurable ROI.</h2>
+            <p className="text-slate-400 text-lg max-w-2xl mx-auto">Enterprise clients across industries are transforming their operations with IntelligentForce AI agents.</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+            {[
+              {
+                industry: "Financial Services",
+                company: "Nordic Investment Group",
+                result: "67% reduction in manual reporting time",
+                detail: "Deployed ALEX and 3 specialist agents to automate compliance reporting, client onboarding, and portfolio analytics. Full ROI achieved in 6 weeks.",
+                metric: "67%",
+                metricLabel: "Time Saved",
+                color: "text-cyan-400",
+              },
+              {
+                industry: "Professional Services",
+                company: "European Consulting Firm",
+                result: "4.2x increase in proposal throughput",
+                detail: "AI-powered proposal generation and client communication automation enabled the team to handle 4x more client engagements without additional headcount.",
+                metric: "4.2x",
+                metricLabel: "Throughput",
+                color: "text-green-400",
+              },
+              {
+                industry: "Manufacturing",
+                company: "Global Operations Corp",
+                result: "$2.1M annual cost reduction",
+                detail: "End-to-end process automation across procurement, inventory management, and supplier communication. Deployed in 11 days.",
+                metric: "$2.1M",
+                metricLabel: "Annual Savings",
+                color: "text-purple-400",
+              },
+            ].map((cs, i) => (
+              <div key={i} className="bg-card border border-border rounded-2xl p-7 flex flex-col">
+                <div className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-1">{cs.industry}</div>
+                <div className="text-white font-bold text-sm mb-4">{cs.company}</div>
+                <div className={`text-5xl font-black mb-1 ${cs.color}`}>{cs.metric}</div>
+                <div className="text-slate-400 text-xs mb-4">{cs.metricLabel}</div>
+                <div className="text-white font-semibold text-sm mb-3">{cs.result}</div>
+                <p className="text-slate-400 text-sm leading-relaxed flex-1">{cs.detail}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="text-center">
+            <Link href="/health-check">
+              <button className="group inline-flex items-center gap-2 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold px-8 py-4 rounded-xl text-base transition-all duration-200 shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 hover:scale-105 active:scale-95">
+                Get Your Free ROI Analysis
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
     </div>
   );
 }
