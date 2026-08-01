@@ -26,6 +26,7 @@ import Terms from "./pages/Terms";
 import Cookies from "./pages/Cookies";
 import Legal from "./pages/Legal";
 import BackgroundCanvas from "./components/BackgroundCanvas";
+import FAQ from "./pages/FAQ";
 
 // Scroll to top on every route change (except hash-anchor navigation)
 function ScrollToTop() {
@@ -68,6 +69,7 @@ function PublicRouter() {
       <Route path="/terms" component={Terms} />
       <Route path="/cookies" component={Cookies} />
       <Route path="/legal" component={Legal} />
+      <Route path="/faq" component={FAQ} />
       <Route path="/404" component={NotFound} />
       <Route component={NotFound} />
     </Switch>

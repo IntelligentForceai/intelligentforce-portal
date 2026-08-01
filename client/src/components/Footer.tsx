@@ -85,10 +85,12 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Contact */}
+          {/* Support */}
           <div>
             <h4 className="text-sm font-semibold text-white mb-3">{t.footer.contact}</h4>
             <ul className="space-y-2">
+              <li><Link href="/faq" className="text-sm text-muted-foreground hover:text-white transition-colors">FAQ</Link></li>
+              <li><Link href="/contact" className="text-sm text-muted-foreground hover:text-white transition-colors">{t.footer.contact}</Link></li>
               <li><a href="mailto:hello@intelligentforce.ai" className="text-sm text-muted-foreground hover:text-white transition-colors">hello@intelligentforce.ai</a></li>
               <li><a href="mailto:alex@intelligentforce.ai" className="text-sm text-muted-foreground hover:text-cyan-400 transition-colors">alex@intelligentforce.ai</a></li>
             </ul>
