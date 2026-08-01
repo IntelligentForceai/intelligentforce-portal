@@ -19,7 +19,7 @@ export default function Contact() {
   const c = t.contact;
   usePageTracker("/contact");
 
-  const [form, setForm] = useState({ name: "", email: "", category: "", company: "", message: "" });
+  const [form, setForm] = useState({ name: "", email: "", category: "", company: "", employees: "", howDidYouHear: "", message: "" });
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
@@ -44,6 +44,8 @@ export default function Contact() {
           email: form.email,
           company: form.company,
           category: form.category || 'General Enquiry',
+          employees: form.employees || 'Not specified',
+          howDidYouHear: form.howDidYouHear || 'Not specified',
           message: form.message,
           _subject: `New Contact: ${form.name} – ${form.category || 'General'}`,
         }),
@@ -137,8 +139,8 @@ export default function Contact() {
                     <CheckCircle2 size={56} className="text-emerald-400 mb-4" />
                     <h3 className="text-xl font-bold text-white mb-2">{c.quickResponse}</h3>
                     <p className="text-muted-foreground">{c.quickResponseDesc}</p>
-                    <button
-                      onClick={() => { setSent(false); setForm({ name: "", email: "", category: "", company: "", message: "" }); }}
+                      <button
+                        onClick={() => { setSent(false); setForm({ name: "", email: "", category: "", company: "", employees: "", howDidYouHear: "", message: "" }); }}
                       className="mt-6 text-sm text-cyan-400 hover:text-cyan-300 transition-colors"
                     >
                       Send ny melding
@@ -168,6 +170,24 @@ export default function Contact() {
                           <select value={form.category} onChange={e => setForm({ ...form, category: e.target.value })} className={inputClass + " appearance-none"}>
                             {c.categories.map((cat, i) => (
                               <option key={i} value={i === 0 ? "" : cat}>{cat}</option>
+                            ))}
+                          </select>
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-xs text-muted-foreground mb-1.5">{c.employees}</label>
+                          <select value={form.employees} onChange={e => setForm({ ...form, employees: e.target.value })} className={inputClass + " appearance-none"}>
+                            {c.employeesOptions.map((opt, i) => (
+                              <option key={i} value={i === 0 ? "" : opt}>{opt}</option>
+                            ))}
+                          </select>
+                        </div>
+                        <div>
+                          <label className="block text-xs text-muted-foreground mb-1.5">{c.howDidYouHear}</label>
+                          <select value={form.howDidYouHear} onChange={e => setForm({ ...form, howDidYouHear: e.target.value })} className={inputClass + " appearance-none"}>
+                            {c.howDidYouHearOptions.map((opt, i) => (
+                              <option key={i} value={i === 0 ? "" : opt}>{opt}</option>
                             ))}
                           </select>
                         </div>
