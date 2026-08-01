@@ -5,6 +5,10 @@ Allow: /
 Disallow: /admin
 Disallow: /admin/
 Disallow: /api/
+Disallow: /.well-known/
 
 # Sitemap location
 Sitemap: https://intelligentforce.ai/sitemap.xml
+
+# Crawl-delay for polite crawling
+Crawl-delay: 1

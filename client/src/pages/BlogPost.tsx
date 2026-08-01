@@ -1,5 +1,6 @@
 import { Link, useParams } from "wouter";
 import { usePageTracker } from "@/hooks/usePageTracker";
+import { useSEO } from "@/hooks/useSEO";
 import { Clock, ArrowLeft, ArrowRight, ChevronRight } from "lucide-react";
 import { useEffect } from "react";
 
@@ -976,6 +977,49 @@ export default function BlogPost() {
   useEffect(() => { window.scrollTo({ top: 0, behavior: "instant" }); }, [params.slug]);
 
   const article = articles[params.slug ?? ""];
+
+  // Dynamic SEO for each blog article
+  useSEO(
+    article
+      ? {
+          title: `${article.title} | IntelligentForce Blog`,
+          description: article.excerpt || article.subtitle,
+          keywords: `${article.category.toLowerCase()}, AI automation, business automation, IntelligentForce, ${article.title.split(" ").slice(0, 5).join(", ").toLowerCase()}`,
+          canonical: `https://intelligentforce.ai/blog/${article.slug}`,
+          ogType: "article",
+          ogImage: article.image,
+          jsonLd: {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            headline: article.title,
+            description: article.excerpt || article.subtitle,
+            image: article.image,
+            datePublished: article.date,
+            author: {
+              "@type": "Organization",
+              name: "IntelligentForce",
+              url: "https://intelligentforce.ai",
+            },
+            publisher: {
+              "@type": "Organization",
+              name: "IntelligentForce",
+              logo: {
+                "@type": "ImageObject",
+                url: "https://intelligentforce.ai/og-image.png",
+              },
+            },
+            mainEntityOfPage: {
+              "@type": "WebPage",
+              "@id": `https://intelligentforce.ai/blog/${article.slug}`,
+            },
+          },
+        }
+      : {
+          title: "Blog | IntelligentForce",
+          description: "AI automation insights, guides and case studies from IntelligentForce.",
+          canonical: "https://intelligentforce.ai/blog",
+        }
+  );
 
   if (!article) {
     return (

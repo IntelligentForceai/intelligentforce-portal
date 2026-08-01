@@ -1,117 +1,182 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <!-- Core pages -->
   <url>
     <loc>https://intelligentforce.ai/</loc>
-    <lastmod>2026-07-20</lastmod>
+    <lastmod>2026-08-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://intelligentforce.ai/"/>
+    <xhtml:link rel="alternate" hreflang="no" href="https://intelligentforce.ai/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://intelligentforce.ai/"/>
   </url>
   <url>
     <loc>https://intelligentforce.ai/features</loc>
-    <lastmod>2026-07-20</lastmod>
+    <lastmod>2026-08-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://intelligentforce.ai/pricing</loc>
-    <lastmod>2026-07-20</lastmod>
+    <lastmod>2026-08-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://intelligentforce.ai/about</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://intelligentforce.ai/alex</loc>
-    <lastmod>2026-07-20</lastmod>
+    <lastmod>2026-08-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://intelligentforce.ai/health-check</loc>
-    <lastmod>2026-07-20</lastmod>
+    <lastmod>2026-08-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://intelligentforce.ai/investors</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://intelligentforce.ai/blog</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://intelligentforce.ai/blog/ai-automation-cost-reduction</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://intelligentforce.ai/blog/nine-ai-agents</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://intelligentforce.ai/blog/implementation-14-days</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://intelligentforce.ai/blog/ai-human-collaboration</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://intelligentforce.ai/blog/business-health-check</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://intelligentforce.ai/contact</loc>
-    <lastmod>2026-07-20</lastmod>
+    <lastmod>2026-08-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://intelligentforce.ai/careers</loc>
-    <lastmod>2026-07-20</lastmod>
+    <loc>https://intelligentforce.ai/about</loc>
+    <lastmod>2026-08-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://intelligentforce.ai/investors</loc>
+    <lastmod>2026-08-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://intelligentforce.ai/privacy</loc>
-    <lastmod>2026-07-20</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.4</priority>
+    <loc>https://intelligentforce.ai/blog</loc>
+    <lastmod>2026-08-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
+
+  <!-- Legal pages -->
   <url>
     <loc>https://intelligentforce.ai/terms</loc>
-    <lastmod>2026-07-20</lastmod>
+    <lastmod>2026-08-01</lastmod>
     <changefreq>yearly</changefreq>
-    <priority>0.4</priority>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://intelligentforce.ai/privacy</loc>
+    <lastmod>2026-08-01</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
   </url>
   <url>
     <loc>https://intelligentforce.ai/cookies</loc>
-    <lastmod>2026-07-20</lastmod>
+    <lastmod>2026-08-01</lastmod>
     <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
+    <priority>0.2</priority>
   </url>
   <url>
     <loc>https://intelligentforce.ai/legal</loc>
-    <lastmod>2026-07-20</lastmod>
+    <lastmod>2026-08-01</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
+
+  <!-- Blog articles (15 total) -->
+  <url>
+    <loc>https://intelligentforce.ai/blog/how-ai-automation-reduces-operational-costs-by-60-percent</loc>
+    <lastmod>2026-07-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://intelligentforce.ai/blog/nine-ai-agents-that-run-your-business-while-you-focus-on-growth</loc>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://intelligentforce.ai/blog/from-contract-to-live-in-14-days-how-we-do-it</loc>
+    <lastmod>2026-06-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://intelligentforce.ai/blog/ai-and-human-collaboration-the-model-that-actually-works</loc>
+    <lastmod>2026-06-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://intelligentforce.ai/blog/the-business-health-check-what-it-reveals-and-why-every-leader-should-do-it</loc>
+    <lastmod>2026-06-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://intelligentforce.ai/blog/ai-automation-norway-nordic-business-case</loc>
+    <lastmod>2026-07-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://intelligentforce.ai/blog/ai-customer-service-automation-reduce-costs-improve-satisfaction</loc>
+    <lastmod>2026-07-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://intelligentforce.ai/blog/small-medium-business-ai-automation-complete-guide-2026</loc>
+    <lastmod>2026-07-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://intelligentforce.ai/blog/how-to-calculate-roi-ai-automation-business-case</loc>
+    <lastmod>2026-07-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://intelligentforce.ai/blog/enterprise-ai-workflow-automation-guide-2026</loc>
+    <lastmod>2026-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://intelligentforce.ai/blog/ai-agents-finance-accounting-automation-enterprise</loc>
+    <lastmod>2026-07-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://intelligentforce.ai/blog/ai-hr-recruitment-automation-enterprise-guide</loc>
+    <lastmod>2026-07-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://intelligentforce.ai/blog/digital-transformation-ai-agents-enterprise-2026</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://intelligentforce.ai/blog/ai-supply-chain-automation-procurement-logistics</loc>
+    <lastmod>2026-08-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://intelligentforce.ai/blog/ai-competitive-intelligence-market-analysis-enterprise</loc>
+    <lastmod>2026-08-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
 </urlset>
