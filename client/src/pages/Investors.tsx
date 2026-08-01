@@ -19,6 +19,10 @@ import {
   Building2,
   Target,
   Layers,
+  Clock,
+  Rocket,
+  CheckCircle2,
+  Calendar,
 } from "lucide-react";
 
 export default function Investors() {
@@ -171,21 +175,21 @@ export default function Investors() {
             {[
               {
                 icon: <Globe size={28} className="text-cyan-400" />,
-                value: "$500B+",
-                label: isNo ? "Global markedsstørrelse" : "Global Market Size",
-                sub: isNo ? "AI i forretningsprosesser globalt innen 2028" : "AI in business processes globally by 2028",
+                value: "$169B",
+                label: isNo ? "AI-automatiseringsmarked 2026" : "AI Automation Market 2026",
+                sub: isNo ? "Vokser til $1,1 billioner innen 2033 (CAGR 31%)" : "Growing to $1.1 trillion by 2033 (CAGR 31%)",
               },
               {
                 icon: <TrendingUp size={28} className="text-green-400" />,
-                value: "38%",
-                label: isNo ? "Årlig vekstrate (CAGR)" : "Annual Growth Rate (CAGR)",
-                sub: isNo ? "Raskest voksende segment i global enterprise-software" : "Fastest growing segment in global enterprise software",
+                value: "22.6%",
+                label: isNo ? "Intelligent Automation CAGR" : "Intelligent Automation CAGR",
+                sub: isNo ? "Raskest voksende segment i global enterprise-software 2026–2030" : "Fastest growing segment in global enterprise software 2026–2030",
               },
               {
                 icon: <Building2 size={28} className="text-purple-400" />,
-                value: "€2.4T",
-                label: isNo ? "Globalt bedriftsmarked" : "Global Enterprise Market",
-                sub: isNo ? "Underservert av eksisterende AI-løsninger" : "Underserved by existing AI solutions",
+                value: "$567B",
+                label: isNo ? "AI for SMB innen 2032" : "AI for SMBs by 2032",
+                sub: isNo ? "Fra $195B i 2024 — 14,3% CAGR. Underservert av eksisterende løsninger." : "From $195B in 2024 — 14.3% CAGR. Underserved by existing solutions.",
               },
             ].map((item, i) => (
               <div key={i} className="bg-card border border-border rounded-2xl p-7 text-center">
@@ -342,6 +346,56 @@ export default function Investors() {
         </div>
       </section>
 
+      {/* ── WHY NOW ──────────────────────────────────────────────────── */}
+      <section className="py-20 bg-background">
+        <div className="container max-w-5xl mx-auto">
+          <div className="text-center mb-14">
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-4">
+              {isNo ? "Hvorfor nå?" : "Why Now?"}
+            </h2>
+            <p className="text-slate-400 text-lg max-w-2xl mx-auto">
+              {isNo
+                ? "Tre konvergerende krefter skaper et unikt vindu for markedsinngang — og det lukker seg."
+                : "Three converging forces are creating a unique market entry window — and it is closing."}
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+            {[
+              {
+                icon: <Rocket size={24} className="text-cyan-400" />,
+                title: isNo ? "AI er moden for produksjon" : "AI is Production-Ready",
+                desc: isNo
+                  ? "GPT-4o, Claude 3.5 og tilsvarende modeller har nådd et nivå der de erstatter menneskelig arbeid i reelle forretningsprosesser — ikke bare i laboratorier. Vinduet for tidlig markedsposisjonering er åpent nå."
+                  : "GPT-4o, Claude 3.5 and equivalent models have reached a level where they replace human labour in real business processes — not just in labs. The window for early market positioning is open now.",
+              },
+              {
+                icon: <Clock size={24} className="text-yellow-400" />,
+                title: isNo ? "Bedrifter er klare — men mangel på ekspertise" : "Businesses Are Ready — But Lack Expertise",
+                desc: isNo
+                  ? "Over 80% av norske bedrifter identifiserer automatisering som sin viktigste AI-brukscase (NHH 2025), men færre enn 15% har intern kapasitet til å implementere det. IntelligentForce er broen."
+                  : "Over 80% of Nordic businesses identify automation as their primary AI use case (NHH 2025), but fewer than 15% have internal capacity to implement it. IntelligentForce is the bridge.",
+              },
+              {
+                icon: <TrendingUp size={24} className="text-green-400" />,
+                title: isNo ? "Konkurransen er fragmentert" : "Competition is Fragmented",
+                desc: isNo
+                  ? "Markedet er dominert av enten generiske no-code-verktøy (Make, Zapier) eller kostbare enterprise-systemer (UiPath, ServiceNow). Det profesjonelle mellomsjiktet — rask implementering med ekspertdybde — er uokkupert."
+                  : "The market is dominated by either generic no-code tools (Make, Zapier) or expensive enterprise systems (UiPath, ServiceNow). The professional middle tier — rapid deployment with expert depth — is unoccupied.",
+              },
+            ].map((item, i) => (
+              <div key={i} className="bg-card border border-border rounded-2xl p-7">
+                <div className="w-11 h-11 rounded-xl bg-white/5 flex items-center justify-center mb-5">
+                  {item.icon}
+                </div>
+                <h3 className="text-white font-bold text-base mb-3">{item.title}</h3>
+                <p className="text-slate-400 text-sm leading-relaxed">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── TRACTION ─────────────────────────────────────────────────── */}
       <section className="py-20 bg-background">
         <div className="container max-w-5xl mx-auto">
@@ -395,6 +449,76 @@ export default function Investors() {
                   <h3 className="text-white font-bold text-sm mb-2">{item.title}</h3>
                   <p className="text-slate-400 text-sm leading-relaxed">{item.desc}</p>
                 </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── ROADMAP ──────────────────────────────────────────────────── */}
+      <section className="py-20 bg-card/10">
+        <div className="container max-w-5xl mx-auto">
+          <div className="text-center mb-14">
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-4">
+              {isNo ? "Veikart 2026–2028" : "Roadmap 2026–2028"}
+            </h2>
+            <p className="text-slate-400 text-lg max-w-2xl mx-auto">
+              {isNo
+                ? "Tre klare faser fra norsk markedsleder til global skalering."
+                : "Three clear phases from Norwegian market leader to global scaling."}
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              {
+                phase: isNo ? "Fase 1" : "Phase 1",
+                period: "2026",
+                color: "border-cyan-500/60 bg-cyan-500/5",
+                badge: "text-cyan-400 bg-cyan-500/10",
+                status: isNo ? "Pågår nå" : "In Progress",
+                title: isNo ? "Norsk markedsinngang" : "Norwegian Market Entry",
+                items: isNo
+                  ? ["Plattform live og operasjonell", "Første betalende kunder", "ALEX fullt operasjonell", "Juridisk og compliance-rammeverk", "Seed-finansiering"]
+                  : ["Platform live and operational", "First paying clients", "ALEX fully operational", "Legal and compliance framework", "Seed funding round"],
+              },
+              {
+                phase: isNo ? "Fase 2" : "Phase 2",
+                period: "2027",
+                color: "border-blue-500/40 bg-blue-500/5",
+                badge: "text-blue-400 bg-blue-500/10",
+                status: isNo ? "Planlagt" : "Planned",
+                title: isNo ? "Nordisk ekspansjon" : "Nordic Expansion",
+                items: isNo
+                  ? ["Ekspansjon til Sverige, Danmark, Finland", "50+ aktive kunder", "Partnernettverk etablert", "Series A-finansiering", "Dedikert salgsteam"]
+                  : ["Expansion to Sweden, Denmark, Finland", "50+ active clients", "Partner network established", "Series A funding", "Dedicated sales team"],
+              },
+              {
+                phase: isNo ? "Fase 3" : "Phase 3",
+                period: "2028",
+                color: "border-purple-500/30 bg-purple-500/5",
+                badge: "text-purple-400 bg-purple-500/10",
+                status: isNo ? "Visjon" : "Vision",
+                title: isNo ? "Global skalering" : "Global Scaling",
+                items: isNo
+                  ? ["UK, DACH og Benelux", "500+ kunder globalt", "ARR kr 99M+", "Enterprise-partnerprogram", "Potensiell børsnotering / exit"]
+                  : ["UK, DACH and Benelux", "500+ clients globally", "ARR $9M+", "Enterprise partner programme", "Potential IPO / exit"],
+              },
+            ].map((item, i) => (
+              <div key={i} className={`border ${item.color} rounded-2xl p-7`}>
+                <div className="flex items-center justify-between mb-5">
+                  <div className="text-xs font-bold uppercase tracking-widest text-slate-500">{item.phase} · {item.period}</div>
+                  <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${item.badge}`}>{item.status}</span>
+                </div>
+                <h3 className="text-white font-bold text-base mb-4">{item.title}</h3>
+                <ul className="space-y-2">
+                  {item.items.map((point, j) => (
+                    <li key={j} className="flex items-start gap-2 text-slate-400 text-sm">
+                      <CheckCircle2 size={14} className="text-cyan-500/60 shrink-0 mt-0.5" />
+                      {point}
+                    </li>
+                  ))}
+                </ul>
               </div>
             ))}
           </div>
