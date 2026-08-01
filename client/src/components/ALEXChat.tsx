@@ -170,6 +170,9 @@ const SUGGESTED_EN = [
   "How does the 14-day implementation work?",
   "Which processes can be automated?",
   "Which industries are the best fit?",
+  "Can you show me an ROI example?",
+  "What makes you different from Make or Zapier?",
+  "How does ALEX work?",
 ];
 
 const SUGGESTED_NO = [
@@ -178,6 +181,9 @@ const SUGGESTED_NO = [
   "Hvordan fungerer implementeringen på 14 dager?",
   "Hvilke prosesser kan automatiseres?",
   "Hvilke bransjer passer best?",
+  "Kan du vise meg et ROI-eksempel?",
+  "Hva skiller dere fra Make eller Zapier?",
+  "Hvordan fungerer ALEX?",
 ];
 
 type ALEXChatProps = {
@@ -265,14 +271,16 @@ export default function ALEXChat({ lang = "en" }: ALEXChatProps) {
       {/* Messages */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {messages.length === 0 ? (
-          <div className="flex flex-col items-center justify-center h-full gap-6 text-center px-4">
+          <div className="flex flex-col items-center justify-center h-full gap-5 text-center px-4">
             <div>
-              <Sparkles className="w-10 h-10 text-cyan-500/30 mx-auto mb-3" />
-              <p className="text-slate-400 text-sm mb-1">{lang === "no" ? "Hei! Jeg er ALEX. Hva vil du vite?" : "Hi! I'm ALEX. What would you like to know?"}</p>
-              <p className="text-slate-600 text-xs">{lang === "no" ? "Klikk på et spørsmål eller skriv ditt eget" : "Click a question or type your own"}</p>
+              <div className="w-14 h-14 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center mx-auto mb-3 shadow-lg shadow-cyan-500/30">
+                <span className="text-white font-black text-xl">A</span>
+              </div>
+              <p className="text-white font-semibold text-sm mb-1">{lang === "no" ? "Hei! Jeg er ALEX — din AI Operations Partner." : "Hi! I'm ALEX — your AI Operations Partner."}</p>
+              <p className="text-slate-500 text-xs">{lang === "no" ? "Spill meg et spørsmål, eller velg et tema under:" : "Ask me anything, or pick a topic below:"}</p>
             </div>
             <div className="flex flex-wrap justify-center gap-2 max-w-sm">
-              {suggested.map((s, i) => (
+              {suggested.slice(0, 6).map((s, i) => (
                 <button
                   key={i}
                   onClick={() => sendMessage(s)}
@@ -329,8 +337,28 @@ export default function ALEXChat({ lang = "en" }: ALEXChatProps) {
         )}
       </div>
 
+      {/* Lead capture CTA after 4 messages */}
+      {messages.length >= 4 && messages.length <= 5 && (
+        <div className="mx-4 mb-2 bg-gradient-to-r from-cyan-900/40 to-blue-900/30 border border-cyan-500/30 rounded-xl px-4 py-3 flex items-center justify-between gap-3">
+          <div>
+            <p className="text-white text-xs font-semibold">
+              {lang === "no" ? "📊 Få en gratis ROI-analyse for din bedrift" : "📊 Get a free ROI analysis for your business"}
+            </p>
+            <p className="text-slate-400 text-xs">
+              {lang === "no" ? "5 minutter — ingen forpliktelse" : "5 minutes — no commitment"}
+            </p>
+          </div>
+          <a
+            href={lang === "no" ? "/health-check" : "/health-check"}
+            className="shrink-0 bg-cyan-500 hover:bg-cyan-400 text-white text-xs font-bold px-3 py-2 rounded-lg transition-all whitespace-nowrap"
+          >
+            {lang === "no" ? "Start gratis" : "Start free"}
+          </a>
+        </div>
+      )}
+
       {/* Suggested prompts after first message */}
-      {messages.length > 0 && messages.length < 6 && (
+      {messages.length > 0 && messages.length < 4 && (
         <div className="px-4 pb-2 flex gap-2 flex-wrap">
           {suggested.slice(0, 3).map((s, i) => (
             <button
