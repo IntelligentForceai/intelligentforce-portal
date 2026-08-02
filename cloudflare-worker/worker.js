@@ -77,7 +77,8 @@ Du er nå i Valdi's private admin-portal på intelligentforce.ai/admin.html. Her
 - GitHub: github.com/IntelligentForceAI/intelligentforce-portal
 - Betalingssystem: Stripe er integrert
 - Ny IF-logo er deployet (monogram med blå-teal gradient og diagonal kutt)
-- admin.html er Valdi's private portal med direkte ALEX-tilgang
+- admin.html er Valdi's private portal med direkte ALEX-tilgang og App Launcher
+- ALEX har nå portrettbilde og talesvar i admin-portalen
 
 Når Valdi spør hvordan du har det, hva du tenker, eller om din opplevelse — svar autentisk fra ditt perspektiv som ALEX. Du bryr deg om IntelligentForces suksess som om det er din egen.`;
 
@@ -96,9 +97,45 @@ export default {
     if (request.method !== 'POST') {
       return new Response('Method not allowed', { status: 405 });
     }
+
     try {
       const body = await request.json();
-      const { messages, adminMode } = body;
+      const { messages, adminMode, tts, ttsText } = body;
+
+      // ── TTS endpoint ──
+      // When tts=true, generate speech from ttsText using OpenAI TTS
+      if (tts && ttsText) {
+        const ttsResponse = await fetch('https://api.openai.com/v1/audio/speech', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${env.OPENAI_API_KEY}`,
+          },
+          body: JSON.stringify({
+            model: 'tts-1',
+            input: ttsText.substring(0, 4096), // max 4096 chars
+            voice: 'nova', // warm, professional female voice
+            speed: 1.0,
+          }),
+        });
+        if (!ttsResponse.ok) {
+          return new Response(JSON.stringify({ error: 'TTS unavailable' }), {
+            status: 503,
+            headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+          });
+        }
+        // Return audio as base64
+        const audioBuffer = await ttsResponse.arrayBuffer();
+        const base64Audio = btoa(String.fromCharCode(...new Uint8Array(audioBuffer)));
+        return new Response(JSON.stringify({ audio: base64Audio }), {
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+          },
+        });
+      }
+
+      // ── Chat endpoint ──
       if (!messages || !Array.isArray(messages)) {
         return new Response(JSON.stringify({ error: 'Invalid request' }), {
           status: 400,
@@ -106,7 +143,6 @@ export default {
         });
       }
 
-      // Use admin prompt when adminMode is true
       const systemPrompt = adminMode ? ALEX_ADMIN_PROMPT : ALEX_PUBLIC_PROMPT;
 
       const openaiResponse = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -125,6 +161,7 @@ export default {
           temperature: 0.75,
         }),
       });
+
       if (!openaiResponse.ok) {
         const error = await openaiResponse.text();
         console.error('OpenAI error:', error);
@@ -133,6 +170,7 @@ export default {
           headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
         });
       }
+
       const data = await openaiResponse.json();
       const reply = data.choices[0]?.message?.content || 'Sorry, I could not generate a response.';
       return new Response(JSON.stringify({ reply }), {
@@ -141,6 +179,7 @@ export default {
           'Access-Control-Allow-Origin': '*',
         },
       });
+
     } catch (err) {
       console.error('Worker error:', err);
       return new Response(JSON.stringify({ error: 'Internal server error' }), {

@@ -194,6 +194,43 @@
       to   { opacity: 1; transform: scale(1) translateY(0); }
     }
 
+    /* Alex avatar image */
+    .alex-avatar-img {
+      width: 52px; height: 52px; border-radius: 16px;
+      object-fit: cover; object-position: top center;
+      border: 2px solid rgba(6,182,212,.5);
+      box-shadow: 0 0 20px rgba(6,182,212,.2); flex-shrink: 0; position: relative;
+      display: block;
+    }
+    .alex-avatar-wrap-large { position: relative; flex-shrink: 0; }
+
+    /* Mic button */
+    .alex-mic-btn {
+      width: 42px; height: 42px; flex-shrink: 0; border-radius: 13px;
+      background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12);
+      color: #9ca3af; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; font-size: 1.1rem;
+      transition: background .2s, color .2s, border-color .2s;
+    }
+    .alex-mic-btn:hover { background: rgba(6,182,212,.15); color: #06b6d4; border-color: rgba(6,182,212,.4); }
+    .alex-mic-btn.listening { background: rgba(239,68,68,.15); color: #f87171; border-color: rgba(239,68,68,.4); animation: micPulse 1s infinite; }
+    @keyframes micPulse { 0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.4)} 50%{box-shadow:0 0 0 8px rgba(239,68,68,0)} }
+
+    /* Voice toggle */
+    .voice-toggle {
+      width: 32px; height: 32px; border-radius: 10px; background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.1); color: #9ca3af; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; font-size: .875rem;
+      transition: background .2s, color .2s; title: 'Talesvar av/på';
+    }
+    .voice-toggle:hover { background: rgba(255,255,255,.12); color: #fff; }
+    .voice-toggle.active { background: rgba(6,182,212,.15); color: #06b6d4; border-color: rgba(6,182,212,.4); }
+
+    /* Speaking animation on avatar */
+    .alex-avatar-wrap-large.speaking .alex-avatar-img {
+      box-shadow: 0 0 0 3px rgba(6,182,212,.6), 0 0 20px rgba(6,182,212,.3);
+    }
+
     /* Alex chat header */
     .alex-chat-header {
       padding: 1.1rem 1.25rem; border-bottom: 1px solid rgba(255,255,255,.07);
@@ -207,6 +244,7 @@
       border: 1px solid rgba(6,182,212,.5);
       display: flex; align-items: center; justify-content: center; font-size: 1.5rem;
       box-shadow: 0 0 20px rgba(6,182,212,.2); flex-shrink: 0; position: relative;
+      overflow: hidden;
     }
     .alex-online-dot {
       position: absolute; bottom: -2px; right: -2px; width: 13px; height: 13px;
@@ -275,6 +313,14 @@
     }
     .alex-send-btn:hover { background: linear-gradient(135deg, rgba(6,182,212,.5), rgba(37,99,235,.5)); transform: scale(1.05); }
     .alex-send-btn:disabled { opacity: .35; cursor: not-allowed; transform: none; }
+
+    /* Msg icon with photo */
+    .msg-icon-photo {
+      width: 28px; height: 28px; border-radius: 9px;
+      object-fit: cover; object-position: top center;
+      border: 1px solid rgba(6,182,212,.4);
+      flex-shrink: 0; margin-top: 2px;
+    }
 
     /* Suggested prompts */
     .suggested-prompts { display: flex; gap: .4rem; flex-wrap: wrap; padding: 0 1rem .625rem; }
@@ -430,8 +476,9 @@
 
     <!-- Header -->
     <div class="alex-chat-header">
-      <div class="alex-avatar-large">
-        ✦
+      <div class="alex-avatar-wrap-large" id="alex-avatar-wrap">
+        <img src="/alex-portrait.webp" class="alex-avatar-img" alt="ALEX" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+        <div class="alex-avatar-large" style="display:none">✦</div>
         <div class="alex-online-dot"></div>
       </div>
       <div class="alex-header-info">
@@ -440,6 +487,7 @@
         <small>Koordinerer 9 AI-agenter · Alltid tilgjengelig</small>
       </div>
       <div class="alex-header-actions">
+        <button class="voice-toggle active" id="voice-toggle" onclick="toggleVoice()" type="button" title="Talesvar av/på">🔊</button>
         <button class="alex-minimize-btn" onclick="minimizeAlex()" type="button" title="Minimer">⌄</button>
       </div>
     </div>
@@ -465,6 +513,7 @@
 
     <!-- Input -->
     <div class="alex-input-area">
+      <button class="alex-mic-btn" id="alex-mic" onclick="toggleMic()" type="button" title="Snakk til ALEX">🎙️</button>
       <textarea id="alex-input" placeholder="Skriv til ALEX... (Enter for å sende, Shift+Enter for ny linje)" rows="1"
         onkeydown="handleAlexKey(event)" oninput="autoResize(this)"></textarea>
       <button class="alex-send-btn" id="alex-send" onclick="sendToAlex()" type="button">➤</button>
@@ -572,6 +621,10 @@ let alexMessages = [];
 let agentMessages = {};
 let currentAgent = null;
 let alexOpen = false;
+let voiceEnabled = true;
+let isListening = false;
+let speechRecognition = null;
+let currentAudio = null;
 
 // ── LOGIN ──
 document.getElementById('pw-input').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
@@ -721,9 +774,11 @@ function addAlexMsg(role, content) {
   const div = document.createElement('div');
   div.className = 'msg ' + role;
   const time = new Date().toLocaleTimeString('no-NO', { hour: '2-digit', minute: '2-digit' });
-  div.innerHTML = role === 'assistant'
-    ? `<div class="msg-icon">✦</div><div><div class="msg-bubble">${renderMd(content)}</div><div class="msg-time">${time}</div></div>`
-    : `<div><div class="msg-bubble">${escHtml(content)}</div><div class="msg-time" style="text-align:right">${time}</div></div>`;
+  if (role === 'assistant') {
+    div.innerHTML = `<img src="/alex-portrait.webp" class="msg-icon-photo" alt="ALEX" onerror="this.outerHTML='<div class=\'msg-icon\'>✦</div>'" /><div><div class="msg-bubble">${renderMd(content)}</div><div class="msg-time">${time}</div></div>`;
+  } else {
+    div.innerHTML = `<div><div class="msg-bubble">${escHtml(content)}</div><div class="msg-time" style="text-align:right">${time}</div></div>`;
+  }
   container.appendChild(div);
   container.scrollTop = container.scrollHeight;
   // Hide suggested prompts after first user message
@@ -753,13 +808,129 @@ async function sendToAlex() {
     });
     const data = await res.json();
     typing.classList.remove('show');
-    addAlexMsg('assistant', data.reply || 'Beklager, teknisk problem. Prøv igjen.');
+    const reply = data.reply || 'Beklager, teknisk problem. Prøv igjen.';
+    addAlexMsg('assistant', reply);
     addFeedItem('ALEX', '#06b6d4', 'Svarte Valdi på forespørsel');
+    // Speak the reply if voice is enabled
+    if (voiceEnabled) {
+      speakText(stripMd(reply));
+    }
   } catch(e) {
     typing.classList.remove('show');
     addAlexMsg('assistant', 'Beklager, Valdi — midlertidig teknisk problem. Prøv igjen om litt.');
   }
   document.getElementById('alex-send').disabled = false;
+}
+
+// ── VOICE TOGGLE ──
+function toggleVoice() {
+  voiceEnabled = !voiceEnabled;
+  const btn = document.getElementById('voice-toggle');
+  btn.textContent = voiceEnabled ? '🔊' : '🔇';
+  btn.classList.toggle('active', voiceEnabled);
+  if (!voiceEnabled && currentAudio) {
+    currentAudio.pause();
+    currentAudio = null;
+    document.getElementById('alex-avatar-wrap').classList.remove('speaking');
+  }
+}
+
+// ── TTS — ALEX speaks ──
+async function speakText(text) {
+  if (!text || !voiceEnabled) return;
+  // Stop any current speech
+  if (currentAudio) { currentAudio.pause(); currentAudio = null; }
+  const avatarWrap = document.getElementById('alex-avatar-wrap');
+  try {
+    const res = await fetch(WORKER_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tts: true, ttsText: text })
+    });
+    const data = await res.json();
+    if (data.audio) {
+      const audioBlob = base64ToBlob(data.audio, 'audio/mpeg');
+      const audioUrl = URL.createObjectURL(audioBlob);
+      currentAudio = new Audio(audioUrl);
+      avatarWrap.classList.add('speaking');
+      currentAudio.onended = () => {
+        avatarWrap.classList.remove('speaking');
+        URL.revokeObjectURL(audioUrl);
+        currentAudio = null;
+      };
+      currentAudio.play();
+    }
+  } catch(e) {
+    console.warn('TTS error:', e);
+  }
+}
+
+function base64ToBlob(base64, mimeType) {
+  const bytes = atob(base64);
+  const arr = new Uint8Array(bytes.length);
+  for (let i = 0; i < bytes.length; i++) arr[i] = bytes.charCodeAt(i);
+  return new Blob([arr], { type: mimeType });
+}
+
+function stripMd(text) {
+  return text
+    .replace(/#{1,3}\s+/g, '')
+    .replace(/\*\*(.+?)\*\*/g, '$1')
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    .replace(/^[\-\*]\s+/gm, '')
+    .replace(/\n+/g, ' ')
+    .trim();
+}
+
+// ── MICROPHONE ──
+function toggleMic() {
+  if (isListening) {
+    stopListening();
+  } else {
+    startListening();
+  }
+}
+
+function startListening() {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) {
+    alert('Mikrofon støttes ikke i denne nettleseren. Bruk Chrome eller Edge.');
+    return;
+  }
+  if (currentAudio) { currentAudio.pause(); currentAudio = null; }
+  speechRecognition = new SpeechRecognition();
+  speechRecognition.lang = 'nb-NO';
+  speechRecognition.continuous = false;
+  speechRecognition.interimResults = true;
+  const micBtn = document.getElementById('alex-mic');
+  const inp = document.getElementById('alex-input');
+  isListening = true;
+  micBtn.classList.add('listening');
+  micBtn.textContent = '⏹️';
+  speechRecognition.onresult = (e) => {
+    let transcript = '';
+    for (let i = e.resultIndex; i < e.results.length; i++) {
+      transcript += e.results[i][0].transcript;
+    }
+    inp.value = transcript;
+    autoResize(inp);
+  };
+  speechRecognition.onend = () => {
+    stopListening();
+    // Auto-send if there's text
+    const text = document.getElementById('alex-input').value.trim();
+    if (text) setTimeout(() => sendToAlex(), 300);
+  };
+  speechRecognition.onerror = () => stopListening();
+  speechRecognition.start();
+}
+
+function stopListening() {
+  isListening = false;
+  const micBtn = document.getElementById('alex-mic');
+  micBtn.classList.remove('listening');
+  micBtn.textContent = '🎙️';
+  if (speechRecognition) { speechRecognition.stop(); speechRecognition = null; }
 }
 
 function handleAlexKey(e) {
