@@ -627,19 +627,21 @@ let speechRecognition = null;
 let currentAudio = null;
 let audioUnlocked = false;
 
-// Unlock audio on first user gesture (required by browsers)
+// Shared AudioContext — created once on first user gesture, reused for all TTS playback
+let sharedAudioCtx = null;
+
 function unlockAudio() {
   if (audioUnlocked) return;
   audioUnlocked = true;
-  // Create and immediately suspend a silent AudioContext to satisfy browser autoplay policy
   try {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const buf = ctx.createBuffer(1, 1, 22050);
-    const src = ctx.createBufferSource();
+    sharedAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    // Play a silent buffer to fully unlock the context
+    const buf = sharedAudioCtx.createBuffer(1, 1, 22050);
+    const src = sharedAudioCtx.createBufferSource();
     src.buffer = buf;
-    src.connect(ctx.destination);
+    src.connect(sharedAudioCtx.destination);
     src.start(0);
-    ctx.resume();
+    sharedAudioCtx.resume();
   } catch(e) {}
 }
 
@@ -860,7 +862,7 @@ function toggleVoice() {
   }
 }
 
-// ── TTS — ALEX speaks via OpenAI TTS, fallback to Web Speech API ──
+// ── TTS — ALEX speaks via OpenAI TTS using AudioContext (bypasses autoplay policy) ──
 async function speakText(text) {
   if (!text || !voiceEnabled) return;
   // Stop any ongoing speech
@@ -875,33 +877,35 @@ async function speakText(text) {
     });
     const data = await res.json();
     if (data.audio) {
-      const audioBlob = base64ToBlob(data.audio, 'audio/mpeg');
-      const audioUrl = URL.createObjectURL(audioBlob);
-      const audio = new Audio(audioUrl);
-      audio.volume = 1.0;
-      currentAudio = audio;
+      // Decode base64 to ArrayBuffer
+      const binaryStr = atob(data.audio);
+      const bytes = new Uint8Array(binaryStr.length);
+      for (let i = 0; i < binaryStr.length; i++) bytes[i] = binaryStr.charCodeAt(i);
+      const arrayBuf = bytes.buffer;
+
+      // Use shared AudioContext to play — this is NOT subject to autoplay restrictions
+      // because the AudioContext was created during a user gesture (login/mic click)
+      if (!sharedAudioCtx) {
+        // Fallback: create context now (may be blocked first time, but usually ok)
+        sharedAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (sharedAudioCtx.state === 'suspended') {
+        await sharedAudioCtx.resume();
+      }
+      const audioBuf = await sharedAudioCtx.decodeAudioData(arrayBuf);
+      const source = sharedAudioCtx.createBufferSource();
+      source.buffer = audioBuf;
+      source.connect(sharedAudioCtx.destination);
       avatarWrap.classList.add('speaking');
-      audio.onended = () => {
+      source.onended = () => {
         avatarWrap.classList.remove('speaking');
-        URL.revokeObjectURL(audioUrl);
-        if (currentAudio === audio) currentAudio = null;
       };
-      audio.onerror = () => {
-        avatarWrap.classList.remove('speaking');
-        if (currentAudio === audio) currentAudio = null;
-        speakFallback(text, avatarWrap);
-      };
-      const p = audio.play();
-      if (p) p.catch(() => {
-        avatarWrap.classList.remove('speaking');
-        currentAudio = null;
-        speakFallback(text, avatarWrap);
-      });
+      source.start(0);
     } else {
       speakFallback(text, avatarWrap);
     }
   } catch(e) {
-    console.warn('TTS error:', e);
+    console.warn('TTS error, using Web Speech fallback:', e);
     speakFallback(text, avatarWrap);
   }
 }
@@ -942,6 +946,7 @@ function stripMd(text) {
 
 // ── MICROPHONE ──
 function toggleMic() {
+  unlockAudio(); // Re-unlock on every mic click (user gesture)
   if (isListening) {
     stopListening();
   } else {
