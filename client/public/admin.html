@@ -468,19 +468,15 @@ Regler:
     document.getElementById('messages').scrollTop = 99999;
 
     try {
-      const res = await fetch('/api/trpc/alex.chat', {
+      const res = await fetch('https://alex-ai-worker.vladimir-joffcheff.workers.dev', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          json: {
-            messages: messages.map(m => ({ role: m.role, content: m.content })),
-            language: 'no',
-            adminMode: true
-          }
+          messages: messages.map(m => ({ role: m.role, content: m.content }))
         })
       });
       const data = await res.json();
-      const reply = data?.result?.data?.json?.content || data?.result?.data?.content;
+      const reply = data?.reply;
       typing.classList.remove('show');
       addMessage('assistant', reply || 'Beklager, teknisk problem. Prøv igjen.');
     } catch(e) {
