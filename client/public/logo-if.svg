@@ -1,35 +1,55 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 160" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 170" fill="none">
   <defs>
-    <linearGradient id="gradI" x1="0" y1="1" x2="0" y2="0">
-      <stop offset="0%" stop-color="#1a3a8c"/>
-      <stop offset="100%" stop-color="#22d3ee"/>
+    <linearGradient id="gradI" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#1e3a8a"/>
     </linearGradient>
-    <linearGradient id="gradF" x1="0" y1="1" x2="0" y2="0">
-      <stop offset="0%" stop-color="#0ea5e9"/>
-      <stop offset="100%" stop-color="#2dd4bf"/>
+    <linearGradient id="gradF" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#22d3ee"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
     </linearGradient>
   </defs>
 
-  <!-- I: same height as F, diagonal top going upward left-to-right -->
-  <polygon points="94,18 112,10 112,96 94,96" fill="url(#gradI)"/>
+  <!--
+    CONCEPT: Both I and F share a single diagonal cut across their tops.
+    The diagonal goes from lower-left to upper-right.
+    
+    I: narrow rectangle x=90..108, bottom=96
+       top-left corner: y=52, top-right corner: y=44  (diagonal)
+    
+    F: wider shape x=114..186, bottom=96
+       Vertical bar: x=114..132
+       Top arm: x=114..186, height 14px
+       Middle arm: x=114..170, height 14px
+       
+       F top-left (x=114): y=42, F top-right of vertical (x=132): y=34
+       The top arm starts at the diagonal of the vertical bar top.
+       
+    F as one clean polygon (no inner gaps, no overlapping shapes):
+  -->
 
-  <!-- F: same height, diagonal top going upward left-to-right, solid letter, thicker -->
+  <!-- I -->
+  <polygon points="90,52  108,44  108,96  90,96" fill="url(#gradI)"/>
+
+  <!-- F: one single polygon tracing the outline of the letter F -->
   <polygon points="
-    118,10
-    192,2
-    192,18
-    134,24
-    134,48
-    178,42
-    178,58
-    134,62
-    134,96
-    118,96
+    114,42
+    132,34
+    132,34
+    186,34
+    186,48
+    132,48
+    132,62
+    170,62
+    170,76
+    132,76
+    132,96
+    114,96
   " fill="url(#gradF)"/>
 
   <!-- Text: INTELLIGENT FORCE -->
-  <text x="150" y="120" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="700" fill="#0f2744" text-anchor="middle" letter-spacing="2">INTELLIGENT FORCE</text>
+  <text x="150" y="126" font-family="Arial Black, Arial, sans-serif" font-size="14" font-weight="900" fill="#0f2744" text-anchor="middle" letter-spacing="1.5">INTELLIGENT FORCE</text>
 
   <!-- Subtext: AI DRIVEN SOLUTIONS -->
-  <text x="150" y="138" font-family="Arial, Helvetica, sans-serif" font-size="8.5" font-weight="400" fill="#334e7a" text-anchor="middle" letter-spacing="3">AI DRIVEN SOLUTIONS</text>
+  <text x="150" y="145" font-family="Arial, Helvetica, sans-serif" font-size="9" font-weight="400" fill="#334e7a" text-anchor="middle" letter-spacing="3.5">AI DRIVEN SOLUTIONS</text>
 </svg>
