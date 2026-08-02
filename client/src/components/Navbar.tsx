@@ -42,15 +42,12 @@ export default function Navbar() {
       <div className="container">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 shrink-0">
+          <Link href="/" className="flex items-center shrink-0">
             <img
               src="/logo.png?v=2"
               alt="IntelligentForce"
-              className="h-10 w-auto object-contain"
+              className="h-14 w-auto object-contain"
             />
-            <span className="font-bold text-sm tracking-widest text-white hidden sm:block">
-              INTELLIGENTFORCE
-            </span>
           </Link>
 
           {/* Desktop nav */}
