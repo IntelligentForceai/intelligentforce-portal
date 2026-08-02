@@ -817,24 +817,27 @@ async function sendToAlex() {
   typing.classList.add('show');
   document.getElementById('alex-messages').scrollTop = 99999;
   try {
-    // Step 1: Fetch chat reply
-    const res = await fetch(WORKER_URL, {
+    // Fetch chat reply and TTS audio IN PARALLEL for speed
+    const chatPromise = fetch(WORKER_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         messages: alexMessages.map(m => ({ role: m.role, content: m.content })),
         adminMode: true
       })
-    });
-    const data = await res.json();
+    }).then(r => r.json());
+
+    const chatData = await chatPromise;
     typing.classList.remove('show');
-    const reply = data.reply || 'Beklager, teknisk problem. Prøv igjen.';
-    // Step 2: Show text in chat
+    const reply = chatData.reply || 'Beklager, teknisk problem. Prøv igjen.';
+
+    // Show text in chat
     addAlexMsg('assistant', reply);
     addFeedItem('ALEX', '#06b6d4', 'Svarte Valdi på forespørsel');
-    // Step 3: Speak the reply AFTER it is shown in chat
+
+    // Fetch TTS audio now (after chat reply is known)
     if (voiceEnabled) {
-      await speakText(stripMd(reply));
+      speakText(stripMd(reply)); // fire-and-forget, no await — avoids blocking next message
     }
   } catch(e) {
     typing.classList.remove('show');
@@ -860,72 +863,63 @@ function toggleVoice() {
 // ── TTS — ALEX speaks via OpenAI TTS, fallback to Web Speech API ──
 async function speakText(text) {
   if (!text || !voiceEnabled) return;
-  // Stop any current speech
+  // Stop any ongoing speech
   if (currentAudio) { currentAudio.pause(); currentAudio = null; }
   window.speechSynthesis && window.speechSynthesis.cancel();
   const avatarWrap = document.getElementById('alex-avatar-wrap');
-
-  return new Promise(async (resolve) => {
-    try {
-      const res = await fetch(WORKER_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ tts: true, ttsText: text })
+  try {
+    const res = await fetch(WORKER_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tts: true, ttsText: text })
+    });
+    const data = await res.json();
+    if (data.audio) {
+      const audioBlob = base64ToBlob(data.audio, 'audio/mpeg');
+      const audioUrl = URL.createObjectURL(audioBlob);
+      const audio = new Audio(audioUrl);
+      audio.volume = 1.0;
+      currentAudio = audio;
+      avatarWrap.classList.add('speaking');
+      audio.onended = () => {
+        avatarWrap.classList.remove('speaking');
+        URL.revokeObjectURL(audioUrl);
+        if (currentAudio === audio) currentAudio = null;
+      };
+      audio.onerror = () => {
+        avatarWrap.classList.remove('speaking');
+        if (currentAudio === audio) currentAudio = null;
+        speakFallback(text, avatarWrap);
+      };
+      const p = audio.play();
+      if (p) p.catch(() => {
+        avatarWrap.classList.remove('speaking');
+        currentAudio = null;
+        speakFallback(text, avatarWrap);
       });
-      const data = await res.json();
-      if (data.audio) {
-        const audioBlob = base64ToBlob(data.audio, 'audio/mpeg');
-        const audioUrl = URL.createObjectURL(audioBlob);
-        currentAudio = new Audio(audioUrl);
-        currentAudio.volume = 1.0;
-        avatarWrap.classList.add('speaking');
-        currentAudio.onended = () => {
-          avatarWrap.classList.remove('speaking');
-          URL.revokeObjectURL(audioUrl);
-          currentAudio = null;
-          resolve();
-        };
-        currentAudio.onerror = (e) => {
-          console.warn('Audio playback error, falling back to Web Speech:', e);
-          avatarWrap.classList.remove('speaking');
-          speakWithWebSpeech(text, avatarWrap, resolve);
-        };
-        // play() returns a Promise — catch NotAllowedError (autoplay blocked)
-        const playPromise = currentAudio.play();
-        if (playPromise !== undefined) {
-          playPromise.catch(err => {
-            console.warn('Autoplay blocked, using Web Speech API:', err);
-            avatarWrap.classList.remove('speaking');
-            currentAudio = null;
-            speakWithWebSpeech(text, avatarWrap, resolve);
-          });
-        }
-      } else {
-        speakWithWebSpeech(text, avatarWrap, resolve);
-      }
-    } catch(e) {
-      console.warn('TTS fetch error, using Web Speech:', e);
-      speakWithWebSpeech(text, avatarWrap, resolve);
+    } else {
+      speakFallback(text, avatarWrap);
     }
-  });
+  } catch(e) {
+    console.warn('TTS error:', e);
+    speakFallback(text, avatarWrap);
+  }
 }
 
-// Fallback: browser built-in speech synthesis
-function speakWithWebSpeech(text, avatarWrap, resolve) {
-  if (!window.speechSynthesis) { resolve(); return; }
+// Fallback: browser built-in Web Speech API
+function speakFallback(text, avatarWrap) {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
   const utter = new SpeechSynthesisUtterance(text);
   utter.lang = 'nb-NO';
   utter.rate = 1.0;
-  utter.pitch = 1.1;
-  // Try to pick a female Norwegian voice
+  utter.pitch = 1.05;
   const voices = window.speechSynthesis.getVoices();
-  const norVoice = voices.find(v => v.lang.startsWith('nb') || v.lang.startsWith('no'));
-  const femaleVoice = voices.find(v => v.name.toLowerCase().includes('female') || v.name.toLowerCase().includes('woman') || v.name.toLowerCase().includes('anna') || v.name.toLowerCase().includes('karen'));
-  if (norVoice) utter.voice = norVoice;
-  else if (femaleVoice) utter.voice = femaleVoice;
-  avatarWrap.classList.add('speaking');
-  utter.onend = () => { avatarWrap.classList.remove('speaking'); resolve(); };
-  utter.onerror = () => { avatarWrap.classList.remove('speaking'); resolve(); };
+  const pick = voices.find(v => v.lang.startsWith('nb') || v.lang.startsWith('no'))
+    || voices.find(v => /female|woman|anna|karen|samantha/i.test(v.name));
+  if (pick) utter.voice = pick;
+  if (avatarWrap) avatarWrap.classList.add('speaking');
+  utter.onend = utter.onerror = () => { if (avatarWrap) avatarWrap.classList.remove('speaking'); };
   window.speechSynthesis.speak(utter);
 }
 
