@@ -1,20 +1,31 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 90" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 160" fill="none">
   <defs>
-    <linearGradient id="gradI" x1="0" y1="1" x2="0" y2="0">
-      <stop offset="0%" stop-color="#1a3a6e"/>
-      <stop offset="100%" stop-color="#2563eb"/>
+    <linearGradient id="gradI" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#22d3ee"/>
+      <stop offset="100%" stop-color="#1a3a8c"/>
     </linearGradient>
-    <linearGradient id="gradF" x1="0" y1="1" x2="0" y2="0">
-      <stop offset="0%" stop-color="#0891b2"/>
-      <stop offset="100%" stop-color="#22d3ee"/>
+    <linearGradient id="gradF" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2dd4bf"/>
+      <stop offset="100%" stop-color="#0ea5e9"/>
     </linearGradient>
   </defs>
-  <!-- I: shorter, darker, starts lower -->
-  <rect x="4" y="14" width="14" height="62" rx="1" fill="url(#gradI)"/>
-  <!-- F: taller, lighter teal -->
-  <rect x="24" y="4" width="14" height="72" rx="1" fill="url(#gradF)"/>
-  <!-- F top bar -->
-  <rect x="24" y="4" width="38" height="13" rx="1" fill="url(#gradF)"/>
-  <!-- F middle bar -->
-  <rect x="24" y="34" width="30" height="12" rx="1" fill="url(#gradF)"/>
+
+  <!-- Centered group: total width ~100, start at x=100 -->
+
+  <!-- I: shorter, starts lower, diagonal cut at bottom -->
+  <polygon points="100,22 114,22 114,92 100,99" fill="url(#gradI)"/>
+
+  <!-- F: taller, diagonal cuts on bars -->
+  <!-- Main vertical bar -->
+  <polygon points="120,6 134,6 134,98 120,105" fill="url(#gradF)"/>
+  <!-- Top horizontal bar - diagonal right end -->
+  <polygon points="120,6 186,6 182,19 120,19" fill="url(#gradF)"/>
+  <!-- Middle horizontal bar - diagonal right end -->
+  <polygon points="120,44 168,44 164,57 120,57" fill="url(#gradF)"/>
+
+  <!-- Text: INTELLIGENT FORCE -->
+  <text x="150" y="128" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="700" fill="#0f2744" text-anchor="middle" letter-spacing="2">INTELLIGENT FORCE</text>
+
+  <!-- Subtext: AI DRIVEN SOLUTIONS -->
+  <text x="150" y="147" font-family="Arial, Helvetica, sans-serif" font-size="9" font-weight="400" fill="#334e7a" text-anchor="middle" letter-spacing="3">AI DRIVEN SOLUTIONS</text>
 </svg>

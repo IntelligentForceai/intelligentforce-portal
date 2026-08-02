@@ -1,16 +1,23 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 90" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 110" fill="none">
   <defs>
-    <linearGradient id="gradI" x1="0" y1="1" x2="0" y2="0">
-      <stop offset="0%" stop-color="#1a3a6e"/>
-      <stop offset="100%" stop-color="#2563eb"/>
+    <linearGradient id="gradI" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#22d3ee"/>
+      <stop offset="100%" stop-color="#1a3a8c"/>
     </linearGradient>
-    <linearGradient id="gradF" x1="0" y1="1" x2="0" y2="0">
-      <stop offset="0%" stop-color="#0891b2"/>
-      <stop offset="100%" stop-color="#22d3ee"/>
+    <linearGradient id="gradF" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2dd4bf"/>
+      <stop offset="100%" stop-color="#0ea5e9"/>
     </linearGradient>
   </defs>
-  <rect x="4" y="14" width="14" height="62" rx="1" fill="url(#gradI)"/>
-  <rect x="24" y="4" width="14" height="72" rx="1" fill="url(#gradF)"/>
-  <rect x="24" y="4" width="38" height="13" rx="1" fill="url(#gradF)"/>
-  <rect x="24" y="34" width="30" height="12" rx="1" fill="url(#gradF)"/>
+
+  <!-- I: shorter, starts lower, diagonal cut at bottom-left -->
+  <polygon points="6,18 20,18 20,76 6,83" fill="url(#gradI)"/>
+
+  <!-- F: taller, diagonal cut at bottom, shorter horizontal bars also diagonal -->
+  <!-- Main vertical bar of F -->
+  <polygon points="26,4 40,4 40,84 26,90" fill="url(#gradF)"/>
+  <!-- Top horizontal bar of F - diagonal cut on right end -->
+  <polygon points="26,4 82,4 78,17 26,17" fill="url(#gradF)"/>
+  <!-- Middle horizontal bar of F - diagonal cut on right end -->
+  <polygon points="26,37 66,37 62,50 26,50" fill="url(#gradF)"/>
 </svg>
