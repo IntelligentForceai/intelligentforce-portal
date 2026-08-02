@@ -74,6 +74,15 @@ export default function Home() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-indigo-900/15 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '8s' }} />
 
         <div className="relative z-10 container mx-auto px-4 text-center max-w-5xl">
+          {/* Hero Logo */}
+          <div className="flex justify-center mb-8">
+            <img
+              src="/logo.png"
+              alt="IntelligentForce"
+              className="h-28 md:h-36 w-auto object-contain drop-shadow-2xl"
+            />
+          </div>
+
           {/* Badge */}
           <div className="inline-flex items-center gap-2 bg-cyan-500/10 border border-cyan-500/30 rounded-full px-4 py-2 mb-8">
             <span className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse" />
