@@ -82,7 +82,8 @@ function App() {
   // Determine if we're on an admin route
   const isAdminRoute =
     typeof window !== "undefined" &&
-    window.location.pathname.startsWith("/admin");
+    (window.location.pathname.startsWith("/admin") ||
+     window.location.pathname.startsWith("/valdi"));
 
   return (
     <ErrorBoundary>
