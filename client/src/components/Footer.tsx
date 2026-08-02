@@ -1,9 +1,11 @@
 import { Link } from "wouter";
+import { useState } from "react";
 import { useLang } from "@/contexts/LanguageContext";
 import { Linkedin, Instagram, Facebook } from "lucide-react";
 
 export default function Footer() {
   const { t } = useLang();
+  const [logoZoomed, setLogoZoomed] = useState(false);
 
   return (
     <footer className="bg-card border-t border-border mt-20">
@@ -11,13 +13,22 @@ export default function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
-            <Link href="/" className="flex items-center gap-2 mb-4">
+            <Link href="/" className="flex items-center mb-4">
               <img
-                src="/logo.png"
+                src="/logo-white.png?v=1"
                 alt="IntelligentForce"
-                className="h-10 w-auto object-contain"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setLogoZoomed(!logoZoomed);
+                  setTimeout(() => setLogoZoomed(false), 2000);
+                }}
+                className={`w-auto object-contain cursor-pointer transition-all duration-500 drop-shadow-[0_0_8px_rgba(6,182,212,0.4)] ${
+                  logoZoomed
+                    ? "h-24 scale-125 drop-shadow-[0_0_16px_rgba(6,182,212,0.8)]"
+                    : "h-14 hover:scale-105"
+                }`}
+                style={{ maxWidth: logoZoomed ? "180px" : "120px" }}
               />
-              <span className="font-bold text-xs tracking-widest text-white">INTELLIGENTFORCE</span>
             </Link>
             <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
               AI-drevet forretningsautomatisering for norske bedrifter.
