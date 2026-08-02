@@ -8,6 +8,7 @@ export default function Navbar() {
   const [location] = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [logoZoomed, setLogoZoomed] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -41,12 +42,23 @@ export default function Navbar() {
     >
       <div className="container">
         <div className="flex items-center justify-between h-16">
-          {/* Logo */}
+
+          {/* Logo — klikk for zoom */}
           <Link href="/" className="flex items-center shrink-0">
             <img
-              src="/logo.png?v=2"
+              src="/logo-white.png?v=1"
               alt="IntelligentForce"
-              className="h-14 w-auto object-contain"
+              onClick={(e) => {
+                e.preventDefault();
+                setLogoZoomed(!logoZoomed);
+                setTimeout(() => setLogoZoomed(false), 2000);
+              }}
+              className={`w-auto object-contain cursor-pointer transition-all duration-500 drop-shadow-[0_0_8px_rgba(6,182,212,0.5)] ${
+                logoZoomed
+                  ? "h-24 scale-125 drop-shadow-[0_0_16px_rgba(6,182,212,0.8)]"
+                  : "h-12 sm:h-14 hover:scale-105"
+              }`}
+              style={{ maxWidth: logoZoomed ? "180px" : "120px" }}
             />
           </Link>
 
@@ -65,7 +77,6 @@ export default function Navbar() {
                 {link.label}
               </Link>
             ))}
-            {/* Investors – subtle desktop link */}
             <Link
               href="/investors"
               className={`px-3 py-2 text-sm rounded-md transition-colors ${
@@ -79,13 +90,13 @@ export default function Navbar() {
           </div>
 
           {/* Right side */}
-          <div className="flex items-center gap-2">
-            {/* Language toggle – EN primary (left), NO secondary (right) */}
-            <div className="flex items-center gap-1 bg-white/10 rounded-full p-1">
+          <div className="flex items-center gap-1.5">
+            {/* Language toggle */}
+            <div className="flex items-center gap-0.5 bg-white/10 rounded-full p-0.5">
               <button
                 onClick={() => setLang("en")}
                 title="Switch to English"
-                className={`text-xl px-2 py-0.5 rounded-full transition-all ${
+                className={`text-base px-1.5 py-0.5 rounded-full transition-all ${
                   lang === "en" ? "bg-white/20 scale-110" : "opacity-50 hover:opacity-100"
                 }`}
               >
@@ -94,7 +105,7 @@ export default function Navbar() {
               <button
                 onClick={() => setLang("no")}
                 title="Bytt til norsk"
-                className={`text-xl px-2 py-0.5 rounded-full transition-all ${
+                className={`text-base px-1.5 py-0.5 rounded-full transition-all ${
                   lang === "no" ? "bg-white/20 scale-110" : "opacity-50 hover:opacity-100"
                 }`}
               >
@@ -102,10 +113,10 @@ export default function Navbar() {
               </button>
             </div>
 
-            {/* Meet ALEX button */}
+            {/* Meet ALEX button — skjult på veldig små skjermer */}
             <Link
               href="/alex"
-              className="hidden sm:flex items-center gap-1.5 btn-gradient px-4 py-2 rounded-full text-sm font-medium"
+              className="hidden sm:flex items-center gap-1.5 btn-gradient px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap"
             >
               {t.nav.meetAlex}
             </Link>
@@ -116,34 +127,33 @@ export default function Navbar() {
               className="lg:hidden p-2 text-white/80 hover:text-white"
               aria-label="Toggle menu"
             >
-              {menuOpen ? <X size={22} /> : <Menu size={22} />}
+              {menuOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
           </div>
         </div>
 
-        {/* Mobile menu */}
+        {/* Mobile menu — full skjerm overlay */}
         {menuOpen && (
-          <div className="lg:hidden mobile-menu-enter pb-4 border-t border-border mt-0">
-            <div className="flex flex-col gap-1 pt-3">
+          <div className="lg:hidden pb-4 border-t border-border mt-0">
+            <div className="flex flex-col gap-0.5 pt-2">
               {navLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
                   className={`px-4 py-3 text-sm rounded-md transition-colors ${
                     isActive(link.href)
-                      ? "text-white font-medium bg-white/10"
+                      ? "text-white font-semibold bg-white/10"
                       : "text-white/70 hover:text-white hover:bg-white/5"
                   }`}
                 >
                   {link.label}
                 </Link>
               ))}
-              {/* Investors in mobile menu */}
               <Link
                 href="/investors"
                 className={`px-4 py-3 text-sm rounded-md transition-colors ${
                   isActive("/investors")
-                    ? "text-amber-400 font-medium bg-amber-400/10"
+                    ? "text-amber-400 font-semibold bg-amber-400/10"
                     : "text-amber-400/80 hover:text-amber-400 hover:bg-amber-400/5"
                 }`}
               >
