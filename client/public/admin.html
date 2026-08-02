@@ -625,11 +625,29 @@ let voiceEnabled = true;
 let isListening = false;
 let speechRecognition = null;
 let currentAudio = null;
+let audioUnlocked = false;
+
+// Unlock audio on first user gesture (required by browsers)
+function unlockAudio() {
+  if (audioUnlocked) return;
+  audioUnlocked = true;
+  // Create and immediately suspend a silent AudioContext to satisfy browser autoplay policy
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const buf = ctx.createBuffer(1, 1, 22050);
+    const src = ctx.createBufferSource();
+    src.buffer = buf;
+    src.connect(ctx.destination);
+    src.start(0);
+    ctx.resume();
+  } catch(e) {}
+}
 
 // ── LOGIN ──
 document.getElementById('pw-input').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
 
 function doLogin() {
+  unlockAudio(); // Unlock audio on login button click (user gesture)
   const pw = document.getElementById('pw-input').value;
   if (pw === PASS) {
     document.getElementById('login-screen').style.display = 'none';
@@ -839,12 +857,14 @@ function toggleVoice() {
   }
 }
 
-// ── TTS — ALEX speaks (returns Promise, resolves when audio ends) ──
+// ── TTS — ALEX speaks via OpenAI TTS, fallback to Web Speech API ──
 async function speakText(text) {
   if (!text || !voiceEnabled) return;
   // Stop any current speech
   if (currentAudio) { currentAudio.pause(); currentAudio = null; }
+  window.speechSynthesis && window.speechSynthesis.cancel();
   const avatarWrap = document.getElementById('alex-avatar-wrap');
+
   return new Promise(async (resolve) => {
     try {
       const res = await fetch(WORKER_URL, {
@@ -857,6 +877,7 @@ async function speakText(text) {
         const audioBlob = base64ToBlob(data.audio, 'audio/mpeg');
         const audioUrl = URL.createObjectURL(audioBlob);
         currentAudio = new Audio(audioUrl);
+        currentAudio.volume = 1.0;
         avatarWrap.classList.add('speaking');
         currentAudio.onended = () => {
           avatarWrap.classList.remove('speaking');
@@ -864,16 +885,48 @@ async function speakText(text) {
           currentAudio = null;
           resolve();
         };
-        currentAudio.onerror = () => { resolve(); };
-        currentAudio.play();
+        currentAudio.onerror = (e) => {
+          console.warn('Audio playback error, falling back to Web Speech:', e);
+          avatarWrap.classList.remove('speaking');
+          speakWithWebSpeech(text, avatarWrap, resolve);
+        };
+        // play() returns a Promise — catch NotAllowedError (autoplay blocked)
+        const playPromise = currentAudio.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(err => {
+            console.warn('Autoplay blocked, using Web Speech API:', err);
+            avatarWrap.classList.remove('speaking');
+            currentAudio = null;
+            speakWithWebSpeech(text, avatarWrap, resolve);
+          });
+        }
       } else {
-        resolve();
+        speakWithWebSpeech(text, avatarWrap, resolve);
       }
     } catch(e) {
-      console.warn('TTS error:', e);
-      resolve();
+      console.warn('TTS fetch error, using Web Speech:', e);
+      speakWithWebSpeech(text, avatarWrap, resolve);
     }
   });
+}
+
+// Fallback: browser built-in speech synthesis
+function speakWithWebSpeech(text, avatarWrap, resolve) {
+  if (!window.speechSynthesis) { resolve(); return; }
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = 'nb-NO';
+  utter.rate = 1.0;
+  utter.pitch = 1.1;
+  // Try to pick a female Norwegian voice
+  const voices = window.speechSynthesis.getVoices();
+  const norVoice = voices.find(v => v.lang.startsWith('nb') || v.lang.startsWith('no'));
+  const femaleVoice = voices.find(v => v.name.toLowerCase().includes('female') || v.name.toLowerCase().includes('woman') || v.name.toLowerCase().includes('anna') || v.name.toLowerCase().includes('karen'));
+  if (norVoice) utter.voice = norVoice;
+  else if (femaleVoice) utter.voice = femaleVoice;
+  avatarWrap.classList.add('speaking');
+  utter.onend = () => { avatarWrap.classList.remove('speaking'); resolve(); };
+  utter.onerror = () => { avatarWrap.classList.remove('speaking'); resolve(); };
+  window.speechSynthesis.speak(utter);
 }
 
 function base64ToBlob(base64, mimeType) {
