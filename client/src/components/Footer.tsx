@@ -13,11 +13,11 @@ export default function Footer() {
           <div className="col-span-2 md:col-span-1">
             <Link href="/" className="flex items-center gap-2 mb-4">
               <img
-                src="https://d2xsxph8kpxj0f.cloudfront.net/310519663514335084/45LJMhfcviNxpRv8Tz77Wr/logo-handshake-transparent-v3-Zr2h65ErvHj5jTWGZ4vfKi.webp"
+                src="/logo-if.svg"
                 alt="IntelligentForce"
-                className="h-8 w-8 object-contain"
+                className="h-9 w-auto object-contain"
               />
-              <span className="font-bold text-xs tracking-widest text-white">IF</span>
+              <span className="font-bold text-xs tracking-widest text-white">INTELLIGENTFORCE</span>
             </Link>
             <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
               AI-drevet forretningsautomatisering for norske bedrifter.
