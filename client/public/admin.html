@@ -8,182 +8,323 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Inter', sans-serif; background: #050a14; color: #fff; min-height: 100vh; }
+    body { font-family: 'Inter', sans-serif; background: #050a14; color: #fff; min-height: 100vh; overflow: hidden; }
 
     /* ── LOGIN ── */
     #login-screen {
       min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 1rem;
+      background: radial-gradient(ellipse at 50% 0%, rgba(6,182,212,.08) 0%, transparent 70%);
     }
-    .login-box { width: 100%; max-width: 360px; }
+    .login-box { width: 100%; max-width: 380px; }
     .login-header { text-align: center; margin-bottom: 2rem; }
     .login-icon {
-      width: 64px; height: 64px; border-radius: 16px;
-      background: linear-gradient(135deg, rgba(6,182,212,.2), rgba(37,99,235,.2));
-      border: 1px solid rgba(6,182,212,.3);
+      width: 72px; height: 72px; border-radius: 20px;
+      background: linear-gradient(135deg, rgba(6,182,212,.25), rgba(37,99,235,.25));
+      border: 1px solid rgba(6,182,212,.4);
       display: inline-flex; align-items: center; justify-content: center;
-      margin-bottom: 1rem; font-size: 28px;
+      margin-bottom: 1.25rem; font-size: 32px;
+      box-shadow: 0 0 40px rgba(6,182,212,.15);
     }
-    .login-header h1 { font-size: 1.5rem; font-weight: 800; }
-    .login-header p { color: #6b7280; font-size: .875rem; margin-top: .25rem; }
-    .login-card { background: #0d1829; border: 1px solid rgba(255,255,255,.08); border-radius: 20px; padding: 2rem; }
+    .login-header h1 { font-size: 1.6rem; font-weight: 800; letter-spacing: -.02em; }
+    .login-header p { color: #6b7280; font-size: .875rem; margin-top: .35rem; }
+    .login-card { background: #0d1829; border: 1px solid rgba(255,255,255,.09); border-radius: 24px; padding: 2rem; }
     .field { margin-bottom: 1.25rem; }
-    .field label { display: block; font-size: .75rem; color: #9ca3af; margin-bottom: .375rem; font-weight: 500; }
+    .field label { display: block; font-size: .75rem; color: #9ca3af; margin-bottom: .4rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
     .pw-wrap { position: relative; }
     .field input {
       width: 100%; background: #0a1020; border: 1px solid rgba(255,255,255,.1);
-      border-radius: 12px; padding: .75rem 2.5rem .75rem 1rem;
-      font-size: .875rem; color: #fff; outline: none; transition: border-color .2s; font-family: inherit;
+      border-radius: 14px; padding: .8rem 2.75rem .8rem 1rem;
+      font-size: .9rem; color: #fff; outline: none; transition: border-color .2s, box-shadow .2s; font-family: inherit;
     }
-    .field input:focus { border-color: rgba(6,182,212,.5); }
-    .toggle-pw { position: absolute; right: .75rem; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #6b7280; font-size: 1rem; }
-    .error-msg { background: rgba(239,68,68,.1); border: 1px solid rgba(239,68,68,.2); border-radius: 10px; padding: .5rem .75rem; font-size: .75rem; color: #f87171; margin-bottom: 1rem; display: none; }
-    .btn-login { width: 100%; background: linear-gradient(135deg, #06b6d4, #2563eb); border: none; border-radius: 12px; padding: .875rem; font-size: .875rem; font-weight: 700; color: #fff; cursor: pointer; font-family: inherit; }
-    .btn-login:hover { opacity: .9; }
+    .field input:focus { border-color: rgba(6,182,212,.6); box-shadow: 0 0 0 3px rgba(6,182,212,.1); }
+    .toggle-pw { position: absolute; right: .875rem; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #6b7280; font-size: 1rem; }
+    .error-msg { background: rgba(239,68,68,.1); border: 1px solid rgba(239,68,68,.2); border-radius: 10px; padding: .5rem .75rem; font-size: .8rem; color: #f87171; margin-bottom: 1rem; display: none; }
+    .btn-login { width: 100%; background: linear-gradient(135deg, #06b6d4, #2563eb); border: none; border-radius: 14px; padding: .9rem; font-size: .9rem; font-weight: 700; color: #fff; cursor: pointer; font-family: inherit; transition: opacity .2s, transform .1s; letter-spacing: .01em; }
+    .btn-login:hover { opacity: .92; transform: translateY(-1px); }
+    .btn-login:active { transform: translateY(0); }
 
     /* ── OFFICE ── */
     #office { display: none; height: 100vh; flex-direction: column; }
 
-    /* Top bar */
+    /* ── TOPBAR ── */
     .topbar {
       display: flex; align-items: center; justify-content: space-between;
-      padding: .75rem 1.25rem; background: #0a1020;
-      border-bottom: 1px solid rgba(255,255,255,.08); flex-shrink: 0;
+      padding: .6rem 1.25rem; background: #070d1c;
+      border-bottom: 1px solid rgba(255,255,255,.07); flex-shrink: 0; height: 56px;
     }
     .topbar-left { display: flex; align-items: center; gap: .75rem; }
-    .topbar-logo { height: 56px; width: auto; object-fit: contain; }
-    .topbar-title { font-size: .875rem; font-weight: 700; }
-    .topbar-sub { font-size: .7rem; color: #06b6d4; }
+    .topbar-logo { height: 40px; width: auto; object-fit: contain; }
+    .topbar-title { font-size: .8rem; font-weight: 700; color: rgba(255,255,255,.9); }
+    .topbar-sub { font-size: .65rem; color: #06b6d4; margin-top: 1px; }
     .topbar-right { display: flex; align-items: center; gap: .75rem; }
-    .live-badge { display: flex; align-items: center; gap: .375rem; font-size: .7rem; color: #22c55e; }
-    .live-dot { width: 7px; height: 7px; border-radius: 50%; background: #22c55e; animation: pulse 2s infinite; }
-    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
-    .btn-sm { font-size: .75rem; color: #6b7280; background: none; border: 1px solid rgba(255,255,255,.1); border-radius: 8px; padding: .3rem .65rem; cursor: pointer; font-family: inherit; }
-    .btn-sm:hover { color: #fff; }
+    .live-badge { display: flex; align-items: center; gap: .375rem; font-size: .7rem; color: #22c55e; background: rgba(34,197,94,.08); border: 1px solid rgba(34,197,94,.2); border-radius: 20px; padding: .2rem .6rem; }
+    .live-dot { width: 6px; height: 6px; border-radius: 50%; background: #22c55e; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.35} }
+    .topbar-clock { font-size: .7rem; color: #6b7280; font-variant-numeric: tabular-nums; }
+    .topbar-valdi { width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, #06b6d4, #2563eb); display: flex; align-items: center; justify-content: center; font-size: .65rem; font-weight: 800; color: #fff; }
+    .btn-sm { font-size: .7rem; color: #6b7280; background: none; border: 1px solid rgba(255,255,255,.1); border-radius: 8px; padding: .28rem .6rem; cursor: pointer; font-family: inherit; transition: color .2s, border-color .2s; }
+    .btn-sm:hover { color: #fff; border-color: rgba(255,255,255,.25); }
 
-    /* Main layout */
+    /* ── MAIN LAYOUT ── */
     .office-body { display: flex; flex: 1; overflow: hidden; }
 
-    /* ── LEFT: ALEX ── */
-    .alex-panel {
-      width: 340px; flex-shrink: 0; display: flex; flex-direction: column;
-      border-right: 1px solid rgba(255,255,255,.08); background: #080f1e;
+    /* ── LEFT: AGENTS PANEL ── */
+    .agents-panel {
+      width: 280px; flex-shrink: 0; display: flex; flex-direction: column;
+      border-right: 1px solid rgba(255,255,255,.07); background: #070d1c;
     }
-    .alex-header {
-      padding: 1rem; border-bottom: 1px solid rgba(255,255,255,.08);
-      display: flex; align-items: center; gap: .75rem;
+    .agents-header {
+      padding: .75rem 1rem; border-bottom: 1px solid rgba(255,255,255,.07);
+      display: flex; align-items: center; justify-content: space-between;
     }
-    .alex-avatar-wrap { position: relative; }
-    .alex-avatar {
-      width: 44px; height: 44px; border-radius: 14px;
-      background: linear-gradient(135deg, rgba(6,182,212,.3), rgba(37,99,235,.3));
-      border: 1px solid rgba(6,182,212,.4);
-      display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
-    }
-    .online-dot { position: absolute; bottom: -2px; right: -2px; width: 12px; height: 12px; background: #22c55e; border-radius: 50%; border: 2px solid #080f1e; animation: pulse 2s infinite; }
-    .alex-info strong { font-size: .9rem; font-weight: 700; display: block; }
-    .alex-info span { font-size: .7rem; color: #06b6d4; }
-    .alex-messages { flex: 1; overflow-y: auto; padding: .875rem; display: flex; flex-direction: column; gap: .625rem; }
-    .alex-messages::-webkit-scrollbar { width: 3px; }
-    .alex-messages::-webkit-scrollbar-thumb { background: rgba(255,255,255,.1); border-radius: 2px; }
-    .msg { display: flex; gap: .4rem; }
-    .msg.user { flex-direction: row-reverse; }
-    .msg-icon { width: 24px; height: 24px; border-radius: 7px; background: rgba(6,182,212,.2); border: 1px solid rgba(6,182,212,.3); display: flex; align-items: center; justify-content: center; font-size: .65rem; flex-shrink: 0; margin-top: 2px; }
-    .msg-bubble { max-width: 85%; border-radius: 14px; padding: .5rem .75rem; font-size: .8rem; line-height: 1.5; }
-    .msg.assistant .msg-bubble { background: #0d1829; border: 1px solid rgba(255,255,255,.07); color: rgba(255,255,255,.9); }
-    .msg.user .msg-bubble { background: rgba(6,182,212,.15); border: 1px solid rgba(6,182,212,.3); color: #fff; }
-    .msg-time { font-size: .6rem; color: #374151; margin-top: .2rem; }
-    .msg.user .msg-time { text-align: right; }
-    .typing { display: none; align-items: center; gap: .4rem; padding: 0 .875rem .375rem; }
-    .typing.show { display: flex; }
-    .typing-dot { width: 5px; height: 5px; border-radius: 50%; background: #06b6d4; animation: bounce .8s infinite; }
-    .typing-dot:nth-child(2){animation-delay:.15s} .typing-dot:nth-child(3){animation-delay:.3s}
-    @keyframes bounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-5px)}}
-    .alex-input-row { border-top: 1px solid rgba(255,255,255,.08); padding: .625rem; display: flex; gap: .4rem; align-items: flex-end; }
-    .alex-input-row textarea { flex: 1; background: #0a1020; border: 1px solid rgba(255,255,255,.1); border-radius: 10px; padding: .5rem .75rem; font-size: .8rem; color: #fff; resize: none; outline: none; font-family: inherit; min-height: 36px; max-height: 100px; line-height: 1.4; }
-    .alex-input-row textarea:focus { border-color: rgba(6,182,212,.5); }
-    .alex-input-row textarea::placeholder { color: #4b5563; }
-    .send-btn { width: 34px; height: 34px; flex-shrink: 0; border-radius: 10px; background: rgba(6,182,212,.2); border: 1px solid rgba(6,182,212,.3); color: #06b6d4; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: .875rem; }
-    .send-btn:hover { background: rgba(6,182,212,.35); }
-    .send-btn:disabled { opacity: .4; cursor: not-allowed; }
-
-    /* ── MIDDLE: AGENTS ── */
-    .agents-panel { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
-    .agents-header { padding: .875rem 1.25rem; border-bottom: 1px solid rgba(255,255,255,.08); display: flex; align-items: center; justify-content: space-between; }
-    .agents-header h2 { font-size: .875rem; font-weight: 700; }
-    .agents-header span { font-size: .7rem; color: #6b7280; }
-    .agents-grid { flex: 1; overflow-y: auto; padding: 1rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: .75rem; align-content: start; }
-    .agents-grid::-webkit-scrollbar { width: 3px; }
-    .agents-grid::-webkit-scrollbar-thumb { background: rgba(255,255,255,.1); border-radius: 2px; }
+    .agents-header h2 { font-size: .8rem; font-weight: 700; }
+    .agents-header span { font-size: .65rem; color: #22c55e; }
+    .agents-list { flex: 1; overflow-y: auto; padding: .625rem; display: flex; flex-direction: column; gap: .375rem; }
+    .agents-list::-webkit-scrollbar { width: 3px; }
+    .agents-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,.08); border-radius: 2px; }
     .agent-card {
-      background: #0d1829; border: 1px solid rgba(255,255,255,.08); border-radius: 16px;
-      padding: .875rem; cursor: pointer; transition: border-color .2s, background .2s;
+      background: #0d1829; border: 1px solid rgba(255,255,255,.07); border-radius: 12px;
+      padding: .625rem .75rem; cursor: pointer; transition: border-color .2s, background .2s;
+      display: flex; align-items: center; gap: .625rem;
     }
     .agent-card:hover { border-color: rgba(6,182,212,.3); background: #0f1f35; }
-    .agent-card.active { border-color: rgba(6,182,212,.5); background: #0f1f35; }
-    .agent-card-top { display: flex; align-items: center; gap: .625rem; margin-bottom: .625rem; }
-    .agent-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
-    .agent-name { font-size: .8rem; font-weight: 700; }
-    .agent-role { font-size: .65rem; color: #6b7280; margin-top: .1rem; }
-    .agent-status { display: flex; align-items: center; gap: .375rem; font-size: .65rem; }
-    .status-dot { width: 6px; height: 6px; border-radius: 50%; }
-    .status-dot.online { background: #22c55e; animation: pulse 2s infinite; }
-    .status-dot.busy { background: #f59e0b; }
-    .status-dot.idle { background: #6b7280; }
-    .agent-last { font-size: .65rem; color: #4b5563; margin-top: .5rem; font-style: italic; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .agent-icon { width: 32px; height: 32px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: .9rem; flex-shrink: 0; }
+    .agent-info { flex: 1; min-width: 0; }
+    .agent-name { font-size: .75rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .agent-role { font-size: .62rem; color: #6b7280; margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .agent-status-dot { width: 7px; height: 7px; border-radius: 50%; background: #22c55e; animation: pulse 2s infinite; flex-shrink: 0; }
 
-    /* Agent chat modal */
+    /* ── MIDDLE: MAIN WORKSPACE ── */
+    .workspace-panel { flex: 1; display: flex; flex-direction: column; overflow: hidden; background: #050a14; }
+    .workspace-tabs { display: flex; align-items: center; gap: 0; border-bottom: 1px solid rgba(255,255,255,.07); padding: 0 1.25rem; flex-shrink: 0; }
+    .tab-btn {
+      font-size: .78rem; font-weight: 600; color: #6b7280; padding: .75rem 1rem;
+      border: none; background: none; cursor: pointer; font-family: inherit;
+      border-bottom: 2px solid transparent; transition: color .2s, border-color .2s; margin-bottom: -1px;
+    }
+    .tab-btn.active { color: #06b6d4; border-bottom-color: #06b6d4; }
+    .tab-btn:hover:not(.active) { color: rgba(255,255,255,.7); }
+    .workspace-content { flex: 1; overflow-y: auto; padding: 1.25rem; }
+    .workspace-content::-webkit-scrollbar { width: 4px; }
+    .workspace-content::-webkit-scrollbar-thumb { background: rgba(255,255,255,.08); border-radius: 2px; }
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+
+    /* ── APPS TAB ── */
+    .apps-section-title { font-size: .7rem; font-weight: 700; color: #6b7280; letter-spacing: .08em; text-transform: uppercase; margin-bottom: .75rem; margin-top: 1.25rem; }
+    .apps-section-title:first-child { margin-top: 0; }
+    .apps-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: .625rem; margin-bottom: .25rem; }
+    .app-tile {
+      background: #0d1829; border: 1px solid rgba(255,255,255,.07); border-radius: 14px;
+      padding: .875rem .5rem .75rem; display: flex; flex-direction: column; align-items: center; gap: .4rem;
+      cursor: pointer; text-decoration: none; color: #fff; transition: border-color .2s, background .2s, transform .15s;
+    }
+    .app-tile:hover { border-color: rgba(6,182,212,.35); background: #0f1f35; transform: translateY(-2px); }
+    .app-tile:active { transform: translateY(0); }
+    .app-emoji { font-size: 1.6rem; line-height: 1; }
+    .app-name { font-size: .65rem; font-weight: 600; color: rgba(255,255,255,.75); text-align: center; line-height: 1.3; }
+
+    /* ── PLATFORM TAB ── */
+    .platform-links-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: .75rem; }
+    .platform-link-card {
+      background: #0d1829; border: 1px solid rgba(255,255,255,.07); border-radius: 14px;
+      padding: 1rem; display: flex; align-items: center; gap: .75rem;
+      cursor: pointer; text-decoration: none; color: #fff; transition: border-color .2s, background .2s;
+    }
+    .platform-link-card:hover { border-color: rgba(6,182,212,.35); background: #0f1f35; }
+    .platform-link-icon { font-size: 1.4rem; flex-shrink: 0; }
+    .platform-link-name { font-size: .8rem; font-weight: 700; }
+    .platform-link-desc { font-size: .65rem; color: #6b7280; margin-top: 2px; }
+
+    /* ── RIGHT: FEED PANEL ── */
+    .feed-panel { width: 240px; flex-shrink: 0; border-left: 1px solid rgba(255,255,255,.07); display: flex; flex-direction: column; background: #070d1c; }
+    .feed-header { padding: .75rem 1rem; border-bottom: 1px solid rgba(255,255,255,.07); }
+    .feed-header h3 { font-size: .78rem; font-weight: 700; }
+    .feed-header span { font-size: .62rem; color: #6b7280; }
+    .feed-list { flex: 1; overflow-y: auto; padding: .625rem; display: flex; flex-direction: column; gap: .4rem; }
+    .feed-list::-webkit-scrollbar { width: 3px; }
+    .feed-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,.08); border-radius: 2px; }
+    .feed-item { background: #0d1829; border: 1px solid rgba(255,255,255,.05); border-radius: 10px; padding: .45rem .6rem; }
+    .feed-item-top { display: flex; align-items: center; gap: .35rem; margin-bottom: .2rem; }
+    .feed-agent-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+    .feed-agent-name { font-size: .62rem; font-weight: 600; color: #9ca3af; }
+    .feed-time { font-size: .58rem; color: #374151; margin-left: auto; }
+    .feed-text { font-size: .67rem; color: rgba(255,255,255,.65); line-height: 1.4; }
+
+    /* ── ALEX FLOATING BUBBLE ── */
+    .alex-bubble {
+      position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 200;
+      display: flex; align-items: center; gap: .625rem; cursor: pointer;
+    }
+    .alex-bubble-btn {
+      width: 56px; height: 56px; border-radius: 18px;
+      background: linear-gradient(135deg, #06b6d4, #2563eb);
+      border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; box-shadow: 0 0 0 0 rgba(6,182,212,.5);
+      animation: alexGlow 2.5s infinite; transition: transform .2s;
+    }
+    .alex-bubble-btn:hover { transform: scale(1.08); }
+    @keyframes alexGlow {
+      0% { box-shadow: 0 0 0 0 rgba(6,182,212,.5); }
+      50% { box-shadow: 0 0 0 12px rgba(6,182,212,0); }
+      100% { box-shadow: 0 0 0 0 rgba(6,182,212,0); }
+    }
+    .alex-bubble-label {
+      background: #0d1829; border: 1px solid rgba(6,182,212,.3); border-radius: 10px;
+      padding: .35rem .75rem; font-size: .75rem; font-weight: 700; color: #06b6d4;
+      white-space: nowrap; pointer-events: none;
+    }
+
+    /* ── ALEX EXPANDED CHAT OVERLAY ── */
+    .alex-overlay {
+      display: none; position: fixed; inset: 0; z-index: 300;
+      background: rgba(5,10,20,.75); backdrop-filter: blur(6px);
+      align-items: center; justify-content: center; padding: 1rem;
+    }
+    .alex-overlay.open { display: flex; }
+    .alex-chat-box {
+      background: #0a1020; border: 1px solid rgba(6,182,212,.25); border-radius: 24px;
+      width: 100%; max-width: 720px; height: 82vh; max-height: 700px;
+      display: flex; flex-direction: column;
+      box-shadow: 0 0 80px rgba(6,182,212,.12), 0 40px 80px rgba(0,0,0,.6);
+      animation: chatSlideIn .25s ease;
+    }
+    @keyframes chatSlideIn {
+      from { opacity: 0; transform: scale(.96) translateY(12px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    /* Alex chat header */
+    .alex-chat-header {
+      padding: 1.1rem 1.25rem; border-bottom: 1px solid rgba(255,255,255,.07);
+      display: flex; align-items: center; gap: 1rem; flex-shrink: 0;
+      background: linear-gradient(135deg, rgba(6,182,212,.06), rgba(37,99,235,.04));
+      border-radius: 24px 24px 0 0;
+    }
+    .alex-avatar-large {
+      width: 52px; height: 52px; border-radius: 16px;
+      background: linear-gradient(135deg, rgba(6,182,212,.3), rgba(37,99,235,.3));
+      border: 1px solid rgba(6,182,212,.5);
+      display: flex; align-items: center; justify-content: center; font-size: 1.5rem;
+      box-shadow: 0 0 20px rgba(6,182,212,.2); flex-shrink: 0; position: relative;
+    }
+    .alex-online-dot {
+      position: absolute; bottom: -2px; right: -2px; width: 13px; height: 13px;
+      background: #22c55e; border-radius: 50%; border: 2px solid #0a1020; animation: pulse 2s infinite;
+    }
+    .alex-header-info { flex: 1; }
+    .alex-header-info strong { font-size: 1rem; font-weight: 800; display: block; }
+    .alex-header-info span { font-size: .75rem; color: #06b6d4; }
+    .alex-header-info small { font-size: .65rem; color: #6b7280; display: block; margin-top: 2px; }
+    .alex-header-actions { display: flex; align-items: center; gap: .5rem; }
+    .alex-minimize-btn {
+      width: 32px; height: 32px; border-radius: 10px; background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.1); color: #9ca3af; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; font-size: .875rem;
+      transition: background .2s, color .2s;
+    }
+    .alex-minimize-btn:hover { background: rgba(255,255,255,.12); color: #fff; }
+
+    /* Alex messages */
+    .alex-messages {
+      flex: 1; overflow-y: auto; padding: 1.1rem; display: flex; flex-direction: column; gap: .75rem;
+    }
+    .alex-messages::-webkit-scrollbar { width: 4px; }
+    .alex-messages::-webkit-scrollbar-thumb { background: rgba(255,255,255,.1); border-radius: 2px; }
+    .msg { display: flex; gap: .5rem; }
+    .msg.user { flex-direction: row-reverse; }
+    .msg-icon {
+      width: 28px; height: 28px; border-radius: 9px;
+      background: rgba(6,182,212,.2); border: 1px solid rgba(6,182,212,.3);
+      display: flex; align-items: center; justify-content: center; font-size: .75rem;
+      flex-shrink: 0; margin-top: 2px;
+    }
+    .msg-bubble {
+      max-width: 78%; border-radius: 16px; padding: .65rem .9rem;
+      font-size: .85rem; line-height: 1.6;
+    }
+    .msg.assistant .msg-bubble { background: #0d1829; border: 1px solid rgba(255,255,255,.08); color: rgba(255,255,255,.92); }
+    .msg.user .msg-bubble { background: rgba(6,182,212,.15); border: 1px solid rgba(6,182,212,.3); color: #fff; }
+    .msg-time { font-size: .62rem; color: #374151; margin-top: .25rem; }
+    .msg.user .msg-time { text-align: right; }
+    .typing { display: none; align-items: center; gap: .5rem; padding: 0 1.1rem .5rem; }
+    .typing.show { display: flex; }
+    .typing-dot { width: 6px; height: 6px; border-radius: 50%; background: #06b6d4; animation: bounce .8s infinite; }
+    .typing-dot:nth-child(2){animation-delay:.15s} .typing-dot:nth-child(3){animation-delay:.3s}
+    @keyframes bounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-6px)}}
+
+    /* Alex input */
+    .alex-input-area {
+      border-top: 1px solid rgba(255,255,255,.07); padding: .875rem 1rem;
+      display: flex; gap: .5rem; align-items: flex-end; flex-shrink: 0;
+    }
+    .alex-input-area textarea {
+      flex: 1; background: #070d1c; border: 1px solid rgba(255,255,255,.1);
+      border-radius: 14px; padding: .65rem 1rem; font-size: .875rem; color: #fff;
+      resize: none; outline: none; font-family: inherit; min-height: 42px; max-height: 120px;
+      line-height: 1.5; transition: border-color .2s;
+    }
+    .alex-input-area textarea:focus { border-color: rgba(6,182,212,.5); }
+    .alex-input-area textarea::placeholder { color: #374151; }
+    .alex-send-btn {
+      width: 42px; height: 42px; flex-shrink: 0; border-radius: 13px;
+      background: linear-gradient(135deg, rgba(6,182,212,.3), rgba(37,99,235,.3));
+      border: 1px solid rgba(6,182,212,.4); color: #06b6d4; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; font-size: 1rem;
+      transition: background .2s, transform .1s;
+    }
+    .alex-send-btn:hover { background: linear-gradient(135deg, rgba(6,182,212,.5), rgba(37,99,235,.5)); transform: scale(1.05); }
+    .alex-send-btn:disabled { opacity: .35; cursor: not-allowed; transform: none; }
+
+    /* Suggested prompts */
+    .suggested-prompts { display: flex; gap: .4rem; flex-wrap: wrap; padding: 0 1rem .625rem; }
+    .prompt-chip {
+      font-size: .7rem; color: #6b7280; border: 1px solid rgba(255,255,255,.1);
+      border-radius: 20px; padding: .25rem .65rem; cursor: pointer; background: none;
+      font-family: inherit; transition: color .2s, border-color .2s;
+    }
+    .prompt-chip:hover { color: #06b6d4; border-color: rgba(6,182,212,.4); }
+
+    /* ── AGENT MODAL ── */
     .agent-modal {
-      display: none; position: fixed; inset: 0; background: rgba(0,0,0,.7);
-      z-index: 100; align-items: center; justify-content: center; padding: 1rem;
+      display: none; position: fixed; inset: 0; background: rgba(0,0,0,.75);
+      z-index: 400; align-items: center; justify-content: center; padding: 1rem;
+      backdrop-filter: blur(4px);
     }
     .agent-modal.open { display: flex; }
     .agent-modal-box {
-      background: #0d1829; border: 1px solid rgba(6,182,212,.3); border-radius: 20px;
-      width: 100%; max-width: 480px; max-height: 80vh; display: flex; flex-direction: column;
+      background: #0d1829; border: 1px solid rgba(6,182,212,.25); border-radius: 22px;
+      width: 100%; max-width: 520px; max-height: 82vh; display: flex; flex-direction: column;
+      box-shadow: 0 40px 80px rgba(0,0,0,.6);
     }
-    .modal-header { padding: 1rem 1.25rem; border-bottom: 1px solid rgba(255,255,255,.08); display: flex; align-items: center; justify-content: space-between; }
+    .modal-header { padding: 1rem 1.25rem; border-bottom: 1px solid rgba(255,255,255,.07); display: flex; align-items: center; justify-content: space-between; }
     .modal-header-left { display: flex; align-items: center; gap: .75rem; }
-    .modal-close { background: none; border: none; color: #6b7280; cursor: pointer; font-size: 1.2rem; }
+    .modal-close { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); color: #9ca3af; cursor: pointer; font-size: 1rem; width: 30px; height: 30px; border-radius: 9px; display: flex; align-items: center; justify-content: center; transition: background .2s; }
+    .modal-close:hover { background: rgba(255,255,255,.12); color: #fff; }
     .modal-messages { flex: 1; overflow-y: auto; padding: .875rem; display: flex; flex-direction: column; gap: .625rem; min-height: 200px; }
     .modal-messages::-webkit-scrollbar { width: 3px; }
     .modal-messages::-webkit-scrollbar-thumb { background: rgba(255,255,255,.1); border-radius: 2px; }
-    .modal-input-row { border-top: 1px solid rgba(255,255,255,.08); padding: .75rem; display: flex; gap: .5rem; }
-    .modal-input-row input { flex: 1; background: #0a1020; border: 1px solid rgba(255,255,255,.1); border-radius: 10px; padding: .5rem .75rem; font-size: .8rem; color: #fff; outline: none; font-family: inherit; }
+    .modal-input-row { border-top: 1px solid rgba(255,255,255,.07); padding: .75rem; display: flex; gap: .5rem; }
+    .modal-input-row input { flex: 1; background: #0a1020; border: 1px solid rgba(255,255,255,.1); border-radius: 11px; padding: .55rem .875rem; font-size: .825rem; color: #fff; outline: none; font-family: inherit; transition: border-color .2s; }
     .modal-input-row input:focus { border-color: rgba(6,182,212,.5); }
-    .modal-send { padding: .5rem 1rem; background: rgba(6,182,212,.2); border: 1px solid rgba(6,182,212,.3); border-radius: 10px; color: #06b6d4; cursor: pointer; font-size: .8rem; font-family: inherit; font-weight: 600; }
+    .modal-send { padding: .55rem 1.1rem; background: rgba(6,182,212,.2); border: 1px solid rgba(6,182,212,.3); border-radius: 11px; color: #06b6d4; cursor: pointer; font-size: .8rem; font-family: inherit; font-weight: 700; transition: background .2s; }
     .modal-send:hover { background: rgba(6,182,212,.35); }
 
-    /* ── RIGHT: ACTIVITY FEED ── */
-    .feed-panel { width: 260px; flex-shrink: 0; border-left: 1px solid rgba(255,255,255,.08); display: flex; flex-direction: column; background: #080f1e; }
-    .feed-header { padding: .875rem 1rem; border-bottom: 1px solid rgba(255,255,255,.08); }
-    .feed-header h3 { font-size: .8rem; font-weight: 700; }
-    .feed-header span { font-size: .65rem; color: #6b7280; }
-    .feed-list { flex: 1; overflow-y: auto; padding: .75rem; display: flex; flex-direction: column; gap: .5rem; }
-    .feed-list::-webkit-scrollbar { width: 3px; }
-    .feed-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,.1); border-radius: 2px; }
-    .feed-item { background: #0d1829; border: 1px solid rgba(255,255,255,.06); border-radius: 10px; padding: .5rem .625rem; }
-    .feed-item-top { display: flex; align-items: center; gap: .375rem; margin-bottom: .25rem; }
-    .feed-agent-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-    .feed-agent-name { font-size: .65rem; font-weight: 600; color: #9ca3af; }
-    .feed-time { font-size: .6rem; color: #374151; margin-left: auto; }
-    .feed-text { font-size: .7rem; color: rgba(255,255,255,.7); line-height: 1.4; }
-
-    /* Quick links bottom */
-    .quick-bar { padding: .75rem 1rem; border-top: 1px solid rgba(255,255,255,.08); display: flex; gap: .5rem; flex-wrap: wrap; }
-    .quick-link { font-size: .7rem; color: #6b7280; text-decoration: none; border: 1px solid rgba(255,255,255,.08); border-radius: 7px; padding: .25rem .5rem; transition: color .2s; }
-    .quick-link:hover { color: #06b6d4; border-color: rgba(6,182,212,.3); }
-
-    @media (max-width: 768px) {
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .agents-panel { width: 220px; }
       .feed-panel { display: none; }
-      .alex-panel { width: 100%; border-right: none; }
+    }
+    @media (max-width: 640px) {
       .agents-panel { display: none; }
-      .alex-panel { display: flex; }
+      .alex-bubble-label { display: none; }
+      .alex-chat-box { height: 92vh; max-height: none; border-radius: 18px; }
     }
   </style>
 </head>
 <body>
 
-<!-- LOGIN -->
+<!-- ══ LOGIN ══ -->
 <div id="login-screen">
   <div class="login-box">
     <div class="login-header">
@@ -196,103 +337,159 @@
         <label>Passord</label>
         <div class="pw-wrap">
           <input type="password" id="pw-input" placeholder="••••••••••••••••" autocomplete="current-password" />
-          <button class="toggle-pw" onclick="togglePw()">👁</button>
+          <button class="toggle-pw" onclick="togglePw()" type="button">👁</button>
         </div>
       </div>
       <div class="error-msg" id="login-error">Feil passord. Prøv igjen.</div>
-      <button class="btn-login" onclick="doLogin()">Logg inn</button>
+      <button class="btn-login" onclick="doLogin()" type="button">Logg inn til AI Office</button>
     </div>
   </div>
 </div>
 
-<!-- OFFICE -->
+<!-- ══ OFFICE ══ -->
 <div id="office">
-  <!-- Top bar -->
+
+  <!-- TOPBAR -->
   <div class="topbar">
     <div class="topbar-left">
-      <img src="/logo-white.png?v=1" class="topbar-logo" alt="IntelligentForce" onerror="this.style.display='none'" />
+      <img src="/logo-white.png?v=2" class="topbar-logo" alt="IntelligentForce" onerror="this.style.display='none'" />
       <div>
-        <div class="topbar-title">IntelligentForce AI Office</div>
-        <div class="topbar-sub">ALEX & 9 Agents · Active</div>
+        <div class="topbar-title">AI Office</div>
+        <div class="topbar-sub" id="agents-status">9 agenter online</div>
       </div>
     </div>
     <div class="topbar-right">
       <div class="live-badge"><div class="live-dot"></div> Live</div>
-      <button class="btn-sm" onclick="doLogout()">Logg ut</button>
+      <div class="topbar-clock" id="topbar-clock">--:--</div>
+      <div class="topbar-valdi">V</div>
+      <button class="btn-sm" onclick="doLogout()" type="button">Logg ut</button>
     </div>
   </div>
 
   <div class="office-body">
 
-    <!-- LEFT: ALEX -->
-    <div class="alex-panel">
-      <div class="alex-header">
-        <div class="alex-avatar-wrap">
-          <div class="alex-avatar">✦</div>
-          <div class="online-dot"></div>
-        </div>
-        <div class="alex-info">
-          <strong>ALEX</strong>
-          <span>Chief AI Coordinator</span>
-        </div>
-      </div>
-      <div class="alex-messages" id="alex-messages"></div>
-      <div class="typing" id="alex-typing">
-        <div class="msg-icon">✦</div>
-        <div style="display:flex;gap:3px;align-items:center">
-          <div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>
-        </div>
-      </div>
-      <div class="alex-input-row">
-        <textarea id="alex-input" placeholder="Skriv til ALEX... (Enter)" rows="1"
-          onkeydown="handleAlexKey(event)" oninput="autoResize(this)"></textarea>
-        <button class="send-btn" id="alex-send" onclick="sendToAlex()">➤</button>
-      </div>
-    </div>
-
-    <!-- MIDDLE: AGENTS -->
+    <!-- LEFT: AI AGENTS -->
     <div class="agents-panel">
       <div class="agents-header">
         <h2>AI Agenter</h2>
-        <span id="agents-online-count">9 agenter online</span>
+        <span>● Online</span>
       </div>
-      <div class="agents-grid" id="agents-grid"></div>
+      <div class="agents-list" id="agents-list"></div>
     </div>
 
-    <!-- RIGHT: FEED -->
+    <!-- MIDDLE: WORKSPACE -->
+    <div class="workspace-panel">
+      <div class="workspace-tabs">
+        <button class="tab-btn active" onclick="switchTab('apps', this)" type="button">Mine Apper</button>
+        <button class="tab-btn" onclick="switchTab('platform', this)" type="button">Plattform</button>
+      </div>
+      <div class="workspace-content">
+
+        <!-- APPS TAB -->
+        <div class="tab-pane active" id="tab-apps">
+          <div class="apps-section-title">AI &amp; Automatisering</div>
+          <div class="apps-grid" id="apps-ai"></div>
+          <div class="apps-section-title">Kommunikasjon &amp; Innhold</div>
+          <div class="apps-grid" id="apps-comm"></div>
+          <div class="apps-section-title">Utvikling &amp; Infrastruktur</div>
+          <div class="apps-grid" id="apps-dev"></div>
+          <div class="apps-section-title">Analyse &amp; Økonomi</div>
+          <div class="apps-grid" id="apps-analytics"></div>
+        </div>
+
+        <!-- PLATFORM TAB -->
+        <div class="tab-pane" id="tab-platform">
+          <div class="apps-section-title">IntelligentForce Plattform</div>
+          <div class="platform-links-grid" id="platform-links"></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- RIGHT: ACTIVITY FEED -->
     <div class="feed-panel">
       <div class="feed-header">
         <h3>Live Aktivitet</h3>
         <span>Agent-kommunikasjon</span>
       </div>
       <div class="feed-list" id="feed-list"></div>
-      <div class="quick-bar">
-        <a class="quick-link" href="https://formspree.io/login" target="_blank">Formspree</a>
-        <a class="quick-link" href="/" target="_blank">Portal</a>
-        <a class="quick-link" href="/health-check" target="_blank">Health Check</a>
-        <a class="quick-link" href="mailto:hello@intelligentforce.ai">E-post</a>
-      </div>
     </div>
+
   </div>
 </div>
 
-<!-- AGENT MODAL -->
+<!-- ══ ALEX FLOATING BUBBLE ══ -->
+<div class="alex-bubble" id="alex-bubble" onclick="openAlex()" style="display:none">
+  <div class="alex-bubble-label">✦ ALEX</div>
+  <button class="alex-bubble-btn" type="button">✦</button>
+</div>
+
+<!-- ══ ALEX EXPANDED CHAT ══ -->
+<div class="alex-overlay" id="alex-overlay">
+  <div class="alex-chat-box">
+
+    <!-- Header -->
+    <div class="alex-chat-header">
+      <div class="alex-avatar-large">
+        ✦
+        <div class="alex-online-dot"></div>
+      </div>
+      <div class="alex-header-info">
+        <strong>ALEX</strong>
+        <span>Chief AI Coordinator · IntelligentForce</span>
+        <small>Koordinerer 9 AI-agenter · Alltid tilgjengelig</small>
+      </div>
+      <div class="alex-header-actions">
+        <button class="alex-minimize-btn" onclick="minimizeAlex()" type="button" title="Minimer">⌄</button>
+      </div>
+    </div>
+
+    <!-- Messages -->
+    <div class="alex-messages" id="alex-messages"></div>
+
+    <!-- Typing indicator -->
+    <div class="typing" id="alex-typing">
+      <div class="msg-icon">✦</div>
+      <div style="display:flex;gap:4px;align-items:center">
+        <div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>
+      </div>
+    </div>
+
+    <!-- Suggested prompts -->
+    <div class="suggested-prompts" id="suggested-prompts">
+      <button class="prompt-chip" onclick="usePrompt(this)" type="button">Status på plattformen?</button>
+      <button class="prompt-chip" onclick="usePrompt(this)" type="button">Hva bør vi prioritere i dag?</button>
+      <button class="prompt-chip" onclick="usePrompt(this)" type="button">Lag en ukesplan</button>
+      <button class="prompt-chip" onclick="usePrompt(this)" type="button">Analyser vekstmuligheter</button>
+    </div>
+
+    <!-- Input -->
+    <div class="alex-input-area">
+      <textarea id="alex-input" placeholder="Skriv til ALEX... (Enter for å sende, Shift+Enter for ny linje)" rows="1"
+        onkeydown="handleAlexKey(event)" oninput="autoResize(this)"></textarea>
+      <button class="alex-send-btn" id="alex-send" onclick="sendToAlex()" type="button">➤</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══ AGENT MODAL ══ -->
 <div class="agent-modal" id="agent-modal">
   <div class="agent-modal-box">
     <div class="modal-header">
       <div class="modal-header-left">
-        <div class="agent-icon" id="modal-icon" style="background:rgba(6,182,212,.2)"></div>
+        <div class="agent-icon" id="modal-icon" style="background:rgba(6,182,212,.2);width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1rem"></div>
         <div>
           <div style="font-size:.875rem;font-weight:700" id="modal-name"></div>
           <div style="font-size:.7rem;color:#06b6d4" id="modal-role"></div>
         </div>
       </div>
-      <button class="modal-close" onclick="closeAgentModal()">✕</button>
+      <button class="modal-close" onclick="closeAgentModal()" type="button">✕</button>
     </div>
     <div class="modal-messages" id="modal-messages"></div>
     <div class="modal-input-row">
       <input type="text" id="modal-input" placeholder="Skriv til agenten... (Enter)" onkeydown="handleModalKey(event)" />
-      <button class="modal-send" onclick="sendToAgent()">Send</button>
+      <button class="modal-send" onclick="sendToAgent()" type="button">Send</button>
     </div>
   </div>
 </div>
@@ -301,24 +498,84 @@
 const PASS = "IF@Admin2026!Secure";
 const WORKER_URL = "https://alex-ai-worker.vladimir-joffcheff.workers.dev";
 
+// ── DATA ──
+
 const AGENTS = [
-  { id: "data", name: "Data Analyst", role: "Rapporter & Analyse", icon: "📊", color: "#3b82f6", specialty: "dataanalyse, rapporter, statistikk og innsikt fra bedriftsdata" },
-  { id: "customer", name: "Customer Service", role: "Kundeservice 24/7", icon: "💬", color: "#06b6d4", specialty: "kundehenvendelser, support, FAQ og kundetilfredshet" },
-  { id: "process", name: "Process Optimizer", role: "Prosesseffektivisering", icon: "⚙️", color: "#8b5cf6", specialty: "prosessoptimalisering, flaskehalser, automatisering og effektivitet" },
-  { id: "market", name: "Market Analyst", role: "Markedsintelligens", icon: "📈", color: "#10b981", specialty: "markedsanalyse, konkurrenter, trender og vekstmuligheter" },
-  { id: "risk", name: "Risk Manager", role: "Risiko & Compliance", icon: "🛡️", color: "#f59e0b", specialty: "risikovurdering, compliance, regelverk og sikkerhet" },
-  { id: "content", name: "Content Creator", role: "Innhold & Kommunikasjon", icon: "✍️", color: "#ec4899", specialty: "innholdsproduksjon, markedsføring, blogg og kommunikasjon" },
-  { id: "supply", name: "Supply Chain", role: "Forsyningskjede", icon: "🚚", color: "#f97316", specialty: "innkjøp, logistikk, leverandører og forsyningskjede" },
-  { id: "hr", name: "HR Specialist", role: "HR & Rekruttering", icon: "👥", color: "#a78bfa", specialty: "rekruttering, onboarding, HR-administrasjon og medarbeideropplevelse" },
-  { id: "finance", name: "Financial Analyst", role: "Finans & Regnskap", icon: "💰", color: "#34d399", specialty: "finansiell rapportering, budsjettering, prognoser og regnskapsanalyse" },
+  { id: "data",     name: "Data Analyst",       role: "Rapporter & Analyse",        icon: "📊", color: "#3b82f6", specialty: "dataanalyse, rapporter, statistikk og innsikt fra bedriftsdata" },
+  { id: "customer", name: "Customer Service",    role: "Kundeservice 24/7",          icon: "💬", color: "#06b6d4", specialty: "kundehenvendelser, support, FAQ og kundetilfredshet" },
+  { id: "process",  name: "Process Optimizer",   role: "Prosesseffektivisering",     icon: "⚙️", color: "#8b5cf6", specialty: "prosessoptimalisering, flaskehalser, automatisering og effektivitet" },
+  { id: "market",   name: "Market Analyst",      role: "Markedsintelligens",         icon: "📈", color: "#10b981", specialty: "markedsanalyse, konkurrenter, trender og vekstmuligheter" },
+  { id: "risk",     name: "Risk Manager",        role: "Risiko & Compliance",        icon: "🛡️", color: "#f59e0b", specialty: "risikovurdering, compliance, regelverk og sikkerhet" },
+  { id: "content",  name: "Content Creator",     role: "Innhold & Kommunikasjon",    icon: "✍️", color: "#ec4899", specialty: "innholdsproduksjon, markedsføring, blogg og kommunikasjon" },
+  { id: "supply",   name: "Supply Chain",        role: "Forsyningskjede",            icon: "🚚", color: "#f97316", specialty: "innkjøp, logistikk, leverandører og forsyningskjede" },
+  { id: "hr",       name: "HR Specialist",       role: "HR & Rekruttering",          icon: "👥", color: "#a78bfa", specialty: "rekruttering, onboarding, HR-administrasjon og medarbeideropplevelse" },
+  { id: "finance",  name: "Financial Analyst",   role: "Finans & Regnskap",          icon: "💰", color: "#34d399", specialty: "finansiell rapportering, budsjettering, prognoser og regnskapsanalyse" },
 ];
 
+const APPS = {
+  ai: [
+    { name: "Manus AI",     emoji: "🤖", url: "https://manus.im",                          color: "#8b5cf6" },
+    { name: "HeyGen",       emoji: "🎬", url: "https://app.heygen.com",                    color: "#3b82f6" },
+    { name: "Zapier",       emoji: "⚡", url: "https://zapier.com/app/dashboard",          color: "#f97316" },
+    { name: "NotebookLM",   emoji: "📓", url: "https://notebooklm.google.com",             color: "#10b981" },
+    { name: "ChatGPT",      emoji: "🧠", url: "https://chat.openai.com",                   color: "#06b6d4" },
+    { name: "Claude",       emoji: "✦",  url: "https://claude.ai",                         color: "#ec4899" },
+  ],
+  comm: [
+    { name: "Gmail",        emoji: "✉️", url: "https://mail.google.com",                   color: "#ef4444" },
+    { name: "LinkedIn",     emoji: "💼", url: "https://www.linkedin.com",                  color: "#0ea5e9" },
+    { name: "Formspree",    emoji: "📋", url: "https://formspree.io/login",                color: "#06b6d4" },
+    { name: "Google Drive", emoji: "📁", url: "https://drive.google.com",                  color: "#f59e0b" },
+  ],
+  dev: [
+    { name: "GitHub",       emoji: "🐙", url: "https://github.com/IntelligentForceai",     color: "#9ca3af" },
+    { name: "Cloudflare",   emoji: "☁️", url: "https://dash.cloudflare.com",               color: "#f97316" },
+    { name: "Domeneshop",   emoji: "🌐", url: "https://www.domeneshop.no/admin",           color: "#3b82f6" },
+    { name: "OpenAI API",   emoji: "🔑", url: "https://platform.openai.com",               color: "#10b981" },
+  ],
+  analytics: [
+    { name: "Stripe",       emoji: "💳", url: "https://dashboard.stripe.com",              color: "#8b5cf6" },
+    { name: "Analytics",    emoji: "📊", url: "https://analytics.google.com",              color: "#3b82f6" },
+    { name: "Search Console", emoji: "🔍", url: "https://search.google.com/search-console", color: "#10b981" },
+    { name: "Formspree Stats", emoji: "📬", url: "https://formspree.io/login",             color: "#06b6d4" },
+  ]
+};
+
+const PLATFORM_LINKS = [
+  { name: "Hoved-portal",      desc: "intelligentforce.ai",         emoji: "🌐", url: "https://intelligentforce.ai" },
+  { name: "Business Health Check", desc: "Gratis ROI-analyse",      emoji: "🏥", url: "https://intelligentforce.ai/health-check" },
+  { name: "FAQ",               desc: "Vanlige spørsmål",            emoji: "❓", url: "https://intelligentforce.ai/faq" },
+  { name: "Kontakt",           desc: "Kontaktskjema",               emoji: "📩", url: "https://intelligentforce.ai/contact" },
+  { name: "Om oss",            desc: "Om IntelligentForce",         emoji: "ℹ️", url: "https://intelligentforce.ai/about" },
+  { name: "E-post",            desc: "hello@intelligentforce.ai",   emoji: "📧", url: "mailto:hello@intelligentforce.ai" },
+];
+
+const FEED_EVENTS = [
+  { agent: "ALEX",             color: "#06b6d4", text: "Koordinerer alle 9 agenter" },
+  { agent: "Data Analyst",     color: "#3b82f6", text: "Analyserer plattformtrafikk" },
+  { agent: "Customer Service", color: "#06b6d4", text: "Klar for kundehenvendelser" },
+  { agent: "Market Analyst",   color: "#10b981", text: "Overvåker markedstrender" },
+  { agent: "Financial Analyst",color: "#34d399", text: "Forbereder månedlig rapport" },
+  { agent: "Process Optimizer",color: "#8b5cf6", text: "Identifiserer optimaliseringsmuligheter" },
+  { agent: "Content Creator",  color: "#ec4899", text: "Oppdaterer innholdsstrategi" },
+  { agent: "HR Specialist",    color: "#a78bfa", text: "Gjennomgår onboarding-prosess" },
+  { agent: "Risk Manager",     color: "#f59e0b", text: "Compliance-sjekk fullført" },
+  { agent: "Supply Chain",     color: "#f97316", text: "Leverandørstatus oppdatert" },
+  { agent: "ALEX",             color: "#06b6d4", text: "Ny rapport generert og klar" },
+  { agent: "Data Analyst",     color: "#3b82f6", text: "Dashboard oppdatert med ny data" },
+  { agent: "Market Analyst",   color: "#10b981", text: "Konkurrentanalyse fullført" },
+  { agent: "Financial Analyst",color: "#34d399", text: "Budsjettprognose oppdatert" },
+];
+
+// ── STATE ──
 let alexMessages = [];
-let agentMessages = {}; // { agentId: [{role, content}] }
+let agentMessages = {};
 let currentAgent = null;
+let alexOpen = false;
 
 // ── LOGIN ──
 document.getElementById('pw-input').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
+
 function doLogin() {
   const pw = document.getElementById('pw-input').value;
   if (pw === PASS) {
@@ -335,6 +592,10 @@ function doLogout() {
   document.getElementById('office').style.display = 'none';
   document.getElementById('login-screen').style.display = 'flex';
   document.getElementById('pw-input').value = '';
+  document.getElementById('alex-bubble').style.display = 'none';
+  document.getElementById('alex-overlay').classList.remove('open');
+  alexMessages = [];
+  alexOpen = false;
 }
 function togglePw() {
   const inp = document.getElementById('pw-input');
@@ -344,14 +605,41 @@ function togglePw() {
 // ── INIT OFFICE ──
 function initOffice() {
   renderAgents();
-  addAlexMsg("assistant", "God dag, Valdi! Alle 9 agenter er online og klare. Jeg koordinerer teamet og holder oversikt over plattformen. Hva skal vi fokusere på i dag?");
+  renderApps();
+  renderPlatformLinks();
   startActivityFeed();
+  startClock();
+  // Open ALEX automatically after short delay
+  setTimeout(() => {
+    document.getElementById('alex-bubble').style.display = 'flex';
+    openAlex();
+    addAlexMsg("assistant", "God dag, Valdi! 👋\n\nAlle 9 agenter er online og klare. Jeg koordinerer teamet og holder full oversikt over plattformen.\n\nHva skal vi fokusere på i dag?");
+  }, 400);
 }
 
-// ── AGENTS GRID ──
+// ── CLOCK ──
+function startClock() {
+  function tick() {
+    const now = new Date();
+    document.getElementById('topbar-clock').textContent =
+      now.toLocaleTimeString('no-NO', { hour: '2-digit', minute: '2-digit' });
+  }
+  tick();
+  setInterval(tick, 10000);
+}
+
+// ── TABS ──
+function switchTab(tabId, btn) {
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + tabId).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ── RENDER AGENTS ──
 function renderAgents() {
-  const grid = document.getElementById('agents-grid');
-  grid.innerHTML = '';
+  const list = document.getElementById('agents-list');
+  list.innerHTML = '';
   AGENTS.forEach(agent => {
     agentMessages[agent.id] = [];
     const card = document.createElement('div');
@@ -359,24 +647,74 @@ function renderAgents() {
     card.id = 'agent-card-' + agent.id;
     card.onclick = () => openAgentModal(agent);
     card.innerHTML = `
-      <div class="agent-card-top">
-        <div class="agent-icon" style="background:${agent.color}22;border:1px solid ${agent.color}44">${agent.icon}</div>
-        <div>
-          <div class="agent-name">${agent.name}</div>
-          <div class="agent-role">${agent.role}</div>
-        </div>
+      <div class="agent-icon" style="background:${agent.color}22;border:1px solid ${agent.color}44">${agent.icon}</div>
+      <div class="agent-info">
+        <div class="agent-name">${agent.name}</div>
+        <div class="agent-role">${agent.role}</div>
       </div>
-      <div class="agent-status">
-        <div class="status-dot online"></div>
-        <span style="color:#22c55e">Online</span>
-      </div>
-      <div class="agent-last" id="agent-last-${agent.id}">Klar for oppgaver</div>
+      <div class="agent-status-dot"></div>
     `;
-    grid.appendChild(card);
+    list.appendChild(card);
+  });
+}
+
+// ── RENDER APPS ──
+function renderApps() {
+  renderAppGroup('apps-ai', APPS.ai);
+  renderAppGroup('apps-comm', APPS.comm);
+  renderAppGroup('apps-dev', APPS.dev);
+  renderAppGroup('apps-analytics', APPS.analytics);
+}
+function renderAppGroup(containerId, apps) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = '';
+  apps.forEach(app => {
+    const tile = document.createElement('a');
+    tile.className = 'app-tile';
+    tile.href = app.url;
+    tile.target = '_blank';
+    tile.rel = 'noopener noreferrer';
+    tile.innerHTML = `<div class="app-emoji">${app.emoji}</div><div class="app-name">${app.name}</div>`;
+    container.appendChild(tile);
+  });
+}
+
+// ── RENDER PLATFORM LINKS ──
+function renderPlatformLinks() {
+  const container = document.getElementById('platform-links');
+  container.innerHTML = '';
+  PLATFORM_LINKS.forEach(link => {
+    const card = document.createElement('a');
+    card.className = 'platform-link-card';
+    card.href = link.url;
+    card.target = link.url.startsWith('mailto') ? '_self' : '_blank';
+    card.rel = 'noopener noreferrer';
+    card.innerHTML = `
+      <div class="platform-link-icon">${link.emoji}</div>
+      <div>
+        <div class="platform-link-name">${link.name}</div>
+        <div class="platform-link-desc">${link.desc}</div>
+      </div>
+    `;
+    container.appendChild(card);
   });
 }
 
 // ── ALEX CHAT ──
+function openAlex() {
+  alexOpen = true;
+  document.getElementById('alex-overlay').classList.add('open');
+  setTimeout(() => {
+    document.getElementById('alex-input').focus();
+    const msgs = document.getElementById('alex-messages');
+    msgs.scrollTop = msgs.scrollHeight;
+  }, 100);
+}
+function minimizeAlex() {
+  alexOpen = false;
+  document.getElementById('alex-overlay').classList.remove('open');
+}
+
 function addAlexMsg(role, content) {
   alexMessages.push({ role, content });
   const container = document.getElementById('alex-messages');
@@ -388,6 +726,10 @@ function addAlexMsg(role, content) {
     : `<div><div class="msg-bubble">${escHtml(content)}</div><div class="msg-time" style="text-align:right">${time}</div></div>`;
   container.appendChild(div);
   container.scrollTop = container.scrollHeight;
+  // Hide suggested prompts after first user message
+  if (role === 'user') {
+    document.getElementById('suggested-prompts').style.display = 'none';
+  }
 }
 
 async function sendToAlex() {
@@ -424,6 +766,13 @@ function handleAlexKey(e) {
   if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendToAlex(); }
 }
 
+function usePrompt(btn) {
+  const inp = document.getElementById('alex-input');
+  inp.value = btn.textContent;
+  inp.focus();
+  sendToAlex();
+}
+
 // ── AGENT MODAL ──
 function openAgentModal(agent) {
   currentAgent = agent;
@@ -436,7 +785,7 @@ function openAgentModal(agent) {
   if (agentMessages[agent.id].length === 0) {
     const greetDiv = document.createElement('div');
     greetDiv.className = 'msg assistant';
-    greetDiv.innerHTML = `<div class="msg-icon">${agent.icon}</div><div><div class="msg-bubble" style="background:#0a1020;border:1px solid rgba(255,255,255,.07);font-size:.8rem">Hei, Valdi! Jeg er ${agent.name}. Spesialist på ${agent.specialty}. Hva kan jeg hjelpe deg med?</div></div>`;
+    greetDiv.innerHTML = `<div class="msg-icon">${agent.icon}</div><div><div class="msg-bubble" style="background:#0a1020;border:1px solid rgba(255,255,255,.07);font-size:.825rem">Hei, Valdi! Jeg er ${agent.name}. Spesialist på ${agent.specialty}. Hva kan jeg hjelpe deg med?</div></div>`;
     container.appendChild(greetDiv);
   } else {
     agentMessages[agent.id].forEach(m => renderAgentMsg(m.role, m.content, agent));
@@ -456,8 +805,8 @@ function renderAgentMsg(role, content, agent) {
   div.className = 'msg ' + role;
   const time = new Date().toLocaleTimeString('no-NO', { hour: '2-digit', minute: '2-digit' });
   div.innerHTML = role === 'assistant'
-    ? `<div class="msg-icon">${agent.icon}</div><div><div class="msg-bubble" style="background:#0a1020;border:1px solid rgba(255,255,255,.07);font-size:.8rem">${renderMd(content)}</div><div class="msg-time">${time}</div></div>`
-    : `<div><div class="msg-bubble" style="background:rgba(6,182,212,.15);border:1px solid rgba(6,182,212,.3);font-size:.8rem">${escHtml(content)}</div><div class="msg-time" style="text-align:right">${time}</div></div>`;
+    ? `<div class="msg-icon">${agent.icon}</div><div><div class="msg-bubble" style="background:#0a1020;border:1px solid rgba(255,255,255,.07);font-size:.825rem">${renderMd(content)}</div><div class="msg-time">${time}</div></div>`
+    : `<div><div class="msg-bubble" style="background:rgba(6,182,212,.15);border:1px solid rgba(6,182,212,.3);font-size:.825rem">${escHtml(content)}</div><div class="msg-time" style="text-align:right">${time}</div></div>`;
   container.appendChild(div);
   container.scrollTop = container.scrollHeight;
 }
@@ -483,7 +832,8 @@ Hold svarene konsise og handlingsorienterte. Du er ikke en chatbot — du er en 
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         messages: [
-          { role: 'user', content: agentSystemPrompt + '\n\n---\n\n' + text }
+          { role: 'user', content: agentSystemPrompt + '\n\n---\n\n' + text },
+          ...agentMessages[currentAgent.id].slice(1).map(m => ({ role: m.role, content: m.content }))
         ],
         adminMode: false
       })
@@ -492,7 +842,6 @@ Hold svarene konsise og handlingsorienterte. Du er ikke en chatbot — du er en 
     const reply = data.reply || 'Beklager, teknisk problem.';
     agentMessages[currentAgent.id].push({ role: 'assistant', content: reply });
     renderAgentMsg('assistant', reply, currentAgent);
-    document.getElementById('agent-last-' + currentAgent.id).textContent = reply.substring(0, 50) + '...';
     addFeedItem(currentAgent.name, currentAgent.color, 'Svarte på forespørsel fra Valdi');
   } catch(e) {
     renderAgentMsg('assistant', 'Beklager, teknisk problem. Prøv igjen.', currentAgent);
@@ -504,19 +853,6 @@ function handleModalKey(e) {
 }
 
 // ── ACTIVITY FEED ──
-const feedEvents = [
-  { agent: 'ALEX', color: '#06b6d4', text: 'Koordinerer alle 9 agenter' },
-  { agent: 'Data Analyst', color: '#3b82f6', text: 'Analyserer plattformtrafikk' },
-  { agent: 'Customer Service', color: '#06b6d4', text: 'Klar for kundehenvendelser' },
-  { agent: 'Market Analyst', color: '#10b981', text: 'Overvåker markedstrender' },
-  { agent: 'Financial Analyst', color: '#34d399', text: 'Forbereder månedlig rapport' },
-  { agent: 'Process Optimizer', color: '#8b5cf6', text: 'Identifiserer optimaliseringsmuligheter' },
-  { agent: 'Content Creator', color: '#ec4899', text: 'Oppdaterer innholdsstrategi' },
-  { agent: 'HR Specialist', color: '#a78bfa', text: 'Gjennomgår onboarding-prosess' },
-  { agent: 'Risk Manager', color: '#f59e0b', text: 'Compliance-sjekk fullført' },
-  { agent: 'Supply Chain', color: '#f97316', text: 'Leverandørstatus oppdatert' },
-];
-
 function addFeedItem(agentName, color, text) {
   const list = document.getElementById('feed-list');
   const time = new Date().toLocaleTimeString('no-NO', { hour: '2-digit', minute: '2-digit' });
@@ -531,15 +867,15 @@ function addFeedItem(agentName, color, text) {
     <div class="feed-text">${text}</div>
   `;
   list.insertBefore(div, list.firstChild);
-  if (list.children.length > 30) list.removeChild(list.lastChild);
+  if (list.children.length > 40) list.removeChild(list.lastChild);
 }
 
 function startActivityFeed() {
-  feedEvents.forEach(e => addFeedItem(e.agent, e.color, e.text));
+  FEED_EVENTS.forEach(e => addFeedItem(e.agent, e.color, e.text));
   setInterval(() => {
-    const e = feedEvents[Math.floor(Math.random() * feedEvents.length)];
+    const e = FEED_EVENTS[Math.floor(Math.random() * FEED_EVENTS.length)];
     addFeedItem(e.agent, e.color, e.text);
-  }, 12000);
+  }, 10000);
 }
 
 // ── UTILS ──
@@ -547,26 +883,20 @@ function escHtml(t) {
   return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
 }
 function renderMd(t) {
-  // Escape HTML first
   let s = t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  // Headers
-  s = s.replace(/^#{3}\s+(.+)$/gm, '<strong style="font-size:1rem;display:block;margin:.6em 0 .3em">$1</strong>');
-  s = s.replace(/^#{2}\s+(.+)$/gm, '<strong style="font-size:1.05rem;display:block;margin:.6em 0 .3em">$1</strong>');
-  s = s.replace(/^#{1}\s+(.+)$/gm, '<strong style="font-size:1.1rem;display:block;margin:.6em 0 .3em">$1</strong>');
-  // Bold
+  s = s.replace(/^#{3}\s+(.+)$/gm, '<strong style="font-size:.95rem;display:block;margin:.6em 0 .3em">$1</strong>');
+  s = s.replace(/^#{2}\s+(.+)$/gm, '<strong style="font-size:1rem;display:block;margin:.7em 0 .35em">$1</strong>');
+  s = s.replace(/^#{1}\s+(.+)$/gm, '<strong style="font-size:1.05rem;display:block;margin:.7em 0 .35em">$1</strong>');
   s = s.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-  // Links
   s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" style="color:#06b6d4" target="_blank">$1</a>');
-  // Bullet list
-  s = s.replace(/^[\-\*]\s+(.+)$/gm, '<li style="margin:.2em 0 .2em 1.2em">$1</li>');
-  s = s.replace(/(<li[^>]*>.*<\/li>)/gs, '<ul style="list-style:disc;padding-left:.5em">$1</ul>');
-  // Newlines
+  s = s.replace(/^[\-\*]\s+(.+)$/gm, '<li style="margin:.25em 0 .25em 1.2em">$1</li>');
+  s = s.replace(/(<li[^>]*>.*<\/li>)/gs, '<ul style="list-style:disc;padding-left:.5em;margin:.4em 0">$1</ul>');
   s = s.replace(/\n/g, '<br>');
   return s;
 }
 function autoResize(el) {
   el.style.height = 'auto';
-  el.style.height = Math.min(el.scrollHeight, 100) + 'px';
+  el.style.height = Math.min(el.scrollHeight, 120) + 'px';
 }
 </script>
 </body>
