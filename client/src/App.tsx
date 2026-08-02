@@ -27,6 +27,7 @@ import Cookies from "./pages/Cookies";
 import Legal from "./pages/Legal";
 import BackgroundCanvas from "./components/BackgroundCanvas";
 import FAQ from "./pages/FAQ";
+import ValdiPortal from "./pages/ValdiPortal";
 
 // Scroll to top on every route change (except hash-anchor navigation)
 function ScrollToTop() {
@@ -46,6 +47,7 @@ function AdminRouter() {
     <Switch>
       <Route path="/admin" component={AdminLogin} />
       <Route path="/admin/dashboard" component={AdminDashboard} />
+      <Route path="/valdi" component={ValdiPortal} />
     </Switch>
   );
 }
