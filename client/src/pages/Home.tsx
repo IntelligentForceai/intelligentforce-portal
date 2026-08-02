@@ -77,7 +77,7 @@ export default function Home() {
           {/* Hero Logo */}
           <div className="flex justify-center mb-8">
             <img
-              src="/logo.png?v=2"
+              src="/logo-white.png?v=1"
               alt="IntelligentForce"
               className="h-32 md:h-44 w-auto object-contain drop-shadow-2xl"
             />
