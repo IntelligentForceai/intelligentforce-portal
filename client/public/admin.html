@@ -472,7 +472,8 @@ Regler:
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          messages: messages.map(m => ({ role: m.role, content: m.content }))
+          messages: messages.map(m => ({ role: m.role, content: m.content })),
+          adminMode: true
         })
       });
       const data = await res.json();
