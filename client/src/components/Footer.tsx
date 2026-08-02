@@ -13,9 +13,9 @@ export default function Footer() {
           <div className="col-span-2 md:col-span-1">
             <Link href="/" className="flex items-center gap-2 mb-4">
               <img
-                src="/logo-if.svg"
+                src="/logo.png"
                 alt="IntelligentForce"
-                className="h-9 w-auto object-contain"
+                className="h-10 w-auto object-contain"
               />
               <span className="font-bold text-xs tracking-widest text-white">INTELLIGENTFORCE</span>
             </Link>
