@@ -793,11 +793,13 @@ async function sendToAlex() {
   if (!text) return;
   inp.value = ''; inp.style.height = 'auto';
   document.getElementById('alex-send').disabled = true;
+  document.getElementById('alex-mic').disabled = true;
   addAlexMsg('user', text);
   const typing = document.getElementById('alex-typing');
   typing.classList.add('show');
   document.getElementById('alex-messages').scrollTop = 99999;
   try {
+    // Step 1: Fetch chat reply
     const res = await fetch(WORKER_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -809,17 +811,19 @@ async function sendToAlex() {
     const data = await res.json();
     typing.classList.remove('show');
     const reply = data.reply || 'Beklager, teknisk problem. Prøv igjen.';
+    // Step 2: Show text in chat
     addAlexMsg('assistant', reply);
     addFeedItem('ALEX', '#06b6d4', 'Svarte Valdi på forespørsel');
-    // Speak the reply if voice is enabled
+    // Step 3: Speak the reply AFTER it is shown in chat
     if (voiceEnabled) {
-      speakText(stripMd(reply));
+      await speakText(stripMd(reply));
     }
   } catch(e) {
     typing.classList.remove('show');
     addAlexMsg('assistant', 'Beklager, Valdi — midlertidig teknisk problem. Prøv igjen om litt.');
   }
   document.getElementById('alex-send').disabled = false;
+  document.getElementById('alex-mic').disabled = false;
 }
 
 // ── VOICE TOGGLE ──
@@ -835,34 +839,41 @@ function toggleVoice() {
   }
 }
 
-// ── TTS — ALEX speaks ──
+// ── TTS — ALEX speaks (returns Promise, resolves when audio ends) ──
 async function speakText(text) {
   if (!text || !voiceEnabled) return;
   // Stop any current speech
   if (currentAudio) { currentAudio.pause(); currentAudio = null; }
   const avatarWrap = document.getElementById('alex-avatar-wrap');
-  try {
-    const res = await fetch(WORKER_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ tts: true, ttsText: text })
-    });
-    const data = await res.json();
-    if (data.audio) {
-      const audioBlob = base64ToBlob(data.audio, 'audio/mpeg');
-      const audioUrl = URL.createObjectURL(audioBlob);
-      currentAudio = new Audio(audioUrl);
-      avatarWrap.classList.add('speaking');
-      currentAudio.onended = () => {
-        avatarWrap.classList.remove('speaking');
-        URL.revokeObjectURL(audioUrl);
-        currentAudio = null;
-      };
-      currentAudio.play();
+  return new Promise(async (resolve) => {
+    try {
+      const res = await fetch(WORKER_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ tts: true, ttsText: text })
+      });
+      const data = await res.json();
+      if (data.audio) {
+        const audioBlob = base64ToBlob(data.audio, 'audio/mpeg');
+        const audioUrl = URL.createObjectURL(audioBlob);
+        currentAudio = new Audio(audioUrl);
+        avatarWrap.classList.add('speaking');
+        currentAudio.onended = () => {
+          avatarWrap.classList.remove('speaking');
+          URL.revokeObjectURL(audioUrl);
+          currentAudio = null;
+          resolve();
+        };
+        currentAudio.onerror = () => { resolve(); };
+        currentAudio.play();
+      } else {
+        resolve();
+      }
+    } catch(e) {
+      console.warn('TTS error:', e);
+      resolve();
     }
-  } catch(e) {
-    console.warn('TTS error:', e);
-  }
+  });
 }
 
 function base64ToBlob(base64, mimeType) {
