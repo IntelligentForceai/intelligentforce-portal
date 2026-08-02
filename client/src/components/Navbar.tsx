@@ -44,7 +44,7 @@ export default function Navbar() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 shrink-0">
             <img
-              src="/logo.png"
+              src="/logo.png?v=2"
               alt="IntelligentForce"
               className="h-10 w-auto object-contain"
             />
