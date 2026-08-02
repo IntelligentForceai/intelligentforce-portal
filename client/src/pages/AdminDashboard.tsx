@@ -1,7 +1,8 @@
 import { useLocation } from "wouter";
 import {
-  Shield, ExternalLink, Mail, BarChart2, Globe, Info
+  Shield, ExternalLink, Mail, BarChart2, Globe, Info, Sparkles
 } from "lucide-react";
+import AlexChat from "@/components/AlexChat";
 
 export default function AdminDashboard() {
   const [, navigate] = useLocation();
@@ -26,6 +27,15 @@ export default function AdminDashboard() {
           >
             ← Tilbake til portalen
           </button>
+        </div>
+
+        {/* ALEX Chat — øverst i admin */}
+        <div className="mb-6">
+          <div className="flex items-center gap-2 mb-3">
+            <Sparkles size={14} className="text-cyan-400" />
+            <span className="text-xs font-semibold text-cyan-400 uppercase tracking-wider">Din AI-partner</span>
+          </div>
+          <AlexChat />
         </div>
 
         {/* Info banner */}
