@@ -3,7 +3,8 @@ import { Link } from "wouter";
 import AlexVideo from "@/components/AlexVideo";
 import { usePageTracker } from "@/hooks/usePageTracker";
 import { useSEO } from "@/hooks/useSEO";
-import { ArrowRight, CheckCircle2, Zap, BarChart3, Shield, Users, Clock, Star, TrendingUp, Globe, Award } from "lucide-react";
+import { ArrowRight, CheckCircle2, Zap, BarChart3, Shield, Users, Clock, Star, TrendingUp, Globe, Award, Play, X } from "lucide-react";
+import { useState } from "react";
 import { homeCaptions } from "@/lib/alexCaptions";
 
 
@@ -21,7 +22,8 @@ const clientLogos = [
 ];
 
 export default function Home() {
-  const { t } = useLang();
+  const { t, lang } = useLang();
+  const [videoOpen, setVideoOpen] = useState(false);
   usePageTracker("/");
   useSEO({
     title: "IntelligentForce – AI-Powered Business Automation",
@@ -111,7 +113,41 @@ export default function Home() {
                 💬 {t.home.cta3}
               </button>
             </Link>
+            <button
+              onClick={() => setVideoOpen(true)}
+              className="flex items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/20 hover:border-white/40 text-white font-semibold px-8 py-4 rounded-xl text-lg transition-all duration-200 backdrop-blur-sm"
+            >
+              <Play className="w-5 h-5 fill-white" />
+              {lang === 'no' ? 'Introduksjonsvideo' : 'Introduction Video'}
+            </button>
           </div>
+
+          {/* Video Modal */}
+          {videoOpen && (
+            <div
+              className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
+              onClick={() => setVideoOpen(false)}
+            >
+              <div
+                className="relative w-full max-w-4xl rounded-2xl overflow-hidden shadow-2xl shadow-cyan-500/20 border border-white/10"
+                onClick={e => e.stopPropagation()}
+              >
+                <button
+                  onClick={() => setVideoOpen(false)}
+                  className="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-black/60 hover:bg-black/80 flex items-center justify-center transition-colors"
+                >
+                  <X className="w-5 h-5 text-white" />
+                </button>
+                <video
+                  src="/videos/alex-intro.mp4"
+                  controls
+                  autoPlay
+                  className="w-full aspect-video bg-black"
+                  onEnded={() => setVideoOpen(false)}
+                />
+              </div>
+            </div>
+          )}
 
           {/* Trust badges */}
           <div className="flex flex-col sm:flex-row gap-6 justify-center text-sm text-slate-400">
