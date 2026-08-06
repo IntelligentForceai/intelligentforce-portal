@@ -194,6 +194,7 @@ export default function ALEXChat({ lang = "en" }: ALEXChatProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
+  const [followUps, setFollowUps] = useState<string[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const kb = ALEX_KNOWLEDGE[lang];
@@ -223,15 +224,23 @@ export default function ALEXChat({ lang = "en" }: ALEXChatProps) {
       if (response.ok) {
         const data = await response.json();
         setMessages(prev => [...prev, { role: "assistant", content: data.reply }]);
+        // Update contextual follow-up prompts from ALEX
+        if (data.followUps && data.followUps.length > 0) {
+          setFollowUps(data.followUps);
+        } else {
+          setFollowUps([]);
+        }
       } else {
         // Fallback to local knowledge base if API fails
         const answer = findAnswer(text, lang);
         setMessages(prev => [...prev, { role: "assistant", content: answer }]);
+        setFollowUps([]);
       }
     } catch {
       // Fallback to local knowledge base on network error
       const answer = findAnswer(text, lang);
       setMessages(prev => [...prev, { role: "assistant", content: answer }]);
+      setFollowUps([]);
     }
 
     setIsTyping(false);
@@ -357,8 +366,29 @@ export default function ALEXChat({ lang = "en" }: ALEXChatProps) {
         </div>
       )}
 
-      {/* Suggested prompts after first message */}
-      {messages.length > 0 && messages.length < 4 && (
+      {/* Dynamic contextual follow-up prompts from ALEX — shown after each response */}
+      {!isTyping && followUps.length > 0 && (
+        <div className="px-4 pb-2">
+          <p className="text-slate-500 text-xs mb-1.5">
+            {lang === "no" ? "Fortsett samtalen:" : "Continue the conversation:"}
+          </p>
+          <div className="flex gap-2 flex-wrap">
+            {followUps.map((s, i) => (
+              <button
+                key={i}
+                onClick={() => { setFollowUps([]); sendMessage(s); }}
+                disabled={isTyping}
+                className="text-xs bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 hover:bg-cyan-500/20 hover:border-cyan-400/50 hover:text-cyan-200 rounded-xl px-3 py-1.5 transition-all disabled:opacity-50 text-left leading-snug"
+              >
+                {s}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Static suggested prompts when no follow-ups yet */}
+      {!isTyping && followUps.length === 0 && messages.length > 0 && messages.length < 3 && (
         <div className="px-4 pb-2 flex gap-2 flex-wrap">
           {suggested.slice(0, 3).map((s, i) => (
             <button
