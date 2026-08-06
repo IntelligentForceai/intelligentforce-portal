@@ -1,7 +1,37 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "wouter";
 import { useLang } from "@/contexts/LanguageContext";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Globe } from "lucide-react";
+
+// Popular languages for quick access
+const TRANSLATE_LANGS = [
+  { code: "pl", label: "Polski" },
+  { code: "de", label: "Deutsch" },
+  { code: "fr", label: "Français" },
+  { code: "es", label: "Español" },
+  { code: "it", label: "Italiano" },
+  { code: "pt", label: "Português" },
+  { code: "nl", label: "Nederlands" },
+  { code: "sv", label: "Svenska" },
+  { code: "da", label: "Dansk" },
+  { code: "fi", label: "Suomi" },
+  { code: "ru", label: "Русский" },
+  { code: "ar", label: "العربية" },
+  { code: "zh", label: "中文" },
+  { code: "ja", label: "日本語" },
+  { code: "ko", label: "한국어" },
+  { code: "hi", label: "हिन्दी" },
+  { code: "tr", label: "Türkçe" },
+  { code: "uk", label: "Українська" },
+];
+
+function applyTranslation(langCode: string) {
+  const expires = new Date();
+  expires.setFullYear(expires.getFullYear() + 1);
+  document.cookie = `googtrans=/en/${langCode}; expires=${expires.toUTCString()}; path=/`;
+  document.cookie = `googtrans=/en/${langCode}; expires=${expires.toUTCString()}; path=/; domain=.intelligentforce.ai`;
+  window.location.reload();
+}
 
 export default function Navbar() {
   const { t, lang, setLang } = useLang();
@@ -9,6 +39,19 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [logoZoomed, setLogoZoomed] = useState(false);
+  const [translateOpen, setTranslateOpen] = useState(false);
+  const translateRef = useRef<HTMLDivElement>(null);
+
+  // Close translate dropdown on outside click
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (translateRef.current && !translateRef.current.contains(e.target as Node)) {
+        setTranslateOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, []);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -111,6 +154,41 @@ export default function Navbar() {
               >
                 🇳🇴
               </button>
+            </div>
+
+            {/* Google Translate dropdown */}
+            <div className="relative" ref={translateRef}>
+              <button
+                onClick={() => setTranslateOpen(!translateOpen)}
+                title="Translate page"
+                className={`flex items-center gap-1 px-2 py-1.5 rounded-full text-xs font-medium transition-all ${
+                  translateOpen
+                    ? "bg-cyan-500/20 text-cyan-400 border border-cyan-500/40"
+                    : "bg-white/10 text-white/70 hover:text-white hover:bg-white/15"
+                }`}
+              >
+                <Globe className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Translate</span>
+              </button>
+
+              {translateOpen && (
+                <div className="absolute right-0 top-full mt-2 w-48 bg-[#0a1628]/98 border border-cyan-500/30 rounded-xl shadow-2xl shadow-cyan-500/10 backdrop-blur-md overflow-hidden z-50">
+                  <div className="px-3 py-2 border-b border-white/10">
+                    <p className="text-xs text-slate-400 font-medium">Translate with Google</p>
+                  </div>
+                  <div className="max-h-64 overflow-y-auto py-1">
+                    {TRANSLATE_LANGS.map((l) => (
+                      <button
+                        key={l.code}
+                        onClick={() => { setTranslateOpen(false); applyTranslation(l.code); }}
+                        className="w-full text-left px-3 py-2 text-sm text-white/80 hover:text-white hover:bg-white/10 transition-colors"
+                      >
+                        {l.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Meet ALEX button — skjult på veldig små skjermer */}
