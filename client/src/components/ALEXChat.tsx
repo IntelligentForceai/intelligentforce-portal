@@ -49,7 +49,7 @@ const ALEX_KNOWLEDGE = {
       },
     ],
     fallback: "That's a great question! For the most accurate answer tailored to your specific situation, I'd recommend:\n\n1. **[Free Business Health Check](/health-check)** — Get a precise ROI estimate in 5 minutes\n2. **[Book a demo](/contact)** — Talk directly with our team\n3. **Email us:** hello@intelligentforce.ai\n\nIs there anything specific about AI automation or IntelligentForce I can help clarify?",
-    greeting: "Hi! I'm ALEX, your AI Operations Partner at IntelligentForce. 👋\n\nI'm here to help you understand how AI automation can transform your business. What would you like to know?",
+    greeting: "Hi! I'm ALEX, your AI Operations Partner at IntelligentForce. 👋\n\nI'm here to help you understand how AI automation can transform your business. What would you like to know?\n\n🌍 *You can chat with me in any language — I will always respond in the language you write in.*",
   },
   no: {
     greetings: ["hei", "hallo", "god morgen", "god dag", "hva er", "fortell meg"],
@@ -92,7 +92,7 @@ const ALEX_KNOWLEDGE = {
       },
     ],
     fallback: "Det er et godt spørsmål! For det mest nøyaktige svaret tilpasset din spesifikke situasjon, anbefaler jeg:\n\n1. **[Gratis Business Health Check](/health-check)** — Få et presist ROI-estimat på 5 minutter\n2. **[Bestill en demo](/contact)** — Snakk direkte med teamet vårt\n3. **Send e-post:** hello@intelligentforce.ai\n\nEr det noe spesifikt om AI-automatisering eller IntelligentForce jeg kan hjelpe med å avklare?",
-    greeting: "Hei! Jeg er ALEX, din AI Operations Partner hos IntelligentForce. 👋\n\nJeg er her for å hjelpe deg forstå hvordan AI-automatisering kan transformere bedriften din. Hva vil du vite?",
+    greeting: "Hei! Jeg er ALEX, din AI Operations Partner hos IntelligentForce. 👋\n\nJeg er her for å hjelpe deg forstå hvordan AI-automatisering kan transformere bedriften din. Hva vil du vite?\n\n🌍 *Du kan chatte med meg på hvilket som helst språk — jeg svarer alltid på det språket du skriver på.*",
   },
 };
 
