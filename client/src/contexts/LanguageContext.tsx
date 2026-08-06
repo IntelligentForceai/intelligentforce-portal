@@ -1,6 +1,13 @@
 import React, { createContext, useContext, useState } from "react";
 import { Language, translations } from "@/lib/i18n";
 
+// Auto-detect Norwegian browser language at startup
+function getInitialLang(): Language {
+  const nav = (navigator.language || (navigator as any).userLanguage || "en").toLowerCase();
+  if (nav.startsWith("nb") || nav.startsWith("nn") || nav.startsWith("no")) return "no";
+  return "en";
+}
+
 interface LanguageContextType {
   lang: Language;
   setLang: (lang: Language) => void;
@@ -14,7 +21,7 @@ const LanguageContext = createContext<LanguageContextType>({
 });
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [lang, setLang] = useState<Language>("en");
+  const [lang, setLang] = useState<Language>(getInitialLang);
   const t = translations[lang];
   return (
     <LanguageContext.Provider value={{ lang, setLang, t }}>

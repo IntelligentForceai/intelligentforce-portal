@@ -28,6 +28,7 @@ import Legal from "./pages/Legal";
 import BackgroundCanvas from "./components/BackgroundCanvas";
 import FAQ from "./pages/FAQ";
 import ValdiPortal from "./pages/ValdiPortal";
+import GoogleTranslateBanner from "./components/GoogleTranslateBanner";
 
 // Scroll to top on every route change (except hash-anchor navigation)
 function ScrollToTop() {
@@ -112,6 +113,7 @@ function App() {
                   }}
                 />
                 <BackgroundCanvas />
+                <GoogleTranslateBanner />
                 <Navbar />
                 <main className="flex-1">
                   <PublicRouter />
