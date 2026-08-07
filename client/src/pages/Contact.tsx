@@ -15,7 +15,7 @@ export default function Contact() {
     canonical: "https://intelligentforce.ai/contact",
     
   });
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const c = t.contact;
   usePageTracker("/contact");
 
@@ -88,10 +88,23 @@ export default function Contact() {
                 <div className="space-y-4">
                   <div className="flex items-start gap-3">
                     <Mail size={18} className="text-cyan-400 mt-0.5 shrink-0" />
-                    <div>
-                      <p className="text-xs text-muted-foreground mb-1">{c.emailLabel}</p>
-                      <a href="mailto:hello@intelligentforce.ai" className="text-sm text-white hover:text-cyan-400 transition-colors">hello@intelligentforce.ai</a><br />
-                      <a href="mailto:support@intelligentforce.ai" className="text-sm text-white hover:text-cyan-400 transition-colors">support@intelligentforce.ai</a>
+                    <div className="space-y-2">
+                      <div>
+                        <p className="text-xs text-muted-foreground mb-0.5">{lang === 'no' ? 'Generelle henvendelser & salg' : 'General inquiries & sales'}</p>
+                        <a href="mailto:hello@intelligentforce.ai" className="text-sm text-white hover:text-cyan-400 transition-colors">hello@intelligentforce.ai</a>
+                      </div>
+                      <div>
+                        <p className="text-xs text-muted-foreground mb-0.5">{lang === 'no' ? 'Tjenester & custom l\u00f8sninger' : 'Services & custom solutions'}</p>
+                        <a href="mailto:info@intelligentforce.ai" className="text-sm text-white hover:text-cyan-400 transition-colors">info@intelligentforce.ai</a>
+                      </div>
+                      <div>
+                        <p className="text-xs text-muted-foreground mb-0.5">{lang === 'no' ? 'Teknisk support & implementering' : 'Technical support & implementation'}</p>
+                        <a href="mailto:support@intelligentforce.ai" className="text-sm text-white hover:text-cyan-400 transition-colors">support@intelligentforce.ai</a>
+                      </div>
+                      <div>
+                        <p className="text-xs text-muted-foreground mb-0.5">{lang === 'no' ? 'Feedback, partnerskap & investorer' : 'Feedback, partnerships & investors'}</p>
+                        <a href="mailto:post@intelligentforce.ai" className="text-sm text-white hover:text-cyan-400 transition-colors">post@intelligentforce.ai</a>
+                      </div>
                       <p className="text-xs text-muted-foreground mt-1">{c.response}</p>
                     </div>
                   </div>
