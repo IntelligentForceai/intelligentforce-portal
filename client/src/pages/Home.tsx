@@ -95,24 +95,16 @@ export default function Home() {
             {t.home.heroSub}
           </p>
 
-          {/* CTA buttons */}
+          {/* CTA buttons — rekkefølge: Health Check → Video → Chat → Demo */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+            {/* 1. Start Business Health Check */}
             <Link href="/health-check">
               <button className="group flex items-center gap-2 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold px-8 py-4 rounded-xl text-lg transition-all duration-200 shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 hover:scale-105 active:scale-95">
                 {t.home.cta1}
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </button>
             </Link>
-            <Link href="/contact">
-              <button className="flex items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/20 hover:border-white/40 text-white font-semibold px-8 py-4 rounded-xl text-lg transition-all duration-200 backdrop-blur-sm">
-                {t.home.cta2}
-              </button>
-            </Link>
-            <Link href="/alex">
-              <button className="flex items-center gap-2 bg-transparent hover:bg-white/5 border border-cyan-500/40 hover:border-cyan-500/70 text-cyan-400 font-semibold px-8 py-4 rounded-xl text-lg transition-all duration-200">
-                💬 {t.home.cta3}
-              </button>
-            </Link>
+            {/* 2. Introduction Video */}
             <button
               onClick={() => setVideoOpen(true)}
               className="flex items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/20 hover:border-white/40 text-white font-semibold px-8 py-4 rounded-xl text-lg transition-all duration-200 backdrop-blur-sm"
@@ -120,6 +112,18 @@ export default function Home() {
               <Play className="w-5 h-5 fill-white" />
               {lang === 'no' ? 'Introduksjonsvideo' : 'Introduction Video'}
             </button>
+            {/* 3. Chat with ALEX */}
+            <Link href="/alex">
+              <button className="flex items-center gap-2 bg-transparent hover:bg-white/5 border border-cyan-500/40 hover:border-cyan-500/70 text-cyan-400 font-semibold px-8 py-4 rounded-xl text-lg transition-all duration-200">
+                💬 {t.home.cta3}
+              </button>
+            </Link>
+            {/* 4. Book a Demo */}
+            <Link href="/contact">
+              <button className="flex items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/20 hover:border-white/40 text-white font-semibold px-8 py-4 rounded-xl text-lg transition-all duration-200 backdrop-blur-sm">
+                {t.home.cta2}
+              </button>
+            </Link>
           </div>
 
           {/* Video Modal */}
