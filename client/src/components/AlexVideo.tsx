@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Play, Volume2, VolumeX, Maximize2 } from "lucide-react";
+import { Play, Volume2, VolumeX } from "lucide-react";
 
 // Caption type: array of { time (seconds), end (seconds), text }
 export interface Caption {
@@ -20,36 +20,11 @@ interface AlexVideoProps {
 
 export default function AlexVideo({ videoSrc, posterSrc, className = "", captions }: AlexVideoProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
   const [playing, setPlaying] = useState(false);
   const [muted, setMuted] = useState(false);
-  const [isFullscreen, setIsFullscreen] = useState(false);
   const [currentCaption, setCurrentCaption] = useState<string>("");
   const [captionVisible, setCaptionVisible] = useState(false);
   const prevCaptionRef = useRef<string>("");
-
-  const toggleFullscreen = () => {
-    if (!document.fullscreenElement) {
-      // Try native video fullscreen first (best on mobile)
-      if (videoRef.current?.requestFullscreen) {
-        videoRef.current.requestFullscreen();
-      } else if ((videoRef.current as any)?.webkitRequestFullscreen) {
-        (videoRef.current as any).webkitRequestFullscreen();
-      } else if (containerRef.current?.requestFullscreen) {
-        containerRef.current.requestFullscreen();
-      }
-      setIsFullscreen(true);
-    } else {
-      document.exitFullscreen();
-      setIsFullscreen(false);
-    }
-  };
-
-  useEffect(() => {
-    const onFsChange = () => setIsFullscreen(!!document.fullscreenElement);
-    document.addEventListener("fullscreenchange", onFsChange);
-    return () => document.removeEventListener("fullscreenchange", onFsChange);
-  }, []);
 
   const handlePlay = () => {
     if (videoRef.current) {
@@ -146,33 +121,13 @@ export default function AlexVideo({ videoSrc, posterSrc, className = "", caption
             </div>
           )}
 
-          {/* Controls – top right when playing: mute + fullscreen */}
+          {/* Mute toggle – top right when playing */}
           {playing && (
-            <div className="absolute top-3 right-3 flex gap-2 z-10">
-              <button
-                onClick={toggleMute}
-                title={muted ? "Unmute" : "Mute"}
-                className="w-8 h-8 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center hover:bg-black/60 transition-colors"
-              >
-                {muted ? <VolumeX size={14} className="text-white" /> : <Volume2 size={14} className="text-white" />}
-              </button>
-              <button
-                onClick={toggleFullscreen}
-                title="Fullscreen"
-                className="w-8 h-8 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center hover:bg-black/60 transition-colors"
-              >
-                <Maximize2 size={14} className="text-white" />
-              </button>
-            </div>
-          )}
-          {/* Fullscreen button also visible before play (bottom right) */}
-          {!playing && videoSrc && (
             <button
-              onClick={toggleFullscreen}
-              title="Fullscreen"
-              className="absolute bottom-3 right-3 w-8 h-8 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center hover:bg-black/60 transition-colors z-10"
+              onClick={toggleMute}
+              className="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center hover:bg-black/60 transition-colors z-10"
             >
-              <Maximize2 size={14} className="text-white" />
+              {muted ? <VolumeX size={14} className="text-white" /> : <Volume2 size={14} className="text-white" />}
             </button>
           )}
 

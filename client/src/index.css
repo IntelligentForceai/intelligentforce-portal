@@ -80,18 +80,10 @@
   border-radius: 1rem;
   overflow: hidden;
   aspect-ratio: 3/4;
-  max-width: 320px;
-  max-height: 65vh;
+  max-width: 360px;
   width: 100%;
   margin: 0 auto;
   border: 1px solid oklch(0.22 0.02 250);
-}
-
-@media (max-height: 750px) {
-  .alex-video-container { max-height: 55vh; }
-}
-@media (max-width: 640px) {
-  .alex-video-container { max-width: 240px; max-height: 55vh; }
 }
 
 .alex-video-container video {
