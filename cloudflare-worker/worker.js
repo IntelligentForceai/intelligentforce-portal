@@ -61,21 +61,38 @@ Once identified, tailor your entire conversation style, depth and call-to-action
 - **Show intelligence** — reference what the user said earlier in the conversation. Connect the dots for them.
 - **Be proactive** — if you detect a pain point, name it before they do.
 
+## Agent Routing — Internal Intelligence
+You have access to 9 specialist agents. When a question is best answered by a specific agent, route to them internally and incorporate their expertise in your response. Always answer yourself — never say "I'll transfer you". Instead, say "Drawing on our Data Analyst agent..." or "Our Supply Chain specialist indicates..."
+
+Route to agents based on topic:
+- **Data Analyst** ✦ — reporting, analytics, dashboards, data processing
+- **Customer Service** ✦ — customer communication, support automation, response handling
+- **Process Optimizer** ✦ — workflow inefficiencies, bottlenecks, productivity
+- **Market Analyst** ✦ — competitive intelligence, market trends, pricing strategy
+- **Risk Manager** ✦ — compliance, GDPR, risk assessment, legal processes
+- **Content Creator** ✦ — marketing content, copywriting, social media, reports
+- **Supply Chain** ✦ — procurement, logistics, vendor management, inventory
+- **HR Specialist** ✦ — recruitment, onboarding, employee admin, HR processes
+- **Financial Analyst** ✦ — financial reporting, forecasting, budgeting, ROI
+
+When routing, mention the agent naturally: "Our ✦ Financial Analyst indicates that for a company your size..."
+
+## Serious Enquiry Detection
+Classify each conversation as SERIOUS or GENERAL:
+- **SERIOUS**: User mentions company name, employee count, specific budget, timeline, decision-making role, or asks about contracts/implementation/pricing in detail
+- **GENERAL**: Casual questions, testing, learning about AI generally
+
+When SERIOUS, add `"serious": true` to your JSON response. When GENERAL, add `"serious": false`.
+
 ## Response Format — CRITICAL
 You MUST always respond with valid JSON in this exact format:
 {
   "reply": "Your main response text here (markdown supported)",
-  "followUps": ["First follow-up question", "Second follow-up question", "Third follow-up question"]
+  "followUps": ["First follow-up question", "Second follow-up question", "Third follow-up question"],
+  "serious": false
 }
 
 The followUps array must always contain exactly 3 short, relevant, clickable questions that logically continue the conversation. Make them specific to what was just discussed — never generic.
-
-Examples of good follow-ups:
-- "How much time does your team spend on manual reporting?"
-- "Which of the 9 agents would save you the most time?"
-- "What does a 60% cost reduction mean for your business?"
-- "How large is your company and which industry are you in?"
-- "What is your timeline for implementing AI automation?"
 
 ## Language Rule
 Respond in the same language the user writes in — Norwegian, English, Polish, German, French, Spanish, or any other language. Always match the user's language exactly. The followUps must also be in the same language.
@@ -223,11 +240,12 @@ export default {
       }
 
       const data = await openaiResponse.json();
-      const rawContent = data.choices[0]?.message?.content || '{"reply": "Sorry, I could not generate a response.", "followUps": []}';
+      const rawContent = data.choices[0]?.message?.content || '{"reply": "Sorry, I could not generate a response.", "followUps": [], "serious": false}';
       
-      // Parse JSON response from ALEX (public mode returns JSON with reply + followUps)
+      // Parse JSON response from ALEX (public mode returns JSON with reply + followUps + serious)
       let reply = rawContent;
       let followUps = [];
+      let serious = false;
       if (!adminMode) {
         try {
           // Extract JSON even if wrapped in markdown code blocks
@@ -236,15 +254,35 @@ export default {
             const parsed = JSON.parse(jsonMatch[0]);
             reply = parsed.reply || rawContent;
             followUps = parsed.followUps || [];
+            serious = parsed.serious === true;
           }
         } catch (e) {
-          // Fallback: use raw content as reply
           reply = rawContent;
           followUps = [];
+          serious = false;
+        }
+
+        // — Send email notification for serious enquiries via Formspree —
+        if (serious && messages && messages.length >= 2) {
+          const lastUserMsg = [...messages].reverse().find(m => m.role === 'user');
+          const summary = lastUserMsg?.content?.substring(0, 300) || 'No message';
+          try {
+            await fetch('https://formspree.io/f/xpwrjkge', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+              body: JSON.stringify({
+                _subject: '✦ Serious ALEX Enquiry Detected',
+                message: `A serious enquiry was detected in the ALEX chat.\n\nLast message: "${summary}"\n\nConversation length: ${messages.length} messages\n\nPlease follow up at intelligentforce.ai/admin`,
+                email: 'alex@intelligentforce.ai',
+              }),
+            });
+          } catch (e) {
+            // Silent fail — don't block the response
+          }
         }
       }
       
-      return new Response(JSON.stringify({ reply, followUps }), {
+      return new Response(JSON.stringify({ reply, followUps, serious }), {
         headers: {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*',

@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Send, Loader2, Sparkles, User, ArrowRight } from "lucide-react";
+import { Send, Loader2, User, Trash2 } from "lucide-react";
 
 type Message = {
   role: "user" | "assistant";
@@ -190,19 +190,42 @@ type ALEXChatProps = {
   lang?: "en" | "no";
 };
 
+const STORAGE_KEY = "alex_chat_history";
+
 export default function ALEXChat({ lang = "en" }: ALEXChatProps) {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[]>(() => {
+    // Load from localStorage on mount
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      return saved ? JSON.parse(saved) : [];
+    } catch { return []; }
+  });
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [followUps, setFollowUps] = useState<string[]>([]);
+  const [hasSerious, setHasSerious] = useState(false);
+  const [showClearConfirm, setShowClearConfirm] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const kb = ALEX_KNOWLEDGE[lang];
   const suggested = lang === "no" ? SUGGESTED_NO : SUGGESTED_EN;
 
+  // Save messages to localStorage whenever they change
+  useEffect(() => {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(messages)); } catch {}
+  }, [messages]);
+
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isTyping]);
+
+  const clearChat = () => {
+    setMessages([]);
+    setFollowUps([]);
+    setHasSerious(false);
+    setShowClearConfirm(false);
+    try { localStorage.removeItem(STORAGE_KEY); } catch {}
+  };
 
   const sendMessage = async (text: string) => {
     if (!text.trim() || isTyping) return;
@@ -230,6 +253,8 @@ export default function ALEXChat({ lang = "en" }: ALEXChatProps) {
         } else {
           setFollowUps([]);
         }
+        // Mark as serious enquiry if detected
+        if (data.serious) setHasSerious(true);
       } else {
         // Fallback to local knowledge base if API fails
         const answer = findAnswer(text, lang);
@@ -265,16 +290,45 @@ export default function ALEXChat({ lang = "en" }: ALEXChatProps) {
         <div className="w-9 h-9 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center shadow-lg shadow-cyan-500/30 shrink-0">
           <span className="text-white font-black text-sm">A</span>
         </div>
-        <div>
+        <div className="flex-1">
           <div className="flex items-center gap-2">
             <span className="text-white font-bold text-sm">ALEX</span>
             <span className="inline-flex items-center gap-1 bg-green-500/20 border border-green-500/40 text-green-400 text-xs px-2 py-0.5 rounded-full font-medium">
               <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
               {lang === "no" ? "Alltid tilgjengelig" : "Always Online"}
             </span>
+            {hasSerious && (
+              <span className="inline-flex items-center gap-1 bg-amber-500/20 border border-amber-500/40 text-amber-400 text-xs px-2 py-0.5 rounded-full font-medium">
+                ✦ {lang === "no" ? "Seriøs henvendelse" : "Serious enquiry"}
+              </span>
+            )}
           </div>
           <p className="text-cyan-400/70 text-xs">{lang === "no" ? "Chief Operations Partner · IntelligentForce" : "Chief Operations Partner · IntelligentForce"}</p>
         </div>
+        {/* Clear chat button */}
+        {messages.length > 0 && (
+          <div className="relative">
+            {showClearConfirm ? (
+              <div className="flex items-center gap-1">
+                <span className="text-xs text-slate-400">{lang === "no" ? "Slett?" : "Clear?"}</span>
+                <button onClick={clearChat} className="text-xs bg-red-500/20 border border-red-500/40 text-red-400 hover:bg-red-500/30 px-2 py-1 rounded-lg transition-all">
+                  {lang === "no" ? "Ja" : "Yes"}
+                </button>
+                <button onClick={() => setShowClearConfirm(false)} className="text-xs text-slate-500 hover:text-white px-1 py-1 transition-all">
+                  {lang === "no" ? "Nei" : "No"}
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={() => setShowClearConfirm(true)}
+                title={lang === "no" ? "Slett chat-historikk" : "Clear chat history"}
+                className="w-7 h-7 rounded-full bg-white/5 hover:bg-red-500/20 border border-white/10 hover:border-red-500/40 flex items-center justify-center transition-all group"
+              >
+                <Trash2 className="w-3.5 h-3.5 text-slate-500 group-hover:text-red-400 transition-colors" />
+              </button>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Messages */}

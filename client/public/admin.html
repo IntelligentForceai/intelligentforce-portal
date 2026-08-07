@@ -498,7 +498,12 @@
       </div>
       <div class="alex-header-actions">
         <button class="voice-toggle active" id="voice-toggle" onclick="toggleVoice()" type="button" title="Talesvar av/på">🔊</button>
-        <button class="alex-minimize-btn" onclick="minimizeAlex()" type="button" title="Minimer">⌄</button>
+        <button onclick="confirmClearAdminChat()" type="button" title="Slett chat-historikk"
+          style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:8px;color:#94a3b8;font-size:.8rem;padding:.3rem .6rem;cursor:pointer;transition:all .2s"
+          onmouseover="this.style.color='#f87171';this.style.borderColor='rgba(248,113,113,.4)'"
+          onmouseout="this.style.color='#94a3b8';this.style.borderColor='rgba(255,255,255,.12)'"
+          id="clear-chat-btn">🗑️</button>
+        <button class="alex-minimize-btn" onclick="minimizeAlex()" type="button" title="Minimer">⏄</button>
       </div>
     </div>
 
@@ -697,7 +702,11 @@ function initOffice() {
   setTimeout(() => {
     document.getElementById('alex-bubble').style.display = 'flex';
     openAlex();
-    addAlexMsg("assistant", "God dag, Valdi! 👋\n\nAlle 9 agenter er online og klare. Jeg koordinerer teamet og holder full oversikt over plattformen.\n\nHva skal vi fokusere på i dag?");
+    // Load saved chat history, or show welcome message
+    const hadHistory = loadAdminChat();
+    if (!hadHistory) {
+      addAlexMsg("assistant", "God dag, Valdi! 👋\n\nAlle 9 agenter er online og klare. Jeg koordinerer teamet og holder full oversikt over plattformen.\n\nHva skal vi fokusere på i dag?");
+    }
   }, 400);
 }
 
@@ -926,8 +935,57 @@ function minimizeAlex() {
   document.getElementById('alex-overlay').classList.remove('open');
 }
 
-function addAlexMsg(role, content) {
+const ADMIN_CHAT_KEY = 'alex_admin_chat';
+
+function saveAdminChat() {
+  try { localStorage.setItem(ADMIN_CHAT_KEY, JSON.stringify(alexMessages)); } catch {}
+}
+
+function loadAdminChat() {
+  try {
+    const saved = localStorage.getItem(ADMIN_CHAT_KEY);
+    if (saved) {
+      const msgs = JSON.parse(saved);
+      if (msgs && msgs.length > 0) {
+        msgs.forEach(m => addAlexMsg(m.role, m.content, true));
+        return true;
+      }
+    }
+  } catch {}
+  return false;
+}
+
+function confirmClearAdminChat() {
+  const btn = document.getElementById('clear-chat-btn');
+  if (btn.dataset.confirm === '1') {
+    // Second click — confirm clear
+    alexMessages = [];
+    document.getElementById('alex-messages').innerHTML = '';
+    document.getElementById('suggested-prompts').style.display = 'flex';
+    try { localStorage.removeItem(ADMIN_CHAT_KEY); } catch {}
+    btn.textContent = '🗑️';
+    btn.dataset.confirm = '0';
+    btn.style.color = '#94a3b8';
+    btn.style.borderColor = 'rgba(255,255,255,.12)';
+    addAlexMsg('assistant', 'Chat-historikk slettet. Klar for ny samtale, Valdi! ✦');
+  } else {
+    // First click — ask for confirmation
+    btn.textContent = 'Bekreft?';
+    btn.dataset.confirm = '1';
+    btn.style.color = '#f87171';
+    btn.style.borderColor = 'rgba(248,113,113,.4)';
+    setTimeout(() => {
+      btn.textContent = '🗑️';
+      btn.dataset.confirm = '0';
+      btn.style.color = '#94a3b8';
+      btn.style.borderColor = 'rgba(255,255,255,.12)';
+    }, 3000);
+  }
+}
+
+function addAlexMsg(role, content, silent = false) {
   alexMessages.push({ role, content });
+  if (!silent) saveAdminChat();
   const container = document.getElementById('alex-messages');
   const div = document.createElement('div');
   div.className = 'msg ' + role;
