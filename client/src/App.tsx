@@ -98,13 +98,13 @@ function App() {
               <div className="min-h-screen flex flex-col bg-background">
                 {/* Reset scroll position on every route change */}
                 <ScrollToTop />
-                {/* Global watermark – AI team image, very subtle behind all pages */}
+                {/* Global watermark – ALEX office image, very subtle behind all pages */}
                 <div
                   style={{
                     position: "fixed",
                     inset: 0,
                     zIndex: 0,
-                    backgroundImage: "url('https://d2xsxph8kpxj0f.cloudfront.net/310519663514335084/37gsm9ZJmAXwwkBHHCppPv/hero-new-PBvKy65j8D37XDeAUauevf.webp')",
+                    backgroundImage: "url('/alex-office.webp')",
                     backgroundSize: "cover",
                     backgroundPosition: "center",
                     backgroundRepeat: "no-repeat",
