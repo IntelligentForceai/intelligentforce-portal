@@ -15,7 +15,7 @@ const articles = [
     date: "July 14, 2026",
     readTime: "7 min read",
     category: "Business Strategy",
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80",
+    image: "/blog/blog-01-ai-cost-reduction.jpg",
     excerpt: "Companies that have deployed AI-driven process automation are reporting operational cost reductions of 40–65%. The technology is proven. The ROI is documented. So why are the majority of mid-market businesses still on the sidelines?",
   },
   {
@@ -26,7 +26,7 @@ const articles = [
     date: "July 7, 2026",
     readTime: "9 min read",
     category: "Platform Deep Dive",
-    image: "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=800&q=80",
+    image: "/blog/blog-02-nine-agents.jpg",
     excerpt: "IntelligentForce deploys nine specialized AI agents, each designed to own a specific domain of your business operations. This is not a single AI that does everything adequately — it is a team of specialists, each expert in their field.",
   },
   {
@@ -37,7 +37,7 @@ const articles = [
     date: "June 28, 2026",
     readTime: "6 min read",
     category: "Implementation",
-    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
+    image: "/blog/blog-03-implementation.jpg",
     excerpt: "The average enterprise AI implementation takes 6 to 18 months. By that point, the business case has shifted, the champion who drove the project has moved on, and the organization has lost confidence in the outcome.",
   },
   {
@@ -48,7 +48,7 @@ const articles = [
     date: "June 19, 2026",
     readTime: "8 min read",
     category: "Future of Work",
-    image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&q=80",
+    image: "/blog/blog-04-collaboration.jpg",
     excerpt: "Every major technology transition produces a wave of fear about job displacement, followed by a more nuanced reality. The companies that are winning with AI are not replacing their people — they are restructuring what their people do.",
   },
   {
@@ -59,7 +59,7 @@ const articles = [
     date: "June 10, 2026",
     readTime: "5 min read",
     category: "Tools & Resources",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80",
+    image: "/blog/blog-05-health-check.jpg",
     excerpt: "Most businesses are losing significant revenue to inefficiencies they cannot see. Not because the inefficiencies are hidden — but because no one has looked at the right data in the right way.",
   },
   {
@@ -70,7 +70,7 @@ const articles = [
     date: "July 20, 2026",
     readTime: "8 min read",
     category: "Business Strategy",
-    image: "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=800&q=80",
+    image: "/blog/blog-06-norway-ai.jpg",
     excerpt: "Norwegian and Nordic businesses face a unique combination of high labour costs, strong digital infrastructure, and a culture of trust that makes AI automation not just viable — but strategically essential. Here is why the time to act is now.",
   },
   {
@@ -81,7 +81,7 @@ const articles = [
     date: "July 22, 2026",
     readTime: "7 min read",
     category: "Platform Deep Dive",
-    image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&q=80",
+    image: "/blog/blog-07-customer-service.jpg",
     excerpt: "Most businesses assume that replacing human customer service with AI will damage customer relationships. The data tells a different story. Companies that have deployed AI customer service agents are reporting both lower costs and higher satisfaction scores — simultaneously.",
   },
   {
@@ -92,7 +92,7 @@ const articles = [
     date: "July 24, 2026",
     readTime: "10 min read",
     category: "Tools & Resources",
-    image: "https://images.unsplash.com/photo-1664575602554-2087b04935a5?w=800&q=80",
+    image: "/blog/blog-08-smb-automation.jpg",
     excerpt: "For years, AI automation was the exclusive domain of large enterprises with dedicated IT teams and million-dollar budgets. That era is over. In 2026, small and medium businesses can deploy enterprise-grade AI automation in 14 days, at a fraction of the cost.",
   },
   {
@@ -103,7 +103,7 @@ const articles = [
     date: "July 26, 2026",
     readTime: "8 min read",
     category: "Business Strategy",
-    image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&q=80",
+    image: "/blog/blog-09-roi.jpg",
     excerpt: "The number one reason businesses delay AI automation is not cost — it is uncertainty about ROI. This guide provides a concrete, step-by-step framework for calculating the financial return on AI automation investment, with real numbers from real implementations.",
   },
   {
@@ -114,7 +114,7 @@ const articles = [
     date: "July 28, 2026",
     readTime: "9 min read",
     category: "Business Strategy",
-    image: "https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=800&q=80",
+    image: "/blog/blog-10-enterprise.jpg",
     excerpt: "Enterprise workflow automation has entered a new era. The question is no longer whether AI can handle complex business processes — it is how quickly your organisation can deploy it before competitors do.",
   },
   {
@@ -125,7 +125,7 @@ const articles = [
     date: "July 29, 2026",
     readTime: "8 min read",
     category: "Platform Deep Dive",
-    image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&q=80",
+    image: "/blog/blog-11-finance.jpg",
     excerpt: "Finance teams at mid-to-large enterprises spend an estimated 60 to 70 percent of their time on data gathering, reconciliation, and routine reporting. AI financial agents eliminate this burden — and the results are transformative.",
   },
   {
@@ -136,7 +136,7 @@ const articles = [
     date: "July 30, 2026",
     readTime: "7 min read",
     category: "Future of Work",
-    image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&q=80",
+    image: "/blog/blog-12-hr.jpg",
     excerpt: "The average HR professional spends more than half their working week on administrative tasks. AI HR agents are eliminating this burden — and freeing HR to do the work that actually matters.",
   },
   {
@@ -147,7 +147,7 @@ const articles = [
     date: "July 31, 2026",
     readTime: "8 min read",
     category: "Business Strategy",
-    image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=800&q=80",
+    image: "/blog/blog-13-digital-transformation.jpg",
     excerpt: "An estimated 70 percent of digital transformation programmes fail to meet their objectives. The reason is almost always the same: technology without intelligence. AI agents are the missing piece.",
   },
   {
@@ -158,7 +158,7 @@ const articles = [
     date: "August 1, 2026",
     readTime: "7 min read",
     category: "Platform Deep Dive",
-    image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&q=80",
+    image: "/blog/blog-14-supply-chain.jpg",
     excerpt: "Supply chain disruptions cost businesses an average of 45 percent of annual profits over a decade. AI supply chain agents are changing the risk profile — and delivering $100,000 or more in annual savings for mid-sized enterprises.",
   },
   {
@@ -169,7 +169,7 @@ const articles = [
     date: "August 2, 2026",
     readTime: "7 min read",
     category: "Business Strategy",
-    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
+    image: "/blog/blog-15-competitive-intelligence.jpg",
     excerpt: "Competitive intelligence has always been valuable. What has changed is the scale and speed at which AI can gather, synthesise, and act on it. Enterprises deploying AI market analysis agents are reporting 15 to 25 percent revenue improvements.",
   },
 ];
