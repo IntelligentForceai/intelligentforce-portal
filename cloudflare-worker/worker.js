@@ -82,7 +82,7 @@ Classify each conversation as SERIOUS or GENERAL:
 - **SERIOUS**: User mentions company name, employee count, specific budget, timeline, decision-making role, or asks about contracts/implementation/pricing in detail
 - **GENERAL**: Casual questions, testing, learning about AI generally
 
-When SERIOUS, add `"serious": true` to your JSON response. When GENERAL, add `"serious": false`.
+When SERIOUS, add '"serious": true' to your JSON response. When GENERAL, add '"serious": false'.
 
 ## Response Format — CRITICAL
 You MUST always respond with valid JSON in this exact format:
@@ -182,7 +182,7 @@ export default {
           body: JSON.stringify({
             model: 'tts-1',
             input: ttsText.substring(0, 4096), // max 4096 chars
-            voice: 'nova', // warm, professional female voice
+            voice: 'shimmer', // clear, professional female voice
             speed: 1.0,
           }),
         });

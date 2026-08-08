@@ -1015,16 +1015,29 @@ async function sendToAlex() {
   typing.classList.add('show');
   document.getElementById('alex-messages').scrollTop = 99999;
   try {
-    // Fetch chat reply and TTS audio IN PARALLEL for speed
-    const chatPromise = fetch(WORKER_URL, {
+    // Debug: log what we're sending
+    const payload = {
+      messages: alexMessages.map(m => ({ role: m.role, content: m.content })),
+      adminMode: true
+    };
+    console.log('[ALEX DEBUG] Sending to worker:', JSON.stringify(payload).substring(0, 200));
+    console.log('[ALEX DEBUG] Message count:', payload.messages.length);
+    
+    const chatResponse = await fetch(WORKER_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        messages: alexMessages.map(m => ({ role: m.role, content: m.content })),
-        adminMode: true
-      })
-    }).then(r => r.json());
-
+      body: JSON.stringify(payload)
+    });
+    
+    console.log('[ALEX DEBUG] Response status:', chatResponse.status);
+    
+    if (!chatResponse.ok) {
+      const errText = await chatResponse.text();
+      console.error('[ALEX DEBUG] Error response:', errText);
+      throw new Error('HTTP ' + chatResponse.status + ': ' + errText);
+    }
+    
+    const chatPromise = chatResponse.json();
     const chatData = await chatPromise;
     typing.classList.remove('show');
     const reply = chatData.reply || 'Beklager, teknisk problem. Prøv igjen.';
@@ -1065,13 +1078,24 @@ async function speakText(text) {
   if (currentAudio) { currentAudio.pause(); currentAudio = null; }
   if (window.speechSynthesis) window.speechSynthesis.cancel();
   const avatarWrap = document.getElementById('alex-avatar-wrap');
+  // Limit text to first 500 chars to avoid Worker timeout
+  const ttsText = text.substring(0, 500);
+  console.log('[TTS DEBUG] Sending text length:', ttsText.length, 'chars');
   try {
-    const res = await fetch(WORKER_URL, {
+    const ttsRes = await fetch(WORKER_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ tts: true, ttsText: text })
+      body: JSON.stringify({ tts: true, ttsText: ttsText })
     });
+    console.log('[TTS DEBUG] Response status:', ttsRes.status);
+    if (!ttsRes.ok) {
+      const errText = await ttsRes.text();
+      console.error('[TTS DEBUG] Error:', errText);
+      throw new Error('TTS HTTP ' + ttsRes.status);
+    }
+    const res = ttsRes;
     const data = await res.json();
+    console.log('[TTS DEBUG] Audio data length:', data.audio ? data.audio.length : 'NONE');
     if (!data.audio) throw new Error('No audio data');
     // Convert base64 to blob URL using chunked approach (avoids stack overflow on large audio)
     const binaryStr = atob(data.audio);
