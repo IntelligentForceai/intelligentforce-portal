@@ -1058,14 +1058,41 @@ function toggleVoice() {
   }
 }
 
-// ── TTS — ALEX speaks via OpenAI TTS using AudioContext (bypasses autoplay policy) ──
-function speakText(text) {
+// ── TTS — ALEX speaks with OpenAI Nova voice ──
+async function speakText(text) {
   if (!text || !voiceEnabled) return;
-  // Stop any ongoing speech first
+  // Stop any ongoing speech
   if (currentAudio) { currentAudio.pause(); currentAudio = null; }
   if (window.speechSynthesis) window.speechSynthesis.cancel();
   const avatarWrap = document.getElementById('alex-avatar-wrap');
-  speakFallback(text, avatarWrap);
+  try {
+    const res = await fetch(WORKER_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tts: true, ttsText: text })
+    });
+    const data = await res.json();
+    if (!data.audio) throw new Error('No audio data');
+    // Convert base64 to blob URL — avoids AudioContext autoplay issues
+    const bytes = atob(data.audio);
+    const arr = new Uint8Array(bytes.length);
+    for (let i = 0; i < bytes.length; i++) arr[i] = bytes.charCodeAt(i);
+    const blob = new Blob([arr], { type: 'audio/mpeg' });
+    const url = URL.createObjectURL(blob);
+    const audio = new Audio(url);
+    currentAudio = audio;
+    avatarWrap && avatarWrap.classList.add('speaking');
+    audio.onended = audio.onerror = () => {
+      avatarWrap && avatarWrap.classList.remove('speaking');
+      URL.revokeObjectURL(url);
+      if (currentAudio === audio) currentAudio = null;
+    };
+    // Play — works because user already interacted with the page
+    await audio.play();
+  } catch(e) {
+    console.warn('Nova TTS failed, using browser voice:', e);
+    speakFallback(text, avatarWrap);
+  }
 }
 
 // Web Speech API — ALEX speaks using browser built-in synthesis
