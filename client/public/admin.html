@@ -1081,10 +1081,12 @@ function toggleVoice() {
 }
 
 function toggleTTSLang() {
-  ttsLang = ttsLang === 'no' ? 'en' : 'no';
+  // Toggle between muted and unmuted voice (EN only with Charlotte)
+  voiceEnabled = !voiceEnabled;
   const btn = document.getElementById('lang-toggle');
-  btn.textContent = ttsLang === 'no' ? 'NO' : 'EN';
-  btn.style.color = ttsLang === 'no' ? '#06b6d4' : '#a78bfa';
+  btn.textContent = voiceEnabled ? '🔊 EN' : '🔇 EN';
+  btn.style.color = voiceEnabled ? '#06b6d4' : '#6b7280';
+  if (!voiceEnabled) stopAudio();
 }
 
 // ── TTS — ALEX speaks with OpenAI Nova voice ──
@@ -1106,8 +1108,10 @@ async function speakText(text) {
     .replace(/`(.+?)`/g, '$1')
     .replace(/\[(.+?)\]\(.+?\)/g, '$1')
     .replace(/✦/g, '')
+    .replace(/\|.+?\|/g, '') // remove table rows
+    .replace(/[-]{3,}/g, '') // remove horizontal rules
     .trim()
-    .substring(0, 500); // max 500 chars for ElevenLabs
+    .substring(0, 800); // max 800 chars for ElevenLabs
   try {
     const ttsRes = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${ELEVENLABS_VOICE_ID}`, {
       method: 'POST',
