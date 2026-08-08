@@ -168,11 +168,15 @@ export default {
 
     try {
       const body = await request.json();
-      const { messages, adminMode, tts, ttsText } = body;
+      const { messages, adminMode, tts, ttsText, ttsLang } = body;
 
       // ── TTS endpoint ──
       // When tts=true, generate speech from ttsText using OpenAI TTS
+
       if (tts && ttsText) {
+        // Choose voice based on language: Norwegian = alloy (neutral, works well for NO)
+        // English = shimmer (clear female voice)
+        const voice = (ttsLang === 'no') ? 'nova' : 'shimmer';
         const ttsResponse = await fetch('https://api.openai.com/v1/audio/speech', {
           method: 'POST',
           headers: {
@@ -181,9 +185,9 @@ export default {
           },
           body: JSON.stringify({
             model: 'tts-1',
-            input: ttsText.substring(0, 4096), // max 4096 chars
-            voice: 'shimmer', // clear, professional female voice
-            speed: 1.0,
+            input: ttsText.substring(0, 400), // limit to avoid timeout
+            voice: voice,
+            speed: 0.95,
           }),
         });
         if (!ttsResponse.ok) {

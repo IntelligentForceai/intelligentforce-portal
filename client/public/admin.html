@@ -498,6 +498,8 @@
       </div>
       <div class="alex-header-actions">
         <button class="voice-toggle active" id="voice-toggle" onclick="toggleVoice()" type="button" title="Talesvar av/på">🔊</button>
+        <button id="lang-toggle" onclick="toggleTTSLang()" type="button" title="Bytt talesvar-språk"
+          style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:8px;color:#06b6d4;font-size:.75rem;padding:.3rem .5rem;cursor:pointer;transition:all .2s;font-weight:700">NO</button>
         <button onclick="confirmClearAdminChat()" type="button" title="Slett chat-historikk"
           style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:8px;color:#94a3b8;font-size:.8rem;padding:.3rem .6rem;cursor:pointer;transition:all .2s"
           onmouseover="this.style.color='#f87171';this.style.borderColor='rgba(248,113,113,.4)'"
@@ -933,6 +935,14 @@ function openAlex() {
 function minimizeAlex() {
   alexOpen = false;
   document.getElementById('alex-overlay').classList.remove('open');
+  stopAudio(); // Stop voice when minimizing
+}
+
+function stopAudio() {
+  if (currentAudio) { currentAudio.pause(); currentAudio = null; }
+  if (window.speechSynthesis) window.speechSynthesis.cancel();
+  const avatarWrap = document.getElementById('alex-avatar-wrap');
+  if (avatarWrap) avatarWrap.classList.remove('speaking');
 }
 
 const ADMIN_CHAT_KEY = 'alex_admin_chat';
@@ -959,6 +969,7 @@ function confirmClearAdminChat() {
   const btn = document.getElementById('clear-chat-btn');
   if (btn.dataset.confirm === '1') {
     // Second click — confirm clear
+    stopAudio(); // Stop voice immediately
     alexMessages = [];
     document.getElementById('alex-messages').innerHTML = '';
     document.getElementById('suggested-prompts').style.display = 'flex';
@@ -1059,16 +1070,21 @@ async function sendToAlex() {
 }
 
 // ── VOICE TOGGLE ──
+let ttsLang = 'no'; // 'no' = Norwegian, 'en' = English
+
 function toggleVoice() {
   voiceEnabled = !voiceEnabled;
   const btn = document.getElementById('voice-toggle');
   btn.textContent = voiceEnabled ? '🔊' : '🔇';
   btn.classList.toggle('active', voiceEnabled);
-  if (!voiceEnabled && currentAudio) {
-    currentAudio.pause();
-    currentAudio = null;
-    document.getElementById('alex-avatar-wrap').classList.remove('speaking');
-  }
+  if (!voiceEnabled) stopAudio();
+}
+
+function toggleTTSLang() {
+  ttsLang = ttsLang === 'no' ? 'en' : 'no';
+  const btn = document.getElementById('lang-toggle');
+  btn.textContent = ttsLang === 'no' ? 'NO' : 'EN';
+  btn.style.color = ttsLang === 'no' ? '#06b6d4' : '#a78bfa';
 }
 
 // ── TTS — ALEX speaks with OpenAI Nova voice ──
@@ -1078,24 +1094,16 @@ async function speakText(text) {
   if (currentAudio) { currentAudio.pause(); currentAudio = null; }
   if (window.speechSynthesis) window.speechSynthesis.cancel();
   const avatarWrap = document.getElementById('alex-avatar-wrap');
-  // Limit text to first 500 chars to avoid Worker timeout
-  const ttsText = text.substring(0, 500);
-  console.log('[TTS DEBUG] Sending text length:', ttsText.length, 'chars');
+  // Limit text to first 400 chars to avoid Worker timeout
+  const ttsText = text.substring(0, 400);
   try {
     const ttsRes = await fetch(WORKER_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ tts: true, ttsText: ttsText })
+      body: JSON.stringify({ tts: true, ttsText: ttsText, ttsLang: ttsLang })
     });
-    console.log('[TTS DEBUG] Response status:', ttsRes.status);
-    if (!ttsRes.ok) {
-      const errText = await ttsRes.text();
-      console.error('[TTS DEBUG] Error:', errText);
-      throw new Error('TTS HTTP ' + ttsRes.status);
-    }
-    const res = ttsRes;
-    const data = await res.json();
-    console.log('[TTS DEBUG] Audio data length:', data.audio ? data.audio.length : 'NONE');
+    if (!ttsRes.ok) throw new Error('TTS HTTP ' + ttsRes.status);
+    const data = await ttsRes.json();
     if (!data.audio) throw new Error('No audio data');
     // Convert base64 to blob URL using chunked approach (avoids stack overflow on large audio)
     const binaryStr = atob(data.audio);
