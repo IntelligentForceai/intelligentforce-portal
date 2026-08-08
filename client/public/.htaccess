@@ -2,8 +2,15 @@ Options -MultiViews
 RewriteEngine On
 RewriteBase /
 
+# Canonical redirect: www -> non-www (fixes Google duplicate content)
+RewriteCond %{HTTP_HOST} ^www\.intelligentforce\.ai [NC]
+RewriteRule ^(.*)$ https://intelligentforce.ai/$1 [R=301,L]
+
 # Allow direct access to /videos/ directory (mp4, webm)
 RewriteRule ^videos/ - [L]
+
+# Allow direct access to /blog/ directory (images)
+RewriteRule ^blog/ - [L]
 
 # Serve existing files and directories directly
 RewriteCond %{REQUEST_FILENAME} !-f
