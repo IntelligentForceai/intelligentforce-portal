@@ -1101,7 +1101,7 @@ async function speakText(text) {
   if (window.speechSynthesis) window.speechSynthesis.cancel();
   const avatarWrap = document.getElementById('alex-avatar-wrap');
   // Clean text - remove markdown symbols but keep full content
-  // Clean markdown and extract first meaningful paragraph for TTS
+  // Clean markdown and extract first 2-3 sentences for TTS (skip bullet lists)
   const stripped = text
     .replace(/\*\*(.+?)\*\*/g, '$1')
     .replace(/\*(.+?)\*/g, '$1')
@@ -1109,18 +1109,22 @@ async function speakText(text) {
     .replace(/`(.+?)`/g, '$1')
     .replace(/\[(.+?)\]\(.+?\)/g, '$1')
     .replace(/✦/g, '')
-    .replace(/\|.+?\|/g, '')
+    .replace(/\|.+?\|/g, '') // remove tables
+    .replace(/^[-*+]\s.+$/gm, '') // remove bullet list items
+    .replace(/^\d+\.\s.+$/gm, '') // remove numbered list items
     .replace(/[-]{3,}/g, '')
-    .replace(/\n{2,}/g, '\n')
+    .replace(/\n{2,}/g, ' ')
+    .replace(/\n/g, ' ')
+    .replace(/\s{2,}/g, ' ')
     .trim();
-  // Get first 2 sentences or max 400 chars — always ends at sentence boundary
+  // Get first sentences up to 350 chars, always at sentence boundary
   const sentences = stripped.match(/[^.!?]+[.!?]+/g) || [stripped];
   let cleanText = '';
   for (const s of sentences) {
-    if ((cleanText + s).length > 400) break;
-    cleanText += s + ' ';
+    if (cleanText.length > 0 && (cleanText + s).length > 350) break;
+    cleanText += s.trim() + ' ';
   }
-  cleanText = cleanText.trim() || stripped.substring(0, 400);
+  cleanText = cleanText.trim() || stripped.substring(0, 350);
   try {
     const ttsRes = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${ELEVENLABS_VOICE_ID}`, {
       method: 'POST',
