@@ -1088,34 +1088,43 @@ function toggleTTSLang() {
 }
 
 // ── TTS — ALEX speaks with OpenAI Nova voice ──
+// ElevenLabs config
+const ELEVENLABS_API_KEY = 'sk_1f4c089592a715d0f1ac88779f948c2e8b8ed3462ce94e53';
+const ELEVENLABS_VOICE_ID = 'oJTQUsvp374heP3mzGAx';
+
 async function speakText(text) {
   if (!text || !voiceEnabled) return;
   // Stop any ongoing speech
   if (currentAudio) { currentAudio.pause(); currentAudio = null; }
   if (window.speechSynthesis) window.speechSynthesis.cancel();
   const avatarWrap = document.getElementById('alex-avatar-wrap');
-  // Extract first sentence only (max 120 chars) to avoid Worker CPU timeout
-  const firstSentence = text.split(/[.!?\n]/)[0].trim();
-  const ttsText = firstSentence.substring(0, 120);
+  // Clean text - remove markdown symbols but keep full content
+  const cleanText = text
+    .replace(/\*\*(.+?)\*\*/g, '$1')
+    .replace(/\*(.+?)\*/g, '$1')
+    .replace(/#{1,6}\s/g, '')
+    .replace(/`(.+?)`/g, '$1')
+    .replace(/\[(.+?)\]\(.+?\)/g, '$1')
+    .replace(/✦/g, '')
+    .trim()
+    .substring(0, 500); // max 500 chars for ElevenLabs
   try {
-    const ttsRes = await fetch(WORKER_URL, {
+    const ttsRes = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${ELEVENLABS_VOICE_ID}`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ tts: true, ttsText: ttsText, ttsLang: ttsLang })
+      headers: {
+        'xi-api-key': ELEVENLABS_API_KEY,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        text: cleanText,
+        model_id: 'eleven_multilingual_v2',
+        output_format: 'mp3_44100_128',
+        voice_settings: { stability: 0.5, similarity_boost: 0.75, style: 0.3, use_speaker_boost: true }
+      })
     });
-    if (!ttsRes.ok) throw new Error('TTS HTTP ' + ttsRes.status);
-    const data = await ttsRes.json();
-    if (!data.audio) throw new Error('No audio data');
-    // Convert base64 to blob URL using chunked approach (avoids stack overflow on large audio)
-    const binaryStr = atob(data.audio);
-    const len = binaryStr.length;
-    const arr = new Uint8Array(len);
-    const CHUNK = 8192;
-    for (let i = 0; i < len; i += CHUNK) {
-      const end = Math.min(i + CHUNK, len);
-      for (let j = i; j < end; j++) arr[j] = binaryStr.charCodeAt(j);
-    }
-    const blob = new Blob([arr], { type: 'audio/mpeg' });
+    if (!ttsRes.ok) throw new Error('ElevenLabs HTTP ' + ttsRes.status);
+    const arrayBuffer = await ttsRes.arrayBuffer();
+    const blob = new Blob([arrayBuffer], { type: 'audio/mpeg' });
     const url = URL.createObjectURL(blob);
     const audio = new Audio(url);
     currentAudio = audio;
@@ -1125,10 +1134,9 @@ async function speakText(text) {
       URL.revokeObjectURL(url);
       if (currentAudio === audio) currentAudio = null;
     };
-    // Play — works because user already interacted with the page
     await audio.play();
   } catch(e) {
-    console.warn('Nova TTS failed, using browser voice:', e);
+    console.warn('ElevenLabs TTS failed, using browser voice:', e);
     speakFallback(text, avatarWrap);
   }
 }
