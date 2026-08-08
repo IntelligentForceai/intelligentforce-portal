@@ -1073,10 +1073,15 @@ async function speakText(text) {
     });
     const data = await res.json();
     if (!data.audio) throw new Error('No audio data');
-    // Convert base64 to blob URL — avoids AudioContext autoplay issues
-    const bytes = atob(data.audio);
-    const arr = new Uint8Array(bytes.length);
-    for (let i = 0; i < bytes.length; i++) arr[i] = bytes.charCodeAt(i);
+    // Convert base64 to blob URL using chunked approach (avoids stack overflow on large audio)
+    const binaryStr = atob(data.audio);
+    const len = binaryStr.length;
+    const arr = new Uint8Array(len);
+    const CHUNK = 8192;
+    for (let i = 0; i < len; i += CHUNK) {
+      const end = Math.min(i + CHUNK, len);
+      for (let j = i; j < end; j++) arr[j] = binaryStr.charCodeAt(j);
+    }
     const blob = new Blob([arr], { type: 'audio/mpeg' });
     const url = URL.createObjectURL(blob);
     const audio = new Audio(url);
