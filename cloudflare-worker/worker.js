@@ -185,7 +185,7 @@ export default {
           },
           body: JSON.stringify({
             model: 'tts-1',
-            input: ttsText.substring(0, 400), // limit to avoid timeout
+            input: ttsText.substring(0, 120), // limit to avoid CPU timeout
             voice: voice,
             speed: 0.95,
           }),

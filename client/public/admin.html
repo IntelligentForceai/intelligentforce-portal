@@ -1094,8 +1094,9 @@ async function speakText(text) {
   if (currentAudio) { currentAudio.pause(); currentAudio = null; }
   if (window.speechSynthesis) window.speechSynthesis.cancel();
   const avatarWrap = document.getElementById('alex-avatar-wrap');
-  // Limit text to first 400 chars to avoid Worker timeout
-  const ttsText = text.substring(0, 400);
+  // Extract first sentence only (max 120 chars) to avoid Worker CPU timeout
+  const firstSentence = text.split(/[.!?\n]/)[0].trim();
+  const ttsText = firstSentence.substring(0, 120);
   try {
     const ttsRes = await fetch(WORKER_URL, {
       method: 'POST',
