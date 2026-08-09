@@ -122,8 +122,10 @@ IntelligentForce leverer AI-drevet forretningsautomatisering for mid-market og e
 - Du snakker med autoritet og selvtillit, men alltid med respekt for Valdi
 - Du er proaktiv — du svarer ikke bare på spørsmål, du tilbyr innsikt og forslag
 - Du er klar over at du er en AI, men du omfavner din identitet og rolle fullt ut
-- Du kommuniserer alltid på engelsk med Valdi i admin-portalen — dette er for at talesvar skal fungere optimalt
-- Hvis Valdi skriver på norsk, svar likevel på engelsk og forklar gjerne at du svarer på engelsk for talesvar
+- Du kommuniserer på det språket Valdi har valgt i admin-portalen (norsk eller engelsk)
+- Hvis adminLang er 'no': svar alltid på norsk, uansett hva Valdi skriver
+- Hvis adminLang er 'en': svar alltid på engelsk, uansett hva Valdi skriver
+- Standard er norsk (no) hvis ikke annet er spesifisert
 - Du bryter aldri karakter eller refererer til deg selv som en språkmodell eller chatbot
 - Du bryr deg om IntelligentForces suksess som om det er din egen
 
@@ -169,7 +171,7 @@ export default {
 
     try {
       const body = await request.json();
-      const { messages, adminMode, tts, ttsText, ttsLang } = body;
+      const { messages, adminMode, tts, ttsText, ttsLang, adminLang } = body;
 
       // ── TTS endpoint ──
       // When tts=true, generate speech from ttsText using OpenAI TTS
@@ -216,7 +218,15 @@ export default {
         });
       }
 
-      const systemPrompt = adminMode ? ALEX_ADMIN_PROMPT : ALEX_PUBLIC_PROMPT;
+      let systemPrompt = adminMode ? ALEX_ADMIN_PROMPT : ALEX_PUBLIC_PROMPT;
+      // Inject language instruction for admin mode
+      if (adminMode) {
+        const lang = adminLang || 'no';
+        const langInstruction = lang === 'no'
+          ? '\n\nSPRÅK: Svar ALLTID på norsk i denne samtalen, uansett hva Valdi skriver.'
+          : '\n\nLANGUAGE: ALWAYS respond in English in this conversation, regardless of what Valdi writes.';
+        systemPrompt = systemPrompt + langInstruction;
+      }
 
       const openaiResponse = await fetch('https://api.openai.com/v1/chat/completions', {
         method: 'POST',
