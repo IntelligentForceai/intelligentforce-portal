@@ -1204,13 +1204,12 @@ function speakNorwegian(text, avatarWrap) {
     utter.pitch = 1.05;
     utter.volume = 1.0;
     const voices = window.speechSynthesis.getVoices();
-    // Find best Norwegian female voice
+    // Use Microsoft Jon (Norwegian Bokmål) - the available Norwegian voice
     const pick =
-      voices.find(v => v.lang === 'nb-NO' && v.name.toLowerCase().includes('female')) ||
+      voices.find(v => v.name === 'Microsoft Jon - Norwegian (Bokmål)') ||
       voices.find(v => v.lang === 'nb-NO') ||
       voices.find(v => v.lang.startsWith('nb')) ||
       voices.find(v => v.lang.startsWith('no')) ||
-      voices.find(v => v.name.toLowerCase().includes('norwegian')) ||
       null;
     if (pick) utter.voice = pick;
     else utter.lang = 'nb-NO';
