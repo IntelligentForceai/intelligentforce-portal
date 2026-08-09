@@ -1129,7 +1129,13 @@ async function speakText(text) {
     .replace(/\s{2,}/g, ' ')
     .trim();
 
-  // Split into chunks of max 300 chars at sentence boundaries
+  // Norwegian: use Web Speech API with nb-NO for genuine Norwegian pronunciation
+  if (adminLang === 'no') {
+    speakNorwegian(stripped, avatarWrap);
+    return;
+  }
+
+  // English: use ElevenLabs Charlotte — split into chunks of max 300 chars
   const allSentences = stripped.match(/[^.!?]+[.!?]+/g) || [stripped];
   const chunks = [];
   let chunk = '';
@@ -1144,7 +1150,6 @@ async function speakText(text) {
   if (chunk.trim()) chunks.push(chunk.trim());
   if (!chunks.length) return;
 
-  // Play chunks sequentially
   async function playChunk(index) {
     if (index >= chunks.length || !voiceEnabled) {
       avatarWrap && avatarWrap.classList.remove('speaking');
@@ -1174,7 +1179,6 @@ async function speakText(text) {
         audio.play().catch(resolve);
       });
       if (currentAudio === audio) currentAudio = null;
-      // Play next chunk
       await playChunk(index + 1);
     } catch(e) {
       console.warn('ElevenLabs chunk failed:', e);
@@ -1187,6 +1191,37 @@ async function speakText(text) {
   } catch(e) {
     console.warn('ElevenLabs TTS failed, using browser voice:', e);
     speakFallback(text, avatarWrap);
+  }
+}
+
+// Norwegian TTS — use Web Speech API with nb-NO for genuine Norwegian
+function speakNorwegian(text, avatarWrap) {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  function doSpeak() {
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.rate = 0.92;
+    utter.pitch = 1.05;
+    utter.volume = 1.0;
+    const voices = window.speechSynthesis.getVoices();
+    // Find best Norwegian female voice
+    const pick =
+      voices.find(v => v.lang === 'nb-NO' && v.name.toLowerCase().includes('female')) ||
+      voices.find(v => v.lang === 'nb-NO') ||
+      voices.find(v => v.lang.startsWith('nb')) ||
+      voices.find(v => v.lang.startsWith('no')) ||
+      voices.find(v => v.name.toLowerCase().includes('norwegian')) ||
+      null;
+    if (pick) utter.voice = pick;
+    else utter.lang = 'nb-NO';
+    avatarWrap && avatarWrap.classList.add('speaking');
+    utter.onend = utter.onerror = () => avatarWrap && avatarWrap.classList.remove('speaking');
+    window.speechSynthesis.speak(utter);
+  }
+  if (window.speechSynthesis.getVoices().length === 0) {
+    window.speechSynthesis.onvoiceschanged = doSpeak;
+  } else {
+    doSpeak();
   }
 }
 
