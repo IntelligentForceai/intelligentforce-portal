@@ -1129,10 +1129,9 @@ async function speakText(text) {
     .replace(/\s{2,}/g, ' ')
     .trim();
 
-  // Norwegian: use Web Speech API with nb-NO for genuine Norwegian pronunciation
+  // Norwegian: text only, no TTS (no good Norwegian female voice available)
   if (adminLang === 'no') {
-    speakNorwegian(stripped, avatarWrap);
-    return;
+    return; // Show text only, no voice
   }
 
   // English: use ElevenLabs Charlotte — split into chunks of max 300 chars
