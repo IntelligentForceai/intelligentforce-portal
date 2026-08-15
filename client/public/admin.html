@@ -356,6 +356,109 @@
     .modal-send { padding: .55rem 1.1rem; background: rgba(6,182,212,.2); border: 1px solid rgba(6,182,212,.3); border-radius: 11px; color: #06b6d4; cursor: pointer; font-size: .8rem; font-family: inherit; font-weight: 700; transition: background .2s; }
     .modal-send:hover { background: rgba(6,182,212,.35); }
 
+    /* ── LIGHT/DARK THEME & WORKSPACE UPGRADE ── */
+    :root {
+      --if-cyan: #089fbc;
+      --if-bg: #f3f7fa;
+      --if-surface: #ffffff;
+      --if-surface-soft: #f8fbfc;
+      --if-card: #ffffff;
+      --if-input: #f8fbfc;
+      --if-text: #102a43;
+      --if-muted: #607184;
+      --if-subtle: #8b9aaa;
+      --if-border: #dbe7ee;
+      --if-border-soft: #e8f0f4;
+      --if-hover: #effbfc;
+      --if-shadow: 0 10px 30px rgba(15, 42, 67, .08);
+    }
+    body[data-theme="dark"] {
+      --if-bg: #050a14;
+      --if-surface: #070d1c;
+      --if-surface-soft: #0a1020;
+      --if-card: #0d1829;
+      --if-input: #070d1c;
+      --if-text: #f8fafc;
+      --if-muted: #94a3b8;
+      --if-subtle: #64748b;
+      --if-border: rgba(255,255,255,.09);
+      --if-border-soft: rgba(255,255,255,.07);
+      --if-hover: #0f1f35;
+      --if-shadow: 0 20px 45px rgba(0,0,0,.28);
+    }
+    body { background: var(--if-bg); color: var(--if-text); }
+    #login-screen { background: radial-gradient(ellipse at 50% 0%, rgba(6,182,212,.15) 0%, transparent 64%), var(--if-bg); }
+    .login-header p, .field label, .agent-role, .platform-link-desc, .feed-header span, .feed-agent-name, .topbar-clock, .alex-header-info small, .msg-time { color: var(--if-muted); }
+    .login-card, .agent-card, .app-tile, .platform-link-card, .feed-item, .agent-modal-box, .msg.assistant .msg-bubble { background: var(--if-card); border-color: var(--if-border); box-shadow: var(--if-shadow); }
+    .field input, .alex-input-area textarea, .modal-input-row input { background: var(--if-input); border-color: var(--if-border); color: var(--if-text); }
+    .field input::placeholder, .alex-input-area textarea::placeholder { color: var(--if-subtle); }
+    .topbar { background: #081527; border-color: rgba(255,255,255,.09); box-shadow: 0 2px 14px rgba(6,24,44,.14); }
+    .topbar-title { color: #ffffff; }
+    .topbar-sub { color: #67e8f9; }
+    .agents-panel, .feed-panel { background: var(--if-surface); border-color: var(--if-border); }
+    .agents-header, .feed-header, .workspace-tabs, .alex-chat-header, .alex-input-area, .modal-header, .modal-input-row { border-color: var(--if-border-soft); }
+    .workspace-panel { background: var(--if-bg); }
+    .workspace-tabs { background: var(--if-surface); }
+    .workspace-content { padding: 1.35rem; }
+    .agents-header h2, .feed-header h3, .agent-name, .platform-link-name, .alex-header-info strong, .modal-header { color: var(--if-text); }
+    .tab-btn { color: var(--if-muted); padding: .9rem 1rem; }
+    .tab-btn:hover:not(.active) { color: var(--if-text); background: var(--if-surface-soft); }
+    .apps-section-title { color: var(--if-muted); font-size: .71rem; margin-top: 1.5rem; }
+    .agent-card { padding: .72rem .78rem; gap: .75rem; }
+    .agent-card:hover, .app-tile:hover, .platform-link-card:hover { background: var(--if-hover); border-color: rgba(8,159,188,.45); }
+    .agent-icon { width: 42px; height: 42px; border-radius: 12px; font-size: 1.2rem; }
+    .agent-name { font-size: .79rem; }
+    .agent-role { font-size: .65rem; margin-top: 2px; }
+    .apps-grid { grid-template-columns: repeat(auto-fill, minmax(122px, 1fr)); gap: .8rem; }
+    .app-tile { min-height: 122px; padding: 1rem .7rem .85rem; gap: .6rem; border-radius: 16px; box-shadow: 0 4px 15px rgba(15,42,67,.045); }
+    .app-emoji { font-size: 2.25rem; }
+    .app-name { color: var(--if-text); font-size: .7rem; }
+    .platform-links-grid { gap: .85rem; }
+    .platform-link-card { padding: 1.05rem; }
+    .platform-link-icon { font-size: 1.75rem; }
+    .feed-item { box-shadow: none; background: var(--if-surface-soft); border-color: var(--if-border-soft); padding: .6rem .7rem; }
+    .feed-text { color: var(--if-muted); }
+    .alex-bubble-label { background: var(--if-card); color: var(--if-cyan); }
+    .alex-chat-box { background: var(--if-surface); border-color: rgba(8,159,188,.35); box-shadow: 0 30px 75px rgba(15,42,67,.26); }
+    .alex-chat-header { background: linear-gradient(135deg, rgba(6,182,212,.11), rgba(37,99,235,.06)); }
+    .alex-online-dot { border-color: var(--if-surface); }
+    .voice-toggle, .alex-minimize-btn, .alex-mic-btn, .modal-close { background: var(--if-surface-soft); border-color: var(--if-border); color: var(--if-muted); }
+    .voice-toggle:hover, .alex-minimize-btn:hover, .modal-close:hover { background: var(--if-hover); color: var(--if-text); }
+    .msg.user .msg-bubble { color: var(--if-text); }
+    body:not([data-theme="dark"]) .msg.user .msg-bubble { color: #123147; background: rgba(6,182,212,.12); }
+    .prompt-chip { color: var(--if-muted); border-color: var(--if-border); background: var(--if-surface-soft); }
+    .prompt-card { background: var(--if-card) !important; border-color: var(--if-border) !important; box-shadow: 0 4px 15px rgba(15,42,67,.04); }
+    .prompt-card:hover { background: var(--if-hover) !important; border-color: rgba(8,159,188,.45) !important; }
+    .prompt-card > div { color: var(--if-text) !important; }
+    .prompt-card pre { color: var(--if-muted) !important; }
+    .prompt-card button { background: rgba(6,182,212,.11) !important; border-color: rgba(6,182,212,.32) !important; color: var(--if-cyan) !important; }
+    #prompt-search { background: var(--if-input) !important; border-color: var(--if-border) !important; color: var(--if-text) !important; }
+    .theme-toggle {
+      display: inline-flex; align-items: center; gap: .38rem; min-height: 32px; padding: .32rem .65rem;
+      background: rgba(255,255,255,.10); color: #e0f2fe; border: 1px solid rgba(255,255,255,.18);
+      border-radius: 9px; font: 700 .68rem 'Inter', sans-serif; cursor: pointer; transition: background .18s, transform .15s, border-color .18s;
+    }
+    .theme-toggle:hover { background: rgba(103,232,249,.18); border-color: rgba(103,232,249,.48); }
+    .theme-toggle:active { transform: scale(.97); }
+    .theme-toggle span:first-child { font-size: .9rem; }
+    .workspace-overview { display: grid; grid-template-columns: minmax(230px, 1.2fr) minmax(320px, 1.8fr); gap: 1rem; margin-bottom: 1.7rem; }
+    .overview-intro { padding: 1.2rem 1.25rem; border-radius: 18px; color: #ffffff; background: linear-gradient(135deg, #0a4964 0%, #0e3e70 55%, #263d93 100%); box-shadow: 0 12px 26px rgba(11,70,111,.18); }
+    .overview-eyebrow { display: block; color: #a5f3fc; font-size: .66rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; margin-bottom: .45rem; }
+    .overview-intro h1 { font-size: 1.24rem; letter-spacing: -.02em; line-height: 1.2; margin-bottom: .42rem; }
+    .overview-intro p { color: #dbeafe; font-size: .76rem; line-height: 1.55; max-width: 42ch; }
+    .quick-actions { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .7rem; }
+    .quick-action { min-height: 120px; padding: .9rem .75rem; text-decoration: none; color: var(--if-text); background: var(--if-card); border: 1px solid var(--if-border); border-radius: 16px; cursor: pointer; text-align: left; font-family: inherit; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-between; transition: transform .16s, background .16s, border-color .16s; box-shadow: 0 4px 15px rgba(15,42,67,.045); }
+    .quick-action:hover { transform: translateY(-2px); background: var(--if-hover); border-color: rgba(8,159,188,.45); }
+    .quick-action:active { transform: scale(.98); }
+    .quick-action-icon { width: 42px; height: 42px; display: grid; place-items: center; border-radius: 13px; background: rgba(6,182,212,.12); font-size: 1.35rem; }
+    .quick-action-title { font-size: .75rem; font-weight: 800; margin-top: .6rem; }
+    .quick-action-desc { color: var(--if-muted); font-size: .64rem; line-height: 1.35; margin-top: .15rem; }
+    .apps-section-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: 1.25rem; margin-bottom: .75rem; }
+    .apps-section-row .apps-section-title { margin: 0; }
+    .section-note { color: var(--if-subtle); font-size: .67rem; }
+    @media (max-width: 1180px) { .workspace-overview { grid-template-columns: 1fr; } }
+    @media (max-width: 760px) { .quick-actions { grid-template-columns: repeat(2, 1fr); } .workspace-content { padding: 1rem; } }
+
     /* ── RESPONSIVE ── */
     @media (max-width: 900px) {
       .agents-panel { width: 220px; }
@@ -404,12 +507,13 @@
         <div class="topbar-sub" id="agents-status">9 agenter online</div>
       </div>
     </div>
-    <div class="topbar-right">
-      <div class="live-badge"><div class="live-dot"></div> Live</div>
-      <div class="topbar-clock" id="topbar-clock">--:--</div>
-      <div class="topbar-valdi">V</div>
-      <button class="btn-sm" onclick="doLogout()" type="button">Logg ut</button>
-    </div>
+      <div class="topbar-right">
+        <div class="live-badge"><div class="live-dot"></div> Live</div>
+        <div class="topbar-clock" id="topbar-clock">--:--</div>
+        <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" type="button" aria-label="Bytt til mørk visning" title="Bytt mellom lys og mørk visning"><span id="theme-icon">🌙</span><span id="theme-label">Mørk</span></button>
+        <div class="topbar-valdi">V</div>
+        <button class="btn-sm" onclick="doLogout()" type="button">Logg ut</button>
+      </div>
   </div>
 
   <div class="office-body">
@@ -434,13 +538,28 @@
 
         <!-- APPS TAB -->
         <div class="tab-pane active" id="tab-apps">
-          <div class="apps-section-title">AI &amp; Automatisering</div>
+          <div class="workspace-overview">
+            <div class="overview-intro">
+              <span class="overview-eyebrow">IntelligentForce AI Office</span>
+              <h1>Ditt daglige kontrollsenter</h1>
+              <p>Start med ALEX, åpne arbeidsverktøyene dine og følg opp vekst, innhold og plattformarbeid fra ett sted.</p>
+            </div>
+            <div class="quick-actions" aria-label="Hurtigtilgang">
+              <button class="quick-action" onclick="openAlex()" type="button"><span class="quick-action-icon">✦</span><span class="quick-action-title">Snakk med ALEX</span><span class="quick-action-desc">Prioriteringer og koordinering</span></button>
+              <a class="quick-action" href="https://mail.google.com" target="_blank" rel="noopener noreferrer"><span class="quick-action-icon">✉️</span><span class="quick-action-title">E-post</span><span class="quick-action-desc">Gmail og oppfølging</span></a>
+              <a class="quick-action" href="https://app.heygen.com" target="_blank" rel="noopener noreferrer"><span class="quick-action-icon">🎬</span><span class="quick-action-title">ALEX Video</span><span class="quick-action-desc">HeyGen og presentasjoner</span></a>
+              <a class="quick-action" href="https://analytics.google.com" target="_blank" rel="noopener noreferrer"><span class="quick-action-icon">📈</span><span class="quick-action-title">Vekstdata</span><span class="quick-action-desc">Trafikk og resultater</span></a>
+            </div>
+          </div>
+          <div class="apps-section-row"><div class="apps-section-title">Favoritter</div><div class="section-note">Daglige arbeidsverktøy</div></div>
+          <div class="apps-grid" id="apps-favorites"></div>
+          <div class="apps-section-row"><div class="apps-section-title">AI &amp; Automatisering</div><div class="section-note">Bygg, tenk og automatiser</div></div>
           <div class="apps-grid" id="apps-ai"></div>
-          <div class="apps-section-title">Kommunikasjon &amp; Innhold</div>
+          <div class="apps-section-row"><div class="apps-section-title">Kommunikasjon &amp; Innhold</div><div class="section-note">Salg, dialog og synlighet</div></div>
           <div class="apps-grid" id="apps-comm"></div>
-          <div class="apps-section-title">Utvikling &amp; Infrastruktur</div>
+          <div class="apps-section-row"><div class="apps-section-title">Utvikling &amp; Infrastruktur</div><div class="section-note">Teknisk drift og sikkerhet</div></div>
           <div class="apps-grid" id="apps-dev"></div>
-          <div class="apps-section-title">Analyse &amp; Økonomi</div>
+          <div class="apps-section-row"><div class="apps-section-title">Analyse &amp; Økonomi</div><div class="section-note">Beslutninger og inntekter</div></div>
           <div class="apps-grid" id="apps-analytics"></div>
         </div>
 
@@ -579,30 +698,43 @@ const AGENTS = [
 ];
 
 const APPS = {
-  ai: [
-    { name: "Manus AI",     emoji: "🤖", url: "https://manus.im",                          color: "#8b5cf6" },
+  favorites: [
+    { name: "Manus AI",     emoji: "✦",  url: "https://manus.im",                          color: "#8b5cf6" },
+    { name: "Gmail",        emoji: "✉️", url: "https://mail.google.com",                   color: "#ef4444" },
     { name: "HeyGen",       emoji: "🎬", url: "https://app.heygen.com",                    color: "#3b82f6" },
-    { name: "Zapier",       emoji: "⚡", url: "https://zapier.com/app/dashboard",          color: "#f97316" },
-    { name: "NotebookLM",   emoji: "📓", url: "https://notebooklm.google.com",             color: "#10b981" },
-    { name: "ChatGPT",      emoji: "🧠", url: "https://chat.openai.com",                   color: "#06b6d4" },
+    { name: "Google Drive", emoji: "📁", url: "https://drive.google.com",                  color: "#f59e0b" },
+    { name: "GitHub",       emoji: "🐙", url: "https://github.com/IntelligentForceai",     color: "#475569" },
+    { name: "Analytics",    emoji: "📊", url: "https://analytics.google.com",              color: "#3b82f6" },
+  ],
+  ai: [
+    { name: "ChatGPT",      emoji: "🧠", url: "https://chatgpt.com",                       color: "#06b6d4" },
     { name: "Claude",       emoji: "✦",  url: "https://claude.ai",                         color: "#ec4899" },
+    { name: "Gemini",       emoji: "✨", url: "https://gemini.google.com",                 color: "#3b82f6" },
+    { name: "NotebookLM",   emoji: "📓", url: "https://notebooklm.google.com",             color: "#10b981" },
+    { name: "Perplexity",   emoji: "🔎", url: "https://www.perplexity.ai",                 color: "#06b6d4" },
+    { name: "Zapier",       emoji: "⚡", url: "https://zapier.com/app/dashboard",          color: "#f97316" },
+    { name: "Make",         emoji: "🔗", url: "https://www.make.com",                      color: "#6d5dfc" },
+    { name: "n8n",          emoji: "⚙️", url: "https://n8n.io",                            color: "#ea4b71" },
   ],
   comm: [
-    { name: "Gmail",        emoji: "✉️", url: "https://mail.google.com",                   color: "#ef4444" },
     { name: "LinkedIn",     emoji: "💼", url: "https://www.linkedin.com",                  color: "#0ea5e9" },
+    { name: "Google Meet",  emoji: "📹", url: "https://meet.google.com",                   color: "#10b981" },
+    { name: "Google Kalender", emoji: "🗓️", url: "https://calendar.google.com",             color: "#3b82f6" },
     { name: "Formspree",    emoji: "📋", url: "https://formspree.io/login",                color: "#06b6d4" },
-    { name: "Google Drive", emoji: "📁", url: "https://drive.google.com",                  color: "#f59e0b" },
+    { name: "Canva",        emoji: "🎨", url: "https://www.canva.com",                     color: "#8b5cf6" },
+    { name: "YouTube Studio", emoji: "▶️", url: "https://studio.youtube.com",               color: "#ef4444" },
   ],
   dev: [
-    { name: "GitHub",       emoji: "🐙", url: "https://github.com/IntelligentForceai",     color: "#9ca3af" },
     { name: "Cloudflare",   emoji: "☁️", url: "https://dash.cloudflare.com",               color: "#f97316" },
     { name: "Domeneshop",   emoji: "🌐", url: "https://www.domeneshop.no/admin",           color: "#3b82f6" },
     { name: "OpenAI API",   emoji: "🔑", url: "https://platform.openai.com",               color: "#10b981" },
+    { name: "ElevenLabs",   emoji: "🔊", url: "https://elevenlabs.io/app",                 color: "#111827" },
+    { name: "Vercel",       emoji: "▲",  url: "https://vercel.com/dashboard",              color: "#111827" },
   ],
   analytics: [
     { name: "Stripe",       emoji: "💳", url: "https://dashboard.stripe.com",              color: "#8b5cf6" },
-    { name: "Analytics",    emoji: "📊", url: "https://analytics.google.com",              color: "#3b82f6" },
     { name: "Search Console", emoji: "🔍", url: "https://search.google.com/search-console", color: "#10b981" },
+    { name: "Looker Studio", emoji: "📉", url: "https://lookerstudio.google.com",           color: "#3b82f6" },
     { name: "Formspree Stats", emoji: "📬", url: "https://formspree.io/login",             color: "#06b6d4" },
   ]
 };
@@ -647,6 +779,33 @@ let audioUnlocked = false;
 // Shared AudioContext — created once on first user gesture, reused for all TTS playback
 let sharedAudioCtx = null;
 
+// Lys visning er standard. Valdi kan når som helst bytte til mørk visning; valget huskes lokalt.
+const THEME_KEY = 'if_ai_office_theme';
+function applyTheme(theme, persist = true) {
+  const isDark = theme === 'dark';
+  document.body.dataset.theme = isDark ? 'dark' : 'light';
+  const icon = document.getElementById('theme-icon');
+  const label = document.getElementById('theme-label');
+  const button = document.getElementById('theme-toggle');
+  if (icon) icon.textContent = isDark ? '☀️' : '🌙';
+  if (label) label.textContent = isDark ? 'Lys' : 'Mørk';
+  if (button) {
+    button.setAttribute('aria-label', isDark ? 'Bytt til lys visning' : 'Bytt til mørk visning');
+    button.title = isDark ? 'Bytt til lys visning' : 'Bytt til mørk visning';
+  }
+  if (persist) {
+    try { localStorage.setItem(THEME_KEY, isDark ? 'dark' : 'light'); } catch {}
+  }
+}
+function toggleTheme() {
+  applyTheme(document.body.dataset.theme === 'dark' ? 'light' : 'dark');
+}
+function initTheme() {
+  let saved = 'light';
+  try { saved = localStorage.getItem(THEME_KEY) || 'light'; } catch {}
+  applyTheme(saved === 'dark' ? 'dark' : 'light', false);
+}
+
 function unlockAudio() {
   if (audioUnlocked) return;
   audioUnlocked = true;
@@ -663,9 +822,11 @@ function unlockAudio() {
 }
 
 // ── LOGIN ──
+initTheme();
 document.getElementById('pw-input').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
 
 function doLogin() {
+  initTheme();
   unlockAudio(); // Unlock audio on login button click (user gesture)
   const pw = document.getElementById('pw-input').value;
   if (pw === PASS) {
@@ -882,6 +1043,7 @@ function renderAgents() {
 
 // ── RENDER APPS ──
 function renderApps() {
+  renderAppGroup('apps-favorites', APPS.favorites);
   renderAppGroup('apps-ai', APPS.ai);
   renderAppGroup('apps-comm', APPS.comm);
   renderAppGroup('apps-dev', APPS.dev);
