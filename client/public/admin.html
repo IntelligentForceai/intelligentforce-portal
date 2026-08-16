@@ -356,6 +356,26 @@
     .modal-send { padding: .55rem 1.1rem; background: rgba(6,182,212,.2); border: 1px solid rgba(6,182,212,.3); border-radius: 11px; color: #06b6d4; cursor: pointer; font-size: .8rem; font-family: inherit; font-weight: 700; transition: background .2s; }
     .modal-send:hover { background: rgba(6,182,212,.35); }
 
+    /* ── SECURE ATTACHMENTS ── */
+    .attachment-btn, .modal-attach {
+      width: 36px; min-width: 36px; height: 36px; border: 1px solid var(--if-border);
+      border-radius: 10px; background: var(--if-surface-soft); color: var(--if-cyan);
+      font-size: 1.05rem; display: inline-flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: transform .16s, background .16s, border-color .16s;
+    }
+    .attachment-btn:hover, .modal-attach:hover { background: var(--if-hover); border-color: rgba(6,182,212,.55); transform: translateY(-1px); }
+    .attachment-btn:active, .modal-attach:active { transform: scale(.97); }
+    .attachment-btn:disabled, .modal-attach:disabled { opacity: .45; cursor: not-allowed; transform: none; }
+    .attachment-preview { display: flex; flex-wrap: wrap; gap: .4rem; padding: .1rem .75rem .55rem; }
+    .attachment-preview:empty { display: none; }
+    .attachment-chip { display: inline-flex; align-items: center; max-width: 100%; gap: .35rem; border: 1px solid rgba(6,182,212,.28); background: rgba(6,182,212,.08); color: var(--if-text); border-radius: 999px; padding: .28rem .5rem .28rem .65rem; font-size: .72rem; }
+    .attachment-chip-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 190px; }
+    .attachment-chip-remove { width: 18px; height: 18px; border: 0; border-radius: 50%; color: var(--if-muted); background: transparent; cursor: pointer; padding: 0; line-height: 1; font-size: .9rem; }
+    .attachment-chip-remove:hover { background: rgba(239,68,68,.12); color: #ef4444; }
+    .attachment-note { font-size: .67rem; color: var(--if-muted); padding: 0 .75rem .45rem; line-height: 1.35; }
+    .msg-attachments { display: flex; flex-wrap: wrap; gap: .35rem; margin-top: .45rem; }
+    .msg-attachment { display: inline-flex; align-items: center; gap: .25rem; border-radius: 8px; padding: .22rem .42rem; font-size: .67rem; background: rgba(6,182,212,.1); border: 1px solid rgba(6,182,212,.25); color: var(--if-text); max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
     /* ── LIGHT/DARK THEME & WORKSPACE UPGRADE ── */
     :root {
       --if-cyan: #089fbc;
@@ -733,9 +753,14 @@
       <button class="prompt-chip" onclick="usePrompt(this)" type="button">Analyser vekstmuligheter</button>
     </div>
 
+    <!-- Secure Attachments: held only in the browser until the current analysis is sent. -->
+    <input id="alex-attachment-input" type="file" multiple hidden accept=".pdf,.txt,.md,.csv,.docx,.xlsx,.pptx,.png,.jpg,.jpeg,.webp" onchange="selectAttachments(event, 'alex')" />
+    <div class="attachment-preview" id="alex-attachment-preview" aria-live="polite"></div>
+    <div class="attachment-note">Vedlegg analyseres kun i denne forespørselen. Maks 2 filer, 4 MB per fil.</div>
     <!-- Input -->
     <div class="alex-input-area">
       <button class="alex-mic-btn" id="alex-mic" onclick="toggleMic()" type="button" title="Snakk til ALEX">🎙️</button>
+      <button class="attachment-btn" id="alex-attach-btn" onclick="chooseAttachments('alex')" type="button" title="Legg ved dokument eller bilde" aria-label="Legg ved dokument eller bilde">+</button>
       <textarea id="alex-input" placeholder="Skriv til ALEX... (Enter for å sende, Shift+Enter for ny linje)" rows="1"
         onkeydown="handleAlexKey(event)" oninput="autoResize(this)"></textarea>
       <button class="alex-send-btn" id="alex-send" onclick="sendToAlex()" type="button">➤</button>
@@ -758,7 +783,11 @@
       <button class="modal-close" onclick="closeAgentModal()" type="button">✕</button>
     </div>
     <div class="modal-messages" id="modal-messages"></div>
+    <input id="agent-attachment-input" type="file" multiple hidden accept=".pdf,.txt,.md,.csv,.docx,.xlsx,.pptx,.png,.jpg,.jpeg,.webp" onchange="selectAttachments(event, 'agent')" />
+    <div class="attachment-preview" id="agent-attachment-preview" aria-live="polite"></div>
+    <div class="attachment-note">Privat arbeidsvedlegg · Maks 2 filer, 4 MB per fil · ikke lagret i portalen.</div>
     <div class="modal-input-row">
+      <button class="modal-attach" id="agent-attach-btn" onclick="chooseAttachments('agent')" type="button" title="Legg ved dokument eller bilde" aria-label="Legg ved dokument eller bilde">+</button>
       <input type="text" id="modal-input" placeholder="Skriv til agenten... (Enter)" onkeydown="handleModalKey(event)" />
       <button class="modal-send" onclick="sendToAgent()" type="button">Send</button>
     </div>
@@ -871,6 +900,13 @@ let inboxSession = false;
 let inboxMessages = [];
 let selectedInboxUid = null;
 let selectedInboxMessage = null;
+
+// Attachment bytes exist only in the active browser session until the current
+// request is analysed. Chat history retains filenames only, never file data.
+const attachmentState = { alex: [], agent: [] };
+const ATTACHMENT_EXTENSIONS = new Set(['pdf', 'txt', 'md', 'csv', 'docx', 'xlsx', 'pptx', 'png', 'jpg', 'jpeg', 'webp']);
+const MAX_ATTACHMENT_BYTES = 4 * 1024 * 1024;
+const MAX_ATTACHMENTS = 2;
 
 // Lys visning er standard. Valdi kan når som helst bytte til mørk visning; valget huskes lokalt.
 const THEME_KEY = 'if_ai_office_theme';
@@ -1466,7 +1502,7 @@ function loadAdminChat() {
     if (saved) {
       const msgs = JSON.parse(saved);
       if (msgs && msgs.length > 0) {
-        msgs.forEach(m => addAlexMsg(m.role, m.content, true));
+        msgs.forEach(m => addAlexMsg(m.role, m.content, true, m.attachments || []));
         return true;
       }
     }
@@ -1503,8 +1539,9 @@ function confirmClearAdminChat() {
   }
 }
 
-function addAlexMsg(role, content, silent = false) {
-  alexMessages.push({ role, content });
+function addAlexMsg(role, content, silent = false, attachments = []) {
+  const safeAttachments = Array.isArray(attachments) ? attachments.map(file => ({ name: String(file.name || '').slice(0, 120), size: Number(file.size || 0), type: String(file.type || '').slice(0, 120) })) : [];
+  alexMessages.push({ role, content, attachments: safeAttachments });
   if (!silent) saveAdminChat();
   const container = document.getElementById('alex-messages');
   const div = document.createElement('div');
@@ -1513,7 +1550,7 @@ function addAlexMsg(role, content, silent = false) {
   if (role === 'assistant') {
     div.innerHTML = `<img src="/alex-portrait.webp" class="msg-icon-photo" alt="ALEX" onerror="this.outerHTML='<div class=\'msg-icon\'>✦</div>'" /><div><div class="msg-bubble">${renderMd(content)}</div><div class="msg-time">${time}</div></div>`;
   } else {
-    div.innerHTML = `<div><div class="msg-bubble">${escHtml(content)}</div><div class="msg-time" style="text-align:right">${time}</div></div>`;
+    div.innerHTML = `<div><div class="msg-bubble">${escHtml(content)}${attachmentBadges(attachments)}</div><div class="msg-time" style="text-align:right">${time}</div></div>`;
   }
   container.appendChild(div);
   container.scrollTop = container.scrollHeight;
@@ -1525,58 +1562,48 @@ function addAlexMsg(role, content, silent = false) {
 
 async function sendToAlex() {
   const inp = document.getElementById('alex-input');
-  const text = inp.value.trim();
+  const files = attachmentState.alex.slice();
+  const text = inp.value.trim() || (files.length ? 'Vennligst analyser de vedlagte filene og gi meg de viktigste innsiktene og anbefalte neste stegene.' : '');
   if (!text) return;
   inp.value = ''; inp.style.height = 'auto';
   document.getElementById('alex-send').disabled = true;
   document.getElementById('alex-mic').disabled = true;
-  addAlexMsg('user', text);
+  setAttachmentBusy('alex', true);
   const typing = document.getElementById('alex-typing');
-  typing.classList.add('show');
-  document.getElementById('alex-messages').scrollTop = 99999;
   try {
-    // Debug: log what we're sending
+    const attachmentAnalysis = files.length ? await buildAttachmentAnalysis(files) : { imageAttachments: [], documentContext: '' };
+    clearAttachments('alex');
+    addAlexMsg('user', text, false, attachmentMetadata(files));
+    typing.classList.add('show');
+    document.getElementById('alex-messages').scrollTop = 99999;
+    const messages = alexMessages.map(m => ({ role: m.role, content: m.content }));
+    const lastUser = [...messages].reverse().find(m => m.role === 'user');
+    if (lastUser && attachmentAnalysis.documentContext) lastUser.content += attachmentAnalysis.documentContext;
     const payload = {
-      messages: alexMessages.map(m => ({ role: m.role, content: m.content })),
+      messages,
       adminMode: true,
-      adminLang: adminLang // 'no' or 'en'
+      adminLang: adminLang,
+      attachments: attachmentAnalysis.imageAttachments
     };
-    console.log('[ALEX DEBUG] Sending to worker:', JSON.stringify(payload).substring(0, 200));
-    console.log('[ALEX DEBUG] Message count:', payload.messages.length);
-    
     const chatResponse = await fetch(WORKER_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
     });
-    
-    console.log('[ALEX DEBUG] Response status:', chatResponse.status);
-    
-    if (!chatResponse.ok) {
-      const errText = await chatResponse.text();
-      console.error('[ALEX DEBUG] Error response:', errText);
-      throw new Error('HTTP ' + chatResponse.status + ': ' + errText);
-    }
-    
-    const chatPromise = chatResponse.json();
-    const chatData = await chatPromise;
+    if (!chatResponse.ok) throw new Error('ALEX analysis unavailable');
+    const chatData = await chatResponse.json();
     typing.classList.remove('show');
     const reply = chatData.reply || 'Beklager, teknisk problem. Prøv igjen.';
-
-    // Show text in chat
     addAlexMsg('assistant', reply);
-    addFeedItem('ALEX', '#06b6d4', 'Svarte Valdi på forespørsel');
-
-    // Fetch TTS audio now (after chat reply is known)
-    if (voiceEnabled) {
-      speakText(stripMd(reply)); // fire-and-forget, no await — avoids blocking next message
-    }
+    addFeedItem('ALEX', '#06b6d4', files.length ? 'Analyserte privat arbeidsvedlegg for Valdi' : 'Svarte Valdi på forespørsel');
+    if (voiceEnabled) speakText(stripMd(reply));
   } catch(e) {
     typing.classList.remove('show');
-    addAlexMsg('assistant', 'Beklager, Valdi — midlertidig teknisk problem. Prøv igjen om litt.');
+    addAlexMsg('assistant', files.length ? 'Beklager, Valdi — jeg kunne ikke analysere vedlegget akkurat nå. Filen er ikke lagret hos IntelligentForce. Prøv igjen eller velg en mindre fil.' : 'Beklager, Valdi — midlertidig teknisk problem. Prøv igjen om litt.');
   }
   document.getElementById('alex-send').disabled = false;
   document.getElementById('alex-mic').disabled = false;
+  setAttachmentBusy('alex', false);
 }
 
 // ── VOICE TOGGLE ──
@@ -1856,9 +1883,189 @@ function usePrompt(btn) {
   sendToAlex();
 }
 
+// ── SECURE ATTACHMENTS ──
+function attachmentExtension(name) {
+  const pieces = String(name || '').split('.');
+  return pieces.length > 1 ? pieces.pop().toLowerCase() : '';
+}
+function attachmentIcon(name) {
+  const ext = attachmentExtension(name);
+  if (['png', 'jpg', 'jpeg', 'webp'].includes(ext)) return '🖼️';
+  if (ext === 'pdf') return '📕';
+  if (['xls', 'xlsx', 'csv'].includes(ext)) return '📊';
+  if (['ppt', 'pptx'].includes(ext)) return '📽️';
+  return '📎';
+}
+function attachmentSize(bytes) {
+  return bytes < 1024 * 1024 ? `${Math.max(1, Math.round(bytes / 1024))} KB` : `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
+function attachmentMetadata(files) {
+  return files.map(file => ({ name: file.name, size: file.size, type: file.type || 'application/octet-stream' }));
+}
+function attachmentBadges(attachments) {
+  if (!Array.isArray(attachments) || !attachments.length) return '';
+  return `<div class="msg-attachments">${attachments.map(file => `<span class="msg-attachment" title="${escHtml(file.name || '')}">${attachmentIcon(file.name)} ${escHtml(file.name || 'Vedlegg')}</span>`).join('')}</div>`;
+}
+function chooseAttachments(target) {
+  const input = document.getElementById(`${target}-attachment-input`);
+  if (input) input.click();
+}
+function selectAttachments(event, target) {
+  const files = Array.from(event.target.files || []);
+  let next = attachmentState[target].slice();
+  for (const file of files) {
+    const ext = attachmentExtension(file.name);
+    if (!ATTACHMENT_EXTENSIONS.has(ext)) {
+      alert(`«${file.name}» støttes ikke ennå. Velg PDF, Office-dokument, CSV/tekst eller bilde.`);
+      continue;
+    }
+    if (file.size > MAX_ATTACHMENT_BYTES) {
+      alert(`«${file.name}» er for stor. Maksimal størrelse er 4 MB per fil.`);
+      continue;
+    }
+    if (next.length >= MAX_ATTACHMENTS) {
+      alert('Du kan analysere maksimalt to vedlegg i samme forespørsel.');
+      break;
+    }
+    if (next.some(existing => existing.name === file.name && existing.size === file.size)) continue;
+    next.push(file);
+  }
+  attachmentState[target] = next;
+  event.target.value = '';
+  renderAttachmentPreview(target);
+}
+function removeAttachment(target, index) {
+  attachmentState[target].splice(index, 1);
+  renderAttachmentPreview(target);
+}
+function clearAttachments(target) {
+  attachmentState[target] = [];
+  renderAttachmentPreview(target);
+}
+function renderAttachmentPreview(target) {
+  const preview = document.getElementById(`${target}-attachment-preview`);
+  if (!preview) return;
+  preview.replaceChildren();
+  attachmentState[target].forEach((file, index) => {
+    const chip = document.createElement('span');
+    chip.className = 'attachment-chip';
+    chip.title = `${file.name} · ${attachmentSize(file.size)}`;
+    const label = document.createElement('span');
+    label.className = 'attachment-chip-name';
+    label.textContent = `${attachmentIcon(file.name)} ${file.name} · ${attachmentSize(file.size)}`;
+    const remove = document.createElement('button');
+    remove.className = 'attachment-chip-remove';
+    remove.type = 'button';
+    remove.title = 'Fjern vedlegg';
+    remove.setAttribute('aria-label', `Fjern ${file.name}`);
+    remove.textContent = '×';
+    remove.onclick = () => removeAttachment(target, index);
+    chip.append(label, remove);
+    preview.appendChild(chip);
+  });
+}
+const EXTERNAL_SCRIPT_CACHE = {};
+function loadExternalScript(url, globalName) {
+  if (window[globalName]) return Promise.resolve(window[globalName]);
+  if (EXTERNAL_SCRIPT_CACHE[url]) return EXTERNAL_SCRIPT_CACHE[url];
+  EXTERNAL_SCRIPT_CACHE[url] = new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.src = url;
+    script.async = true;
+    script.onload = () => window[globalName] ? resolve(window[globalName]) : reject(new Error('library_unavailable'));
+    script.onerror = () => reject(new Error('library_load_failed'));
+    document.head.appendChild(script);
+  });
+  return EXTERNAL_SCRIPT_CACHE[url];
+}
+function normalizeDocumentText(value) {
+  return String(value || '').replace(/\u0000/g, '').replace(/[ \t]+/g, ' ').replace(/\n{3,}/g, '\n\n').trim();
+}
+function xmlText(value) {
+  const doc = new DOMParser().parseFromString(value, 'application/xml');
+  return normalizeDocumentText(doc.documentElement?.textContent || '');
+}
+async function extractPdfText(file) {
+  const pdfjs = await loadExternalScript('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js', 'pdfjsLib');
+  pdfjs.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  const data = new Uint8Array(await file.arrayBuffer());
+  const pdf = await pdfjs.getDocument({ data }).promise;
+  const pages = [];
+  for (let pageNumber = 1; pageNumber <= Math.min(pdf.numPages, 20); pageNumber++) {
+    const page = await pdf.getPage(pageNumber);
+    const content = await page.getTextContent();
+    pages.push(content.items.map(item => item.str || '').join(' '));
+  }
+  return normalizeDocumentText(pages.join('\n\n'));
+}
+async function extractOfficeText(file) {
+  const JSZip = await loadExternalScript('https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js', 'JSZip');
+  const zip = await JSZip.loadAsync(file);
+  const extension = attachmentExtension(file.name);
+  if (extension === 'docx') {
+    const documentXml = zip.file('word/document.xml');
+    return documentXml ? xmlText(await documentXml.async('string')) : '';
+  }
+  if (extension === 'pptx') {
+    const slideNames = Object.keys(zip.files).filter(name => /^ppt\/slides\/slide\d+\.xml$/i.test(name)).sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
+    const slides = await Promise.all(slideNames.slice(0, 30).map(name => zip.file(name).async('string')));
+    return normalizeDocumentText(slides.map(xmlText).join('\n\n'));
+  }
+  if (extension === 'xlsx') {
+    const entries = Object.keys(zip.files).filter(name => /^xl\/(sharedStrings|worksheets\/sheet\d+)\.xml$/i.test(name)).sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
+    const pieces = await Promise.all(entries.slice(0, 20).map(name => zip.file(name).async('string')));
+    return normalizeDocumentText(pieces.map(xmlText).join('\n\n'));
+  }
+  return '';
+}
+async function extractDocumentText(file) {
+  const extension = attachmentExtension(file.name);
+  if (['txt', 'md', 'csv'].includes(extension)) return normalizeDocumentText(await file.text());
+  if (extension === 'pdf') return extractPdfText(file);
+  if (['docx', 'xlsx', 'pptx'].includes(extension)) return extractOfficeText(file);
+  return '';
+}
+function encodeImageAttachment(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = () => reject(new Error('file_read_failed'));
+    reader.onload = () => {
+      const result = String(reader.result || '');
+      const split = result.indexOf(',');
+      if (split < 0) return reject(new Error('file_read_failed'));
+      resolve({ name: file.name, type: file.type || 'image/jpeg', data: result.slice(split + 1) });
+    };
+    reader.readAsDataURL(file);
+  });
+}
+async function buildAttachmentAnalysis(files) {
+  const imageFiles = files.filter(file => ['png', 'jpg', 'jpeg', 'webp'].includes(attachmentExtension(file.name)));
+  const documentFiles = files.filter(file => !imageFiles.includes(file));
+  const imageAttachments = await Promise.all(imageFiles.map(encodeImageAttachment));
+  const sections = [];
+  let remaining = 30000;
+  for (const file of documentFiles) {
+    try {
+      const text = await extractDocumentText(file);
+      const excerpt = text.slice(0, remaining);
+      remaining -= excerpt.length;
+      sections.push(`\n\n--- PRIVAT VEDLEGG: ${file.name} ---\n${excerpt || '[Ingen lesbar tekst kunne hentes fra dette dokumentet. Forklar hva du trenger analysert, eller prøv en tekstbasert versjon.]'}`);
+      if (remaining <= 0) break;
+    } catch (error) {
+      sections.push(`\n\n--- PRIVAT VEDLEGG: ${file.name} ---\n[Dokumentet kunne ikke leses lokalt. Prøv en mindre, tekstbasert PDF eller lagre filen på nytt.]`);
+    }
+  }
+  return { imageAttachments, documentContext: sections.join('') };
+}
+function setAttachmentBusy(target, busy) {
+  const button = document.getElementById(`${target}-attach-btn`);
+  if (button) button.disabled = busy;
+}
+
 // ── AGENT MODAL ──
 function openAgentModal(agent) {
   currentAgent = agent;
+  clearAttachments('agent');
   document.getElementById('modal-icon').textContent = agent.icon;
   document.getElementById('modal-icon').style.background = agent.color + '22';
   document.getElementById('modal-name').textContent = agent.name;
@@ -1871,63 +2078,77 @@ function openAgentModal(agent) {
     greetDiv.innerHTML = `<div class="msg-icon">${agent.icon}</div><div><div class="msg-bubble" style="background:#0a1020;border:1px solid rgba(255,255,255,.07);font-size:.825rem">Hei, Valdi! Jeg er ${agent.name}. Spesialist på ${agent.specialty}. Hva kan jeg hjelpe deg med?</div></div>`;
     container.appendChild(greetDiv);
   } else {
-    agentMessages[agent.id].forEach(m => renderAgentMsg(m.role, m.content, agent));
+    agentMessages[agent.id].forEach(m => renderAgentMsg(m.role, m.content, agent, m.attachments || []));
   }
   document.getElementById('agent-modal').classList.add('open');
   setTimeout(() => document.getElementById('modal-input').focus(), 100);
 }
 
 function closeAgentModal() {
+  clearAttachments('agent');
   document.getElementById('agent-modal').classList.remove('open');
   currentAgent = null;
 }
 
-function renderAgentMsg(role, content, agent) {
+function renderAgentMsg(role, content, agent, attachments = []) {
   const container = document.getElementById('modal-messages');
   const div = document.createElement('div');
   div.className = 'msg ' + role;
   const time = new Date().toLocaleTimeString('no-NO', { hour: '2-digit', minute: '2-digit' });
   div.innerHTML = role === 'assistant'
     ? `<div class="msg-icon">${agent.icon}</div><div><div class="msg-bubble" style="background:#0a1020;border:1px solid rgba(255,255,255,.07);font-size:.825rem">${renderMd(content)}</div><div class="msg-time">${time}</div></div>`
-    : `<div><div class="msg-bubble" style="background:rgba(6,182,212,.15);border:1px solid rgba(6,182,212,.3);font-size:.825rem">${escHtml(content)}</div><div class="msg-time" style="text-align:right">${time}</div></div>`;
+    : `<div><div class="msg-bubble" style="background:rgba(6,182,212,.15);border:1px solid rgba(6,182,212,.3);font-size:.825rem">${escHtml(content)}${attachmentBadges(attachments)}</div><div class="msg-time" style="text-align:right">${time}</div></div>`;
   container.appendChild(div);
   container.scrollTop = container.scrollHeight;
 }
 
 async function sendToAgent() {
   if (!currentAgent) return;
+  const agent = currentAgent;
   const inp = document.getElementById('modal-input');
-  const text = inp.value.trim();
+  const files = attachmentState.agent.slice();
+  const text = inp.value.trim() || (files.length ? 'Vennligst analyser de vedlagte filene og gi meg de viktigste innsiktene og anbefalte neste stegene.' : '');
   if (!text) return;
   inp.value = '';
-  agentMessages[currentAgent.id].push({ role: 'user', content: text });
-  renderAgentMsg('user', text, currentAgent);
+  setAttachmentBusy('agent', true);
+  const sendButton = document.querySelector('.modal-send');
+  if (sendButton) sendButton.disabled = true;
 
-  const agentSystemPrompt = `Du er ${currentAgent.name} — en spesialisert AI-agent hos IntelligentForce AI.
-Din spesialitet: ${currentAgent.specialty}.
+  const agentSystemPrompt = `Du er ${agent.name} — en spesialisert AI-agent hos IntelligentForce AI.
+Din spesialitet: ${agent.specialty}.
 Du rapporterer til ALEX (Chief AI Coordinator) og til Valdi (CEO og grunnlegger).
 Du er profesjonell, presis og resultatorientert. Svar på norsk med mindre brukeren skriver på engelsk.
 Hold svarene konsise og handlingsorienterte. Du er ikke en chatbot — du er en ansatt AI-spesialist.`;
 
   try {
+    const attachmentAnalysis = files.length ? await buildAttachmentAnalysis(files) : { imageAttachments: [], documentContext: '' };
+    clearAttachments('agent');
+    const metadata = attachmentMetadata(files);
+    agentMessages[agent.id].push({ role: 'user', content: text, attachments: metadata });
+    renderAgentMsg('user', text, agent, metadata);
     const res = await fetch(WORKER_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         messages: [
-          { role: 'user', content: agentSystemPrompt + '\n\n---\n\n' + text },
-          ...agentMessages[currentAgent.id].slice(1).map(m => ({ role: m.role, content: m.content }))
+          { role: 'user', content: agentSystemPrompt + '\n\n---\n\n' + text + attachmentAnalysis.documentContext },
+          ...agentMessages[agent.id].slice(1).map(m => ({ role: m.role, content: m.content }))
         ],
+        attachments: attachmentAnalysis.imageAttachments,
         adminMode: false
       })
     });
+    if (!res.ok) throw new Error('agent_attachment_analysis_unavailable');
     const data = await res.json();
     const reply = data.reply || 'Beklager, teknisk problem.';
-    agentMessages[currentAgent.id].push({ role: 'assistant', content: reply });
-    renderAgentMsg('assistant', reply, currentAgent);
-    addFeedItem(currentAgent.name, currentAgent.color, 'Svarte på forespørsel fra Valdi');
+    agentMessages[agent.id].push({ role: 'assistant', content: reply });
+    renderAgentMsg('assistant', reply, agent);
+    addFeedItem(agent.name, agent.color, files.length ? 'Analyserte privat arbeidsvedlegg for Valdi' : 'Svarte på forespørsel fra Valdi');
   } catch(e) {
-    renderAgentMsg('assistant', 'Beklager, teknisk problem. Prøv igjen.', currentAgent);
+    renderAgentMsg('assistant', files.length ? 'Beklager, jeg kunne ikke analysere vedlegget akkurat nå. Filen er ikke lagret hos IntelligentForce. Prøv igjen eller velg en mindre fil.' : 'Beklager, teknisk problem. Prøv igjen.', agent);
+  } finally {
+    setAttachmentBusy('agent', false);
+    if (sendButton) sendButton.disabled = false;
   }
 }
 
