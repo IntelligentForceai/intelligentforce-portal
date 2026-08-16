@@ -2,6 +2,12 @@ Options -MultiViews
 RewriteEngine On
 RewriteBase /
 
+# ALEX Inbox: never expose server-side secrets or private workflow state.
+<FilesMatch "^\.alex-inbox-(config\.php|state\.json)$">
+  Require all denied
+</FilesMatch>
+
+
 # Canonical redirect: www -> non-www (fixes Google duplicate content)
 RewriteCond %{HTTP_HOST} ^www\.intelligentforce\.ai [NC]
 RewriteRule ^(.*)$ https://intelligentforce.ai/$1 [R=301,L]
