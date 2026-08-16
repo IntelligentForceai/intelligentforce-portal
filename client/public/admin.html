@@ -522,7 +522,15 @@
     .inbox-btn:hover { background: var(--if-hover); border-color: rgba(8,159,188,.4); transform: translateY(-1px); }
     .inbox-btn.primary { background: rgba(6,182,212,.13); border-color: rgba(6,182,212,.36); color: var(--if-cyan); }
     .inbox-btn.safe-send { background: rgba(16,185,129,.12); border-color: rgba(16,185,129,.32); color: #047857; }
+    .inbox-btn:disabled { opacity: .45; cursor: not-allowed; transform: none; }
+    .inbox-btn:disabled:hover { background: var(--if-surface-soft); border-color: var(--if-border); transform: none; }
     body[data-theme="dark"] .inbox-btn.safe-send { color: #6ee7b7; }
+    .inbox-workflow { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .42rem; margin-bottom: .9rem; }
+    .inbox-workflow-step { border: 1px solid var(--if-border-soft); border-radius: 10px; background: var(--if-surface-soft); padding: .5rem .55rem; min-height: 56px; }
+    .inbox-workflow-step.active { border-color: rgba(6,182,212,.42); background: rgba(6,182,212,.08); }
+    .inbox-workflow-step.done { border-color: rgba(16,185,129,.32); background: rgba(16,185,129,.07); }
+    .inbox-workflow-label { display: block; color: var(--if-subtle); font-size: .56rem; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; }
+    .inbox-workflow-value { display: block; color: var(--if-text); font-size: .66rem; font-weight: 800; line-height: 1.25; margin-top: .18rem; }
     .inbox-section { margin-top: .9rem; }
     .inbox-section-title { color: var(--if-muted); font-size: .65rem; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; margin-bottom: .42rem; }
     .inbox-callout { border: 1px solid rgba(6,182,212,.22); background: rgba(6,182,212,.06); border-radius: 12px; padding: .75rem .8rem; color: var(--if-text); font-size: .74rem; line-height: 1.55; white-space: pre-wrap; }
@@ -652,15 +660,15 @@
               <div class="inbox-hero-left">
                 <div class="inbox-hero-eyebrow">Privat arbeidsflyt</div>
                 <h1>ALEX Inbox</h1>
-                <p>ALEX samler henvendelser, foreslår prioritet og lager svarutkast. Hun sender aldri noe uten din tydelige godkjenning.</p>
+                <p>ALEX bekrefter mottak, foreslår prioritet og lager svarutkast. Du godkjenner alltid før et endelig svar sendes.</p>
               </div>
               <button class="inbox-refresh" id="inbox-refresh" onclick="loadInbox(true)" type="button">↻ Oppdater innboks</button>
             </div>
             <div class="inbox-status" id="inbox-status">Klar for sikker innhenting.</div>
             <div class="inbox-kpis">
-              <div class="inbox-kpi"><div class="inbox-kpi-label">Nye henvendelser</div><div class="inbox-kpi-value" id="inbox-kpi-new">—</div></div>
+              <div class="inbox-kpi"><div class="inbox-kpi-label">Åpne saker</div><div class="inbox-kpi-value" id="inbox-kpi-new">—</div></div>
               <div class="inbox-kpi"><div class="inbox-kpi-label">Høy prioritet</div><div class="inbox-kpi-value" id="inbox-kpi-high">—</div></div>
-              <div class="inbox-kpi"><div class="inbox-kpi-label">Venter på Valdi</div><div class="inbox-kpi-value" id="inbox-kpi-waiting">—</div></div>
+              <div class="inbox-kpi"><div class="inbox-kpi-label">Til godkjenning / sending</div><div class="inbox-kpi-value" id="inbox-kpi-waiting">—</div></div>
             </div>
             <div class="inbox-workspace">
               <div class="inbox-list-pane">
@@ -1267,13 +1275,14 @@ function inboxPriorityClass(priority) {
 }
 
 function renderInboxKpis() {
-  const count = inboxMessages.length;
-  const high = inboxMessages.filter(m => m.priority === 'Høy' && m.status !== 'Lukket manuelt').length;
-  const waiting = inboxMessages.filter(m => m.status === 'Venter på Valdi').length;
-  document.getElementById('inbox-kpi-new').textContent = count;
+  const closedStatuses = ['Sendt manuelt', 'Lukket manuelt'];
+  const openMessages = inboxMessages.filter(message => !closedStatuses.includes(message.status));
+  const high = openMessages.filter(message => message.priority === 'Høy').length;
+  const waiting = openMessages.filter(message => ['Venter på Valdi', 'Godkjent – klar for sending'].includes(message.status)).length;
+  document.getElementById('inbox-kpi-new').textContent = openMessages.length;
   document.getElementById('inbox-kpi-high').textContent = high;
   document.getElementById('inbox-kpi-waiting').textContent = waiting;
-  document.getElementById('inbox-list-count').textContent = `${count} ${count === 1 ? 'melding' : 'meldinger'}`;
+  document.getElementById('inbox-list-count').textContent = `${openMessages.length} åpne ${openMessages.length === 1 ? 'sak' : 'saker'} · ${inboxMessages.length} totalt`;
 }
 
 function renderInboxList() {
@@ -1299,20 +1308,28 @@ function renderInboxDetail(message) {
     detail.innerHTML = '<div class="inbox-detail-empty">Velg en melding for å se ALEX sin vurdering, originaltekst og svarutkast.</div>';
     return;
   }
-  const recipient = inboxReplyAddress(message.from || '');
-  const replySubject = /^re:/i.test(message.subject || '') ? message.subject : `Re: ${message.subject || ''}`;
+  const status = message.status || 'Ny';
+  const analyzed = ['ALEX analysert', 'Venter på Valdi', 'Godkjent – klar for sending', 'Sendt manuelt', 'Lukket manuelt'].includes(status);
+  const approved = ['Godkjent – klar for sending', 'Sendt manuelt'].includes(status);
+  const sent = status === 'Sendt manuelt';
+  const activeStep = sent ? 'done' : approved ? 'active' : message.draft ? 'active' : analyzed ? 'active' : '';
   detail.innerHTML = `
     <h2 class="inbox-detail-subject">${escHtml(message.subject || '(uten emne)')}</h2>
-    <div class="inbox-detail-meta"><strong>Fra:</strong> ${escHtml(message.from || 'Ukjent')}<br><strong>Mottatt:</strong> ${escHtml(message.date || '—')}<br><strong>Status:</strong> ${escHtml(message.status || 'Ny')}</div>
+    <div class="inbox-detail-meta"><strong>Fra:</strong> ${escHtml(message.from || 'Ukjent')}<br><strong>Mottatt:</strong> ${escHtml(message.date || '—')}<br><strong>Status:</strong> ${escHtml(status)}</div>
+    <div class="inbox-workflow" aria-label="Godkjenningsflyt">
+      <div class="inbox-workflow-step done"><span class="inbox-workflow-label">Steg 1</span><span class="inbox-workflow-value">Mottak bekreftet</span></div>
+      <div class="inbox-workflow-step ${analyzed ? 'done' : activeStep === 'active' ? 'active' : ''}"><span class="inbox-workflow-label">Steg 2</span><span class="inbox-workflow-value">ALEX vurderer</span></div>
+      <div class="inbox-workflow-step ${approved ? 'done' : message.draft ? 'active' : ''}"><span class="inbox-workflow-label">Steg 3</span><span class="inbox-workflow-value">Valdi godkjenner</span></div>
+      <div class="inbox-workflow-step ${sent ? 'done' : approved ? 'active' : ''}"><span class="inbox-workflow-label">Steg 4</span><span class="inbox-workflow-value">Svar sendes</span></div>
+    </div>
     <div class="inbox-detail-actions">
       <button class="inbox-btn primary" onclick="analyzeInboxMessage()" type="button">✦ Be ALEX vurdere</button>
       <button class="inbox-btn" onclick="draftInboxReply()" type="button">✍ Lag svarutkast</button>
-      <button class="inbox-btn" onclick="markInboxDone()" type="button">✓ Merk ferdig</button>
-      <a class="inbox-btn" href="https://webmail.domeneshop.no/" target="_blank" rel="noopener noreferrer">Åpne webmail ↗</a>
+      <button class="inbox-btn" onclick="markInboxDone()" type="button">Lukk uten svar</button>
     </div>
     <div class="inbox-section"><div class="inbox-section-title">ALEX sin vurdering</div><div class="inbox-callout" id="inbox-analysis">${escHtml(message.summary || 'Ikke analysert ennå. ALEX kan vurdere prioritet og anbefale neste steg når du ber henne om det.')}</div></div>
     <div class="inbox-section"><div class="inbox-section-title">Original melding</div><div class="inbox-original">${escHtml(message.body || 'Ingen ren tekst kunne hentes fra denne meldingen.')}</div></div>
-    <div class="inbox-section"><div class="inbox-section-title">Svarutkast — alltid til din godkjenning</div><textarea class="inbox-draft" id="inbox-draft" placeholder="ALEX sitt forslag vises her. Du kan alltid skrive eller endre det selv.">${escHtml(message.draft || '')}</textarea><div class="inbox-detail-actions" style="padding-top:.65rem;padding-bottom:0;border:0;margin:0"><button class="inbox-btn" onclick="saveInboxDraft()" type="button">Lagre utkast</button><button class="inbox-btn primary" onclick="copyInboxDraft()" type="button">Kopier utkast</button><a class="inbox-btn" href="https://webmail.domeneshop.no/" target="_blank" rel="noopener noreferrer">Åpne i webmail ↗</a></div><div class="inbox-send-warning">ALEX Inbox lager og lagrer utkast. Du kopierer eventuelt teksten til Domeneshop webmail og sender selv. ALEX sender aldri automatisk.</div></div>
+    <div class="inbox-section"><div class="inbox-section-title">Svarutkast — din kontroll</div><textarea class="inbox-draft" id="inbox-draft" placeholder="ALEX sitt forslag vises her. Du kan alltid skrive eller endre det selv.">${escHtml(message.draft || '')}</textarea><div class="inbox-detail-actions" style="padding-top:.65rem;padding-bottom:0;border:0;margin:0"><button class="inbox-btn" onclick="saveInboxDraft()" type="button">1. Lagre til kontroll</button><button class="inbox-btn primary" onclick="approveInboxDraft()" type="button">2. Godkjenn utkast</button><button class="inbox-btn" onclick="copyInboxDraft()" type="button" ${approved ? '' : 'disabled'}>3. Kopier godkjent utkast</button><a class="inbox-btn" href="https://webmail.domeneshop.no/" target="_blank" rel="noopener noreferrer">4. Åpne webmail ↗</a><button class="inbox-btn safe-send" onclick="markInboxSent()" type="button" ${approved && !sent ? '' : 'disabled'}>${sent ? '✓ Sendt manuelt' : '5. Jeg har sendt svaret'}</button></div><div class="inbox-send-warning">Domeneshop sender en automatisk mottaksbekreftelse. ALEX lager utkast, men du godkjenner før du kopierer teksten til webmail og selv sender det endelige svaret.</div></div>
   `;
 }
 
@@ -1440,6 +1457,52 @@ async function saveInboxDraft() {
   }
 }
 
+async function approveInboxDraft() {
+  if (!selectedInboxMessage) return;
+  const textarea = document.getElementById('inbox-draft');
+  const draft = textarea ? textarea.value.trim() : '';
+  if (!draft) { setInboxStatus('Lag eller skriv et utkast før du godkjenner.'); return; }
+  try {
+    await inboxApi('approve_draft', { uid: selectedInboxUid, draft });
+    selectedInboxMessage.draft = draft;
+    selectedInboxMessage.status = 'Godkjent – klar for sending';
+    selectedInboxMessage.approvedAt = new Date().toISOString();
+    const listItem = inboxMessages.find(item => String(item.uid) === String(selectedInboxUid));
+    if (listItem) {
+      listItem.draft = draft;
+      listItem.status = 'Godkjent – klar for sending';
+      listItem.approvedAt = selectedInboxMessage.approvedAt;
+    }
+    renderInboxKpis(); renderInboxList(); renderInboxDetail(selectedInboxMessage);
+    setInboxStatus('Utkastet er godkjent. Kopier teksten, åpne webmail og send når du er klar.');
+    addFeedItem('ALEX', '#06b6d4', 'Svarutkast godkjent av Valdi');
+  } catch (error) {
+    setInboxStatus('Godkjenningen kunne ikke lagres nå. Utkastet står fortsatt i arbeidsflaten.');
+  }
+}
+
+async function markInboxSent() {
+  if (!selectedInboxMessage || selectedInboxMessage.status !== 'Godkjent – klar for sending') {
+    setInboxStatus('Godkjenn utkastet før du markerer det som sendt.');
+    return;
+  }
+  try {
+    await inboxApi('mark_sent', { uid: selectedInboxUid });
+    selectedInboxMessage.status = 'Sendt manuelt';
+    selectedInboxMessage.sentAt = new Date().toISOString();
+    const listItem = inboxMessages.find(item => String(item.uid) === String(selectedInboxUid));
+    if (listItem) {
+      listItem.status = 'Sendt manuelt';
+      listItem.sentAt = selectedInboxMessage.sentAt;
+    }
+    renderInboxKpis(); renderInboxList(); renderInboxDetail(selectedInboxMessage);
+    setInboxStatus('Saken er registrert som sendt manuelt. ALEX Inbox har ikke sendt e-posten selv.');
+    addFeedItem('ALEX', '#10b981', 'Valdi registrerte et godkjent svar som sendt');
+  } catch (error) {
+    setInboxStatus('Kunne ikke oppdatere sendt-status nå.');
+  }
+}
+
 async function markInboxDone() {
   if (!selectedInboxMessage) return;
   try {
@@ -1448,7 +1511,7 @@ async function markInboxDone() {
     const listItem = inboxMessages.find(item => String(item.uid) === String(selectedInboxUid));
     if (listItem) listItem.status = 'Lukket manuelt';
     renderInboxKpis(); renderInboxList(); renderInboxDetail(selectedInboxMessage);
-    setInboxStatus('Saken er merket ferdig i ALEX Inbox. Original e-post er ikke endret.');
+    setInboxStatus('Saken er lukket uten svar. Original e-post er ikke endret.');
   } catch (error) {
     setInboxStatus('Kunne ikke oppdatere status nå.');
   }
@@ -1460,7 +1523,7 @@ async function copyInboxDraft() {
   if (!draft) { setInboxStatus('Skriv eller generer et utkast før du kopierer.'); return; }
   try {
     await navigator.clipboard.writeText(draft);
-    setInboxStatus('Utkastet er kopiert. Åpne Domeneshop webmail, lim inn teksten og send selv når du er klar.');
+    setInboxStatus('Det godkjente utkastet er kopiert. Åpne Domeneshop webmail, lim inn teksten og send når du er klar.');
   } catch (error) {
     if (textarea) { textarea.focus(); textarea.select(); }
     setInboxStatus('Utkastet er markert. Kopier med Ctrl/Cmd + C, og lim det inn i Domeneshop webmail.');

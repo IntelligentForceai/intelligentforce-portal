@@ -220,6 +220,7 @@ function message_summary($mailbox, string $uid, array $overview, array $state): 
         'status' => $stored['status'] ?? 'Ny',
         'summary' => $stored['summary'] ?? '',
         'draft' => $stored['draft'] ?? '',
+        'approvedAt' => $stored['approvedAt'] ?? null,
         'sentAt' => $stored['sentAt'] ?? null,
     ];
 }
@@ -462,6 +463,33 @@ try {
             fail('invalid_draft');
         }
         respond(['ok' => true, 'state' => state_update($uid, ['status' => 'Venter på Valdi', 'draft' => $draft])]);
+    }
+
+    if ($action === 'approve_draft') {
+        $uid = (string) ($input['uid'] ?? '');
+        if (!preg_match('/^\d+$/', $uid)) {
+            fail('invalid_message');
+        }
+        $draft = trim(mb_substr((string) ($input['draft'] ?? ''), 0, 25000));
+        if ($draft === '') {
+            fail('invalid_draft');
+        }
+        respond(['ok' => true, 'state' => state_update($uid, [
+            'status' => 'Godkjent – klar for sending',
+            'draft' => $draft,
+            'approvedAt' => gmdate('c'),
+        ])]);
+    }
+
+    if ($action === 'mark_sent') {
+        $uid = (string) ($input['uid'] ?? '');
+        if (!preg_match('/^\d+$/', $uid)) {
+            fail('invalid_message');
+        }
+        respond(['ok' => true, 'state' => state_update($uid, [
+            'status' => 'Sendt manuelt',
+            'sentAt' => gmdate('c'),
+        ])]);
     }
 
     if ($action === 'mark_done') {
