@@ -191,6 +191,7 @@ type ALEXChatProps = {
 };
 
 const STORAGE_KEY = "alex_chat_history";
+const SERIOUS_CAPTURE_KEY = "alex_serious_lead_captured";
 
 export default function ALEXChat({ lang = "en" }: ALEXChatProps) {
   const [messages, setMessages] = useState<Message[]>(() => {
@@ -203,7 +204,9 @@ export default function ALEXChat({ lang = "en" }: ALEXChatProps) {
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [followUps, setFollowUps] = useState<string[]>([]);
-  const [hasSerious, setHasSerious] = useState(false);
+  const [hasSerious, setHasSerious] = useState(() => {
+    try { return localStorage.getItem(SERIOUS_CAPTURE_KEY) === "true"; } catch { return false; }
+  });
   const [showClearConfirm, setShowClearConfirm] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -224,7 +227,10 @@ export default function ALEXChat({ lang = "en" }: ALEXChatProps) {
     setFollowUps([]);
     setHasSerious(false);
     setShowClearConfirm(false);
-    try { localStorage.removeItem(STORAGE_KEY); } catch {}
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+      localStorage.removeItem(SERIOUS_CAPTURE_KEY);
+    } catch {}
   };
 
   const sendMessage = async (text: string) => {
@@ -240,7 +246,9 @@ export default function ALEXChat({ lang = "en" }: ALEXChatProps) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          messages: updatedMessages.map(m => ({ role: m.role, content: m.content }))
+          messages: updatedMessages.map(m => ({ role: m.role, content: m.content })),
+          // A lead can be captured only once until the visitor explicitly clears chat.
+          leadCapture: !hasSerious,
         }),
       });
 
@@ -253,8 +261,11 @@ export default function ALEXChat({ lang = "en" }: ALEXChatProps) {
         } else {
           setFollowUps([]);
         }
-        // Mark as serious enquiry if detected
-        if (data.serious) setHasSerious(true);
+        // Mark this browser conversation as captured only after ALEX detects a serious lead.
+        if (data.serious) {
+          setHasSerious(true);
+          try { localStorage.setItem(SERIOUS_CAPTURE_KEY, "true"); } catch {}
+        }
       } else {
         // Fallback to local knowledge base if API fails
         const answer = findAnswer(text, lang);

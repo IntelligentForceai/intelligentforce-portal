@@ -171,7 +171,7 @@ export default {
 
     try {
       const body = await request.json();
-      const { messages, adminMode, tts, ttsText, ttsLang, adminLang, attachments } = body;
+      const { messages, adminMode, tts, ttsText, ttsLang, adminLang, attachments, leadCapture } = body;
 
       // ── TTS endpoint ──
       // When tts=true, generate speech from ttsText using OpenAI TTS
@@ -310,10 +310,21 @@ export default {
           serious = false;
         }
 
-        // — Send email notification for serious enquiries via Formspree —
-        if (serious && messages && messages.length >= 2) {
+        // — Internal Lead Brief for the first serious enquiry in a public chat —
+        // The client supplies leadCapture only once per retained chat history. This keeps
+        // Zapier as an internal alerting workspace and never triggers customer-facing actions.
+        if (serious && leadCapture === true && messages && messages.length >= 2) {
           const lastUserMsg = [...messages].reverse().find(m => m.role === 'user');
-          const summary = lastUserMsg?.content?.substring(0, 300) || 'No message';
+          const summary = String(lastUserMsg?.content || 'No message').replace(/\s+/g, ' ').slice(0, 500);
+          const leadBrief = [
+            'ALEX — Internal Lead Brief',
+            `Priority: High`,
+            `Conversation signal: ${summary}`,
+            `Suggested next step: Review the conversation in ALEX Inbox and prepare a personalised follow-up.`,
+            `Captured: ${new Date().toISOString()}`,
+          ].join('\n');
+
+          // Existing internal notification remains active as a fallback channel.
           try {
             await fetch('https://formspree.io/f/xpwrjkge', {
               method: 'POST',
@@ -325,7 +336,30 @@ export default {
               }),
             });
           } catch (e) {
-            // Silent fail — don't block the response
+            // Silent fail — a notification failure must never block the chat reply.
+          }
+
+          // Zapier receives only a concise internal brief. The URL is a Worker secret,
+          // never a browser value or repository file.
+          if (env.ZAPIER_LEAD_WEBHOOK_URL) {
+            try {
+              await fetch(env.ZAPIER_LEAD_WEBHOOK_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  event: 'alex_serious_lead',
+                  schema_version: '1.0',
+                  lead_brief: leadBrief,
+                  priority_score: 80,
+                  source: 'ALEX public chat',
+                  status: 'Needs Valdi review',
+                  suggested_next_step: 'Review the conversation and approve a personalised follow-up.',
+                  received_at: new Date().toISOString(),
+                }),
+              });
+            } catch (e) {
+              // Zapier is internal convenience automation only; never affect ALEX replies.
+            }
           }
         }
       }
