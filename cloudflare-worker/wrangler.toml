@@ -1,0 +1,10 @@
+name = "alex-ai-worker"
+main = "worker.js"
+compatibility_date = "2026-08-02"
+
+[[r2_buckets]]
+binding = "LEDGER_BACKUPS"
+bucket_name = "intelligentforce-lead-ledger-backups"
+
+[triggers]
+crons = ["15 2 * * *"]

@@ -211,8 +211,84 @@ async function persistEnterpriseLead(env, { summary, conversationLength }) {
   }
 }
 
+async function fetchLedgerRows(env, table, order) {
+  const baseUrl = 'https://zcshuwiftywkvtppjqgv.supabase.co';
+  const items = [];
+  const pageSize = 1000;
+  for (let start = 0; start < 10000; start += pageSize) {
+    const response = await fetch(`${baseUrl}/rest/v1/${table}?select=*&order=${encodeURIComponent(order)}`, {
+      headers: {
+        'apikey': env.SUPABASE_SERVICE_ROLE_KEY,
+        'Authorization': `Bearer ${env.SUPABASE_SERVICE_ROLE_KEY}`,
+        'Range-Unit': 'items',
+        'Range': `${start}-${start + pageSize - 1}`,
+      },
+    });
+    if (!response.ok) throw new Error(`Ledger export failed for ${table}`);
+    const page = await response.json();
+    items.push(...page);
+    if (!Array.isArray(page) || page.length < pageSize) break;
+  }
+  return items;
+}
+
+async function archiveEnterpriseLedger(env, source = 'scheduled') {
+  if (!env.LEDGER_BACKUPS || !env.SUPABASE_SERVICE_ROLE_KEY) {
+    throw new Error('Ledger archive is not configured');
+  }
+  const [leads, events] = await Promise.all([
+    fetchLedgerRows(env, 'leads', 'created_at.asc'),
+    fetchLedgerRows(env, 'lead_events', 'created_at.asc'),
+  ]);
+  const createdAt = new Date().toISOString();
+  const snapshot = {
+    schema_version: '1.0',
+    backup_type: 'intelligentforce_enterprise_lead_ledger',
+    source,
+    created_at: createdAt,
+    record_counts: { leads: leads.length, lead_events: events.length },
+    leads,
+    lead_events: events,
+  };
+  const key = `supabase-ledger/${createdAt.slice(0, 10)}/ledger-${createdAt.replace(/[.:]/g, '-')}.json`;
+  await env.LEDGER_BACKUPS.put(key, JSON.stringify(snapshot), {
+    httpMetadata: { contentType: 'application/json' },
+    customMetadata: {
+      schema_version: '1.0',
+      record_counts: `${leads.length}:${events.length}`,
+      source,
+    },
+  });
+  return { key, leadCount: leads.length, eventCount: events.length, createdAt };
+}
+
 export default {
+  async scheduled(event, env, ctx) {
+    ctx.waitUntil(archiveEnterpriseLedger(env, `cron:${event.cron}`).catch((error) => {
+      console.error('Enterprise ledger backup failed');
+    }));
+  },
+
   async fetch(request, env) {
+    const url = new URL(request.url);
+    if (url.pathname === '/internal/ledger-backup' && request.method === 'POST') {
+      const token = request.headers.get('X-Ledger-Backup-Token');
+      if (!token || token !== env.LEDGER_BACKUP_INVOKE_TOKEN) {
+        return new Response('Unauthorized', { status: 401 });
+      }
+      try {
+        const result = await archiveEnterpriseLedger(env, 'controlled_test');
+        return new Response(JSON.stringify({ ok: true, lead_count: result.leadCount, event_count: result.eventCount, created_at: result.createdAt }), {
+          headers: { 'Content-Type': 'application/json' },
+        });
+      } catch (error) {
+        return new Response(JSON.stringify({ ok: false, error: 'Backup unavailable' }), {
+          status: 503,
+          headers: { 'Content-Type': 'application/json' },
+        });
+      }
+    }
+
     // Handle CORS preflight
     if (request.method === 'OPTIONS') {
       return new Response(null, {
