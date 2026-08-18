@@ -217,13 +217,13 @@
     @keyframes micPulse { 0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.4)} 50%{box-shadow:0 0 0 8px rgba(239,68,68,0)} }
 
     /* Voice toggle */
-    .voice-toggle {
+    .voice-toggle, .alex-copy-btn {
       width: 32px; height: 32px; border-radius: 10px; background: rgba(255,255,255,.06);
       border: 1px solid rgba(255,255,255,.1); color: #9ca3af; cursor: pointer;
       display: flex; align-items: center; justify-content: center; font-size: .875rem;
       transition: background .2s, color .2s; title: 'Talesvar av/på';
     }
-    .voice-toggle:hover { background: rgba(255,255,255,.12); color: #fff; }
+    .voice-toggle:hover, .alex-copy-btn:hover { background: rgba(255,255,255,.12); color: #fff; }
     .voice-toggle.active { background: rgba(6,182,212,.15); color: #06b6d4; border-color: rgba(6,182,212,.4); }
 
     /* Speaking animation on avatar */
@@ -442,7 +442,7 @@
     .alex-chat-box { background: var(--if-surface); border-color: rgba(8,159,188,.35); box-shadow: 0 30px 75px rgba(15,42,67,.26); }
     .alex-chat-header { background: linear-gradient(135deg, rgba(6,182,212,.11), rgba(37,99,235,.06)); }
     .alex-online-dot { border-color: var(--if-surface); }
-    .voice-toggle, .alex-minimize-btn, .alex-mic-btn, .modal-close { background: var(--if-surface-soft); border-color: var(--if-border); color: var(--if-muted); }
+    .voice-toggle, .alex-copy-btn, .alex-minimize-btn, .alex-mic-btn, .modal-close { background: var(--if-surface-soft); border-color: var(--if-border); color: var(--if-muted); }
     .voice-toggle:hover, .alex-minimize-btn:hover, .modal-close:hover { background: var(--if-hover); color: var(--if-text); }
     .msg.user .msg-bubble { color: var(--if-text); }
     body:not([data-theme="dark"]) .alex-chat-box { color: #102a3c; }
@@ -744,6 +744,7 @@
         <button class="voice-toggle active" id="voice-toggle" onclick="toggleVoice()" type="button" title="Talesvar av/på">🔊</button>
         <button id="lang-toggle" onclick="toggleAdminLang()" type="button" title="Bytt ALEX sitt svarspråk"
           style="background:rgba(6,182,212,.15);border:1px solid rgba(6,182,212,.4);border-radius:8px;color:#06b6d4;font-size:.75rem;padding:.3rem .6rem;cursor:pointer;transition:all .2s;font-weight:700;letter-spacing:.05em">🇳🇴 NO</button>
+        <button class="alex-copy-btn" id="copy-chat-btn" onclick="copyAlexConversation()" type="button" title="Kopier samtalen i et ryddig format" aria-label="Kopier ALEX-samtalen">📋</button>
         <button onclick="confirmClearAdminChat()" type="button" title="Slett chat-historikk"
           style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:8px;color:#94a3b8;font-size:.8rem;padding:.3rem .6rem;cursor:pointer;transition:all .2s"
           onmouseover="this.style.color='#f87171';this.style.borderColor='rgba(248,113,113,.4)'"
@@ -1582,6 +1583,51 @@ function loadAdminChat() {
     }
   } catch {}
   return false;
+}
+
+function formatAlexConversation() {
+  const exportedAt = new Date().toLocaleString('no-NO', { dateStyle: 'medium', timeStyle: 'short' });
+  const transcript = alexMessages.map((message) => {
+    const speaker = message.role === 'user' ? 'VALDI' : 'ALEX';
+    const attachments = Array.isArray(message.attachments) && message.attachments.length
+      ? `\n[Vedlegg: ${message.attachments.map(file => file.name || 'fil').join(', ')}]`
+      : '';
+    return `${speaker}:\n${String(message.content || '').trim()}${attachments}`;
+  }).join('\n\n────────────────────\n\n');
+  return `INTELLIGENTFORCE AI OFFICE — ALEX-SAMTALE\nEksportert: ${exportedAt}\nFormat: Privat arbeidsnotat · vedlegg vises kun som filnavn\n\n${transcript}`;
+}
+
+async function copyAlexConversation() {
+  const button = document.getElementById('copy-chat-btn');
+  if (!alexMessages.length) {
+    const original = button.textContent;
+    button.textContent = 'Tom';
+    setTimeout(() => { button.textContent = original; }, 1600);
+    return;
+  }
+  const transcript = formatAlexConversation();
+  try {
+    if (!navigator.clipboard?.writeText) throw new Error('clipboard_unavailable');
+    await navigator.clipboard.writeText(transcript);
+  } catch (error) {
+    const helper = document.createElement('textarea');
+    helper.value = transcript;
+    helper.setAttribute('readonly', '');
+    helper.style.position = 'fixed';
+    helper.style.opacity = '0';
+    document.body.appendChild(helper);
+    helper.select();
+    const copied = document.execCommand('copy');
+    helper.remove();
+    if (!copied) {
+      alert('Kunne ikke kopiere automatisk. Prøv igjen i en moderne nettleser.');
+      return;
+    }
+  }
+  const original = button.textContent;
+  button.textContent = '✓';
+  button.title = 'Samtalen er kopiert';
+  setTimeout(() => { button.textContent = original; button.title = 'Kopier samtalen i et ryddig format'; }, 2200);
 }
 
 function confirmClearAdminChat() {
