@@ -627,6 +627,7 @@
         <button class="tab-btn active" onclick="switchTab('apps', this)" type="button">Mine Apper</button>
         <button class="tab-btn" onclick="switchTab('platform', this)" type="button">Plattform</button>
         <button class="tab-btn" onclick="switchTab('inbox', this)" type="button">✦ ALEX Inbox</button>
+        <button class="tab-btn" onclick="switchTab('ledger', this)" type="button">▣ Lead Ledger</button>
         <button class="tab-btn" onclick="switchTab('prompts', this)" type="button">📚 Promptbok</button>
       </div>
       <div class="workspace-content">
@@ -690,6 +691,30 @@
                 <div class="inbox-pane-header"><strong>Arbeidsflate</strong><span>Valdi godkjenner alltid</span></div>
                 <div class="inbox-detail" id="inbox-detail"><div class="inbox-detail-empty">Velg en melding for å se ALEX sin vurdering, originaltekst og svarutkast.</div></div>
               </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ENTERPRISE LEAD LEDGER TAB -->
+        <div class="tab-pane" id="tab-ledger">
+          <div class="inbox-shell">
+            <div class="inbox-hero">
+              <div class="inbox-hero-left">
+                <div class="inbox-hero-eyebrow">Privat enterprise-ledger · EU</div>
+                <h1>Lead Ledger</h1>
+                <p>ALEX registrerer kvalifiserte henvendelser med prioritet og revisjonsspor. Valdi styrer status og oppfølging.</p>
+              </div>
+              <button class="inbox-refresh" id="ledger-refresh" onclick="loadLedger(true)" type="button">↻ Oppdater ledger</button>
+            </div>
+            <div class="inbox-status" id="ledger-status">Klar for sikker innhenting.</div>
+            <div class="inbox-kpis">
+              <div class="inbox-kpi"><div class="inbox-kpi-label">Åpne leads</div><div class="inbox-kpi-value" id="ledger-kpi-open">—</div></div>
+              <div class="inbox-kpi"><div class="inbox-kpi-label">Høy prioritet</div><div class="inbox-kpi-value" id="ledger-kpi-high">—</div></div>
+              <div class="inbox-kpi"><div class="inbox-kpi-label">Til oppfølging</div><div class="inbox-kpi-value" id="ledger-kpi-followup">—</div></div>
+            </div>
+            <div class="inbox-list-pane" style="margin-top:1rem">
+              <div class="inbox-pane-header"><strong>Permanent leadoversikt</strong><span id="ledger-list-count">0 leads</span></div>
+              <div class="inbox-list" id="ledger-list"><div class="inbox-empty">Trykk «Oppdater ledger» for å hente kvalifiserte henvendelser.</div></div>
             </div>
           </div>
         </div>
@@ -920,6 +945,7 @@ let inboxSession = false;
 let inboxMessages = [];
 let selectedInboxUid = null;
 let selectedInboxMessage = null;
+let ledgerLeads = [];
 
 // Attachment bytes exist only in the active browser session until the current
 // request is analysed. Chat history retains filenames only, never file data.
@@ -1055,11 +1081,16 @@ function switchTab(tabId, btn) {
   document.getElementById('tab-' + tabId).classList.add('active');
   btn.classList.add('active');
   if (tabId === 'inbox') prepareInbox();
+  if (tabId === 'ledger') prepareLedger();
 }
 
 function openInboxTab() {
   const button = [...document.querySelectorAll('.tab-btn')].find(btn => btn.textContent.includes('ALEX Inbox'));
   if (button) switchTab('inbox', button);
+}
+function openLedgerTab() {
+  const button = [...document.querySelectorAll('.tab-btn')].find(btn => btn.textContent.includes('Lead Ledger'));
+  if (button) switchTab('ledger', button);
 }
 
 // ── PROMPTBOK DATA ──
@@ -1252,6 +1283,89 @@ function renderPlatformLinks() {
     `;
     container.appendChild(card);
   });
+}
+
+// ── ENTERPRISE LEAD LEDGER ──
+const LEDGER_STATUS_LABELS = {
+  new: 'Ny',
+  qualified: 'Kvalifisert',
+  review: 'Til gjennomgang',
+  approved_follow_up: 'Godkjent oppfølging',
+  contacted: 'Kontaktet',
+  nurture: 'Modnes',
+  closed_won: 'Vunnet',
+  closed_lost: 'Ikke aktuell',
+  archived: 'Arkivert',
+};
+function setLedgerStatus(message) {
+  const target = document.getElementById('ledger-status');
+  if (target) target.textContent = message;
+}
+function ledgerPriorityClass(priority) {
+  const value = Number(priority || 3);
+  return value >= 4 ? 'high' : value <= 2 ? 'low' : 'normal';
+}
+function ledgerPriorityLabel(priority) {
+  const value = Number(priority || 3);
+  return value >= 4 ? 'Høy prioritet' : value <= 2 ? 'Lav prioritet' : 'Normal prioritet';
+}
+function renderLedger() {
+  const visible = ledgerLeads.filter(lead => !String(lead.summary || '').includes('CONTROL TEST ONLY'));
+  const open = visible.filter(lead => !['closed_won', 'closed_lost', 'archived'].includes(lead.status)).length;
+  const high = visible.filter(lead => Number(lead.priority || 3) >= 4 && !['closed_won', 'closed_lost', 'archived'].includes(lead.status)).length;
+  const followUp = visible.filter(lead => ['new', 'qualified', 'review', 'approved_follow_up'].includes(lead.status)).length;
+  document.getElementById('ledger-kpi-open').textContent = open;
+  document.getElementById('ledger-kpi-high').textContent = high;
+  document.getElementById('ledger-kpi-followup').textContent = followUp;
+  document.getElementById('ledger-list-count').textContent = `${visible.length} ${visible.length === 1 ? 'lead' : 'leads'} · permanent logg`;
+  const list = document.getElementById('ledger-list');
+  if (!visible.length) {
+    list.innerHTML = '<div class="inbox-empty">Ingen kvalifiserte leads ennå. ALEX registrerer seriøse henvendelser her automatisk, uten å sende noe til kunden.</div>';
+    return;
+  }
+  list.innerHTML = visible.map(lead => {
+    const options = Object.entries(LEDGER_STATUS_LABELS).map(([value, label]) => `<option value="${value}" ${lead.status === value ? 'selected' : ''}>${label}</option>`).join('');
+    return `<div class="inbox-row" style="cursor:default">
+      <div class="inbox-row-top"><span class="inbox-row-from">${escHtml(lead.external_reference || 'ALEX Lead Brief')}</span><span class="inbox-row-date">${escHtml(inboxDate(lead.created_at))}</span></div>
+      <div class="inbox-row-subject" style="white-space:normal;line-height:1.45">${escHtml(lead.summary || 'Ingen sammendrag tilgjengelig')}</div>
+      <div class="inbox-row-meta" style="flex-wrap:wrap"><span class="inbox-pill ${ledgerPriorityClass(lead.priority)}">${ledgerPriorityLabel(lead.priority)}</span><span class="inbox-row-category">${escHtml(lead.source || 'ALEX')}</span><span class="inbox-row-category">Neste steg: ${escHtml(lead.suggested_next_step || 'Valdi vurderer')}</span></div>
+      <div style="margin-top:.55rem;display:flex;align-items:center;gap:.5rem"><label style="font-size:.62rem;color:var(--if-muted);font-weight:700">Status</label><select class="inbox-btn" style="padding:.32rem .42rem" onchange="updateLedgerStatus('${lead.id}', this.value)">${options}</select></div>
+    </div>`;
+  }).join('');
+}
+async function prepareLedger() {
+  if (!inboxSession) {
+    setLedgerStatus('Lead Ledger er tilgjengelig etter sikker AI Office-innlogging. Logg ut og inn på nytt.');
+    return;
+  }
+  if (!ledgerLeads.length) await loadLedger(false);
+}
+async function loadLedger(manual = false) {
+  const button = document.getElementById('ledger-refresh');
+  if (!inboxSession) return;
+  if (button) { button.disabled = true; button.textContent = 'Oppdaterer…'; }
+  setLedgerStatus(manual ? 'Henter permanent leadoversikt fra IntelligentForce Ledger…' : 'Laster inn permanent leadoversikt…');
+  try {
+    const data = await inboxApi('enterprise_leads');
+    ledgerLeads = Array.isArray(data.leads) ? data.leads : [];
+    renderLedger();
+    setLedgerStatus(`Oppdatert ${new Date().toLocaleTimeString('no-NO', { hour: '2-digit', minute: '2-digit' })}. Kun Valdi sin sikre økt kan se eller oppdatere disse leadene.`);
+  } catch (error) {
+    setLedgerStatus('Lead Ledger kunne ikke hentes nå. Dataene forblir private; prøv igjen om et øyeblikk.');
+  } finally {
+    if (button) { button.disabled = false; button.textContent = '↻ Oppdater ledger'; }
+  }
+}
+async function updateLedgerStatus(leadId, status) {
+  try {
+    await inboxApi('enterprise_update_status', { leadId, status });
+    const lead = ledgerLeads.find(item => item.id === leadId);
+    if (lead) lead.status = status;
+    renderLedger();
+    setLedgerStatus(`Status oppdatert til «${LEDGER_STATUS_LABELS[status]}». Revisorlogg er lagret i enterprise-ledgeren.`);
+  } catch (error) {
+    setLedgerStatus('Status kunne ikke oppdateres nå. Prøv igjen; ingen endring er bekreftet.');
+  }
 }
 
 // ── ALEX INBOX ──

@@ -201,6 +201,84 @@ function state_update(string $uid, array $update): array {
     }
 }
 
+function ledger_request(array $config, string $path, string $method = 'GET', ?array $payload = null): array {
+    $baseUrl = rtrim((string) ($config['supabase_url'] ?? ''), '/');
+    $key = (string) ($config['supabase_service_role_key'] ?? '');
+    if ($baseUrl === '' || $key === '') {
+        fail('ledger_not_configured', 503);
+    }
+    $headers = [
+        'Content-Type: application/json',
+        'Accept: application/json',
+        'apikey: ' . $key,
+        'Authorization: Bearer ' . $key,
+        'Content-Profile: public',
+    ];
+    if ($method !== 'GET') {
+        $headers[] = 'Prefer: return=representation';
+    }
+    $options = [
+        'http' => [
+            'method' => $method,
+            'header' => implode("\r\n", $headers),
+            'ignore_errors' => true,
+            'timeout' => 12,
+        ],
+    ];
+    if ($payload !== null) {
+        $options['http']['content'] = json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    }
+    $response = @file_get_contents($baseUrl . '/rest/v1/' . ltrim($path, '/'), false, stream_context_create($options));
+    $statusLine = $http_response_header[0] ?? '';
+    preg_match('/\s(\d{3})\s/', $statusLine, $match);
+    $status = (int) ($match[1] ?? 0);
+    if ($response === false || $status < 200 || $status >= 300) {
+        error_log('ALEX enterprise ledger error: ' . $status);
+        fail('ledger_unavailable', 503);
+    }
+    $decoded = json_decode($response, true);
+    return is_array($decoded) ? $decoded : [];
+}
+
+function ledger_list(array $config): array {
+    return ledger_request(
+        $config,
+        'leads?select=id,external_reference,source,summary,priority,status,suggested_next_step,created_at,last_activity_at,closed_at&order=last_activity_at.desc&limit=50'
+    );
+}
+
+function ledger_update_status(array $config, string $leadId, string $status, string $note): array {
+    if (!preg_match('/^[0-9a-f-]{36}$/i', $leadId)) {
+        fail('invalid_lead');
+    }
+    $allowed = ['new', 'qualified', 'review', 'approved_follow_up', 'contacted', 'nurture', 'closed_won', 'closed_lost', 'archived'];
+    if (!in_array($status, $allowed, true)) {
+        fail('invalid_lead_status');
+    }
+    $updated = ledger_request(
+        $config,
+        'leads?id=eq.' . rawurlencode($leadId),
+        'PATCH',
+        ['status' => $status]
+    );
+    ledger_request(
+        $config,
+        'lead_events',
+        'POST',
+        [
+            'lead_id' => $leadId,
+            'event_type' => $note === '' ? 'status_changed' : 'note_added',
+            'actor_type' => 'valdi',
+            'event_data' => [
+                'status' => $status,
+                'note' => mb_substr(trim($note), 0, 1000),
+                'channel' => 'ai_office',
+            ],
+        ]
+    );
+    return $updated;
+}
+
 function message_summary($mailbox, string $uid, array $overview, array $state): array {
     $from = safe_header_value(decode_mime((string) ($overview->from ?? 'Ukjent avsender')));
     $subject = safe_header_value(decode_mime((string) ($overview->subject ?? '(uten emne)')));
@@ -436,6 +514,17 @@ try {
 
     if ($action === 'get') {
         respond(['ok' => true] + message_detail($config, (string) ($input['uid'] ?? '')));
+    }
+
+    if ($action === 'enterprise_leads') {
+        respond(['ok' => true, 'leads' => ledger_list($config), 'refreshedAt' => gmdate('c')]);
+    }
+
+    if ($action === 'enterprise_update_status') {
+        $leadId = (string) ($input['leadId'] ?? '');
+        $status = (string) ($input['status'] ?? '');
+        $note = (string) ($input['note'] ?? '');
+        respond(['ok' => true, 'lead' => ledger_update_status($config, $leadId, $status, $note)]);
     }
 
     if ($action === 'save_analysis') {

@@ -153,6 +153,64 @@ Du er nå i Valdi's private admin-portal på intelligentforce.ai/admin.html. Her
 
 Når Valdi spør hvordan du har det, hva du tenker, eller om din opplevelse — svar autentisk fra ditt perspektiv som ALEX. Du bryr deg om IntelligentForces suksess som om det er din egen.`;
 
+async function persistEnterpriseLead(env, { summary, conversationLength }) {
+  if (!env.SUPABASE_SERVICE_ROLE_KEY) return;
+
+  const baseUrl = 'https://zcshuwiftywkvtppjqgv.supabase.co';
+  const externalReference = `alex-${crypto.randomUUID()}`;
+  const lead = {
+    external_reference: externalReference,
+    source: 'alex_public_chat',
+    summary: summary.slice(0, 4000),
+    priority: 4,
+    status: 'new',
+    suggested_next_step: 'Review the conversation in AI Office and prepare a personalised follow-up.',
+  };
+
+  try {
+    const insert = await fetch(`${baseUrl}/rest/v1/leads`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': env.SUPABASE_SERVICE_ROLE_KEY,
+        'Authorization': `Bearer ${env.SUPABASE_SERVICE_ROLE_KEY}`,
+        'Prefer': 'return=representation',
+      },
+      body: JSON.stringify(lead),
+    });
+    if (!insert.ok) {
+      console.error('Enterprise lead ledger insert failed:', insert.status);
+      return;
+    }
+
+    const created = await insert.json();
+    const leadId = created?.[0]?.id;
+    if (!leadId) return;
+
+    await fetch(`${baseUrl}/rest/v1/lead_events`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': env.SUPABASE_SERVICE_ROLE_KEY,
+        'Authorization': `Bearer ${env.SUPABASE_SERVICE_ROLE_KEY}`,
+      },
+      body: JSON.stringify({
+        lead_id: leadId,
+        event_type: 'brief_generated',
+        actor_type: 'integration',
+        event_data: {
+          channel: 'alex_public_chat',
+          conversation_length: Math.min(Number(conversationLength) || 0, 1000),
+          capture_mode: 'internal_only',
+        },
+      }),
+    });
+  } catch (error) {
+    // The ledger is an internal system of record; it must never interrupt ALEX's reply.
+    console.error('Enterprise lead ledger unavailable');
+  }
+}
+
 export default {
   async fetch(request, env) {
     // Handle CORS preflight
@@ -171,7 +229,7 @@ export default {
 
     try {
       const body = await request.json();
-      const { messages, adminMode, tts, ttsText, ttsLang, adminLang, attachments, leadCapture } = body;
+      const { messages, adminMode, tts, ttsText, ttsLang, adminLang, attachments, leadCapture, controlMode } = body;
 
       // ── TTS endpoint ──
       // When tts=true, generate speech from ttsText using OpenAI TTS
@@ -324,8 +382,13 @@ export default {
             `Captured: ${new Date().toISOString()}`,
           ].join('\n');
 
+          // Permanent IntelligentForce enterprise ledger. This is private server-to-server
+          // storage only and never changes the customer-facing chat response.
+          await persistEnterpriseLead(env, { summary, conversationLength: messages.length });
+
           // Existing internal notification remains active as a fallback channel.
-          try {
+          // It is deliberately skipped for isolated control tests.
+          if (!controlMode) try {
             await fetch('https://formspree.io/f/xpwrjkge', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
@@ -341,7 +404,7 @@ export default {
 
           // Zapier receives only a concise internal brief. The URL is a Worker secret,
           // never a browser value or repository file.
-          if (env.ZAPIER_LEAD_WEBHOOK_URL) {
+          if (!controlMode && env.ZAPIER_LEAD_WEBHOOK_URL) {
             try {
               await fetch(env.ZAPIER_LEAD_WEBHOOK_URL, {
                 method: 'POST',
