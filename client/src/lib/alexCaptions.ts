@@ -45,26 +45,15 @@ export const homeCaptions: Caption[] = [
 ];
 
 export const alexCaptions: Caption[] = [
-  { time: 0.0, end: 2.98, text: "Welcome to Intelligent Force. We help" },
-  { time: 2.98, end: 4.98, text: "businesses discover where they\'re losing money" },
-  { time: 4.98, end: 5.7, text: "and automated" },
-  { time: 5.7, end: 9.08, text: "away. Our platform offers three simple" },
-  { time: 9.08, end: 12.98, text: "steps. Diagnosis, we identify your challenges," },
-  { time: 13.46, end: 16.16, text: "calculate, we show your exact savings" },
-  { time: 16.16, end: 19.46, text: "potential. Automate, we implement in two" },
-  { time: 19.46, end: 20.74, text: "weeks. We provide" },
-  { time: 20.74, end: 23.7, text: "nine specialized AI agents, data analyst," },
-  { time: 24.24, end: 26.46, text: "customer service specialist, market analyst," },
-  { time: 26.46, end: 30.22, text: "risk manager, process optimizer, content creator," },
-  { time: 30.82, end: 31.82, text: "supply chain coordinator," },
-  { time: 32.3, end: 35.62, text: "HR specialist and financial analyst. Pricing" },
-  { time: 35.62, end: 38.04, text: "starts at $299 monthly for starter," },
-  { time: 38.56, end: 41.56, text: "$799 for professional and custom pricing" },
-  { time: 41.56, end: 44.16, text: "for enterprise. All plans include a" },
-  { time: 44.16, end: 45.46, text: "14 -day free trial." },
-  { time: 46.08, end: 49.28, text: "Contact us at helloatintelligentforce .ai or" },
-  { time: 49.28, end: 50.9, text: "take our free business health check." },
-  { time: 51.48, end: 53.54, text: "Let\'s automate your path to success." },
+  { time: 0.0, end: 2.4, text: "Welcome to IntelligentForce." },
+  { time: 2.4, end: 5.3, text: "I’m ALEX, Chief AI Coordinator." },
+  { time: 5.3, end: 8.0, text: "We explore practical AI automation for your organisation." },
+  { time: 8.0, end: 11.2, text: "During an agreed pilot, we can connect selected CRM," },
+  { time: 11.2, end: 13.4, text: "ERP, email, or database systems" },
+  { time: 13.4, end: 16.0, text: "after technical and security assessment." },
+  { time: 16.0, end: 18.6, text: "Every integration is scoped and tested" },
+  { time: 18.6, end: 21.0, text: "around your real workflows." },
+  { time: 21.0, end: 24.02, text: "Let’s explore a pilot discussion." },
 ];
 
 export const aboutCaptions: Caption[] = [
