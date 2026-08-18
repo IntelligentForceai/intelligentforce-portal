@@ -10,11 +10,11 @@ import { useSEO } from "@/hooks/useSEO";
 
 function ROICalculator() {
   const [employees, setEmployees] = useState(20);
-  const [avgSalary, setAvgSalary] = useState(600000);
+  const [avgSalary, setAvgSalary] = useState(60000);
   const automationRate = 0.35;
   const annualSavings = Math.round(employees * avgSalary * automationRate);
   const monthlySavings = Math.round(annualSavings / 12);
-  const roi = Math.round((annualSavings / 16490) * 100);
+  const roi = Math.round((annualSavings / (1499 * 12)) * 100);
 
   return (
     <div className="bg-card border border-border rounded-2xl p-8">
@@ -38,46 +38,46 @@ function ROICalculator() {
         </div>
         <div>
           <label className="block text-white font-semibold mb-3">
-            Avg. annual salary (NOK): <span className="text-cyan-400">{avgSalary.toLocaleString()}</span>
+            Illustrative annual employment cost (€): <span className="text-cyan-400">{avgSalary.toLocaleString()}</span>
           </label>
           <input
             type="range"
-            min={300000}
-            max={1500000}
-            step={50000}
+            min={30000}
+            max={150000}
+            step={5000}
             value={avgSalary}
             onChange={(e) => setAvgSalary(Number(e.target.value))}
             className="w-full accent-cyan-500"
           />
           <div className="flex justify-between text-xs text-muted-foreground mt-1">
-            <span>300k</span><span>1.5M</span>
+            <span>€30k</span><span>€150k</span>
           </div>
         </div>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
         <div className="bg-background rounded-xl p-5 text-center border border-border">
           <div className="text-3xl font-extrabold text-cyan-400 mb-1">
-            NOK {(annualSavings / 1000).toFixed(0)}k
+            €{(annualSavings / 1000).toFixed(0)}k
           </div>
           <div className="text-muted-foreground text-sm">Estimated annual savings</div>
         </div>
         <div className="bg-background rounded-xl p-5 text-center border border-border">
           <div className="text-3xl font-extrabold text-green-400 mb-1">
-            NOK {(monthlySavings / 1000).toFixed(0)}k
+            €{(monthlySavings / 1000).toFixed(0)}k
           </div>
           <div className="text-muted-foreground text-sm">Monthly savings</div>
         </div>
         <div className="bg-gradient-to-b from-blue-900/40 to-card rounded-xl p-5 text-center border border-cyan-500/30">
           <div className="text-3xl font-extrabold text-white mb-1">{roi}x</div>
-          <div className="text-muted-foreground text-sm">ROI on Professional plan</div>
+          <div className="text-muted-foreground text-sm">Illustrative scenario ratio</div>
         </div>
       </div>
       <p className="text-xs text-muted-foreground text-center mb-6">
-        Based on 35% automation of manual processes. Actual results vary by industry and implementation scope.
+        Illustrative scenario only, based on an assumed 35% automation of manual processes. Results vary by organisation, process, data quality and implementation scope; this is not a guarantee or offer.
       </p>
       <div className="text-center">
-        <Link href="/health-check" className="btn-gradient inline-flex items-center gap-2 px-8 py-4 rounded-full font-bold text-white">
-          Get Your Precise ROI Estimate <ArrowRight size={18} />
+        <Link href="/contact" className="btn-gradient inline-flex items-center gap-2 px-8 py-4 rounded-full font-bold text-white">
+          Start a pilot discussion <ArrowRight size={18} />
         </Link>
       </div>
     </div>
@@ -87,7 +87,7 @@ function ROICalculator() {
 export default function Pricing() {
   useSEO({
     title: "Pricing Plans – IntelligentForce AI Automation",
-    description: "Transparent pricing for AI business automation. Choose from Starter, Professional, and Enterprise plans. Start with a free Business Health Check. No hidden fees.",
+    description: "Indicative pricing examples for IntelligentForce AI automation pilot discussions. Final scope, pricing and terms are agreed only in writing with the appropriate registered entity.",
     keywords: "AI automation pricing, business automation cost, AI SaaS pricing, IntelligentForce plans, enterprise AI pricing",
     canonical: "https://intelligentforce.ai/pricing",
     
@@ -124,16 +124,16 @@ export default function Pricing() {
   ];
 
   const entFeatures = [
-    "Unlimited Expert Specialists",
-    "Unlimited consulting",
-    "Custom automation solutions",
-    "Dedicated account manager",
-    "24/7 priority support",
-    "Real-time analytics dashboard",
-    "Custom integrations",
-    "SLA guarantee",
-    "On-premise deployment option",
-    "Custom training program",
+    "Specialist allocation scoped per pilot",
+    "Consulting scope agreed per pilot",
+    "Potential custom automation solutions",
+    "Dedicated coordination model where agreed",
+    "Support model agreed in writing",
+    "Potential analytics reporting",
+    "Custom integrations subject to assessment",
+    "SLA framework subject to written agreement",
+    "Deployment options subject to technical assessment",
+    "Training scope agreed per pilot",
   ];
 
   const faqs = [
@@ -267,10 +267,10 @@ export default function Pricing() {
           <div className="text-center mb-10">
             <div className="inline-flex items-center gap-2 bg-cyan-500/10 border border-cyan-500/30 rounded-full px-4 py-2 mb-4">
               <Calculator size={16} className="text-cyan-400" />
-              <span className="text-cyan-400 text-sm font-medium">ROI Calculator</span>
+              <span className="text-cyan-400 text-sm font-medium">Illustrative scenario calculator</span>
             </div>
-            <h2 className="text-3xl font-bold text-white mb-3">How Much Could You Save?</h2>
-            <p className="text-muted-foreground text-lg">Estimate your annual savings based on your team size.</p>
+            <h2 className="text-3xl font-bold text-white mb-3">Explore a potential efficiency scenario</h2>
+            <p className="text-muted-foreground text-lg">Use an illustrative assumption to frame a pilot discussion; it is not a forecast or guarantee.</p>
           </div>
           <ROICalculator />
         </div>
@@ -311,7 +311,7 @@ export default function Pricing() {
           <div className="relative rounded-3xl overflow-hidden bg-gradient-to-r from-blue-900/60 to-purple-900/60 border border-white/10 p-10 sm:p-16 text-center">
             <h2 className="text-3xl font-bold text-white mb-4">{p.ctaTitle}</h2>
             <p className="text-white/70 text-lg mb-8 max-w-xl mx-auto">{p.ctaSub}</p>
-            <Link href="/health-check" className="btn-gradient inline-flex items-center gap-2 px-10 py-4 rounded-full font-bold text-white text-lg">
+            <Link href="/contact" className="btn-gradient inline-flex items-center gap-2 px-10 py-4 rounded-full font-bold text-white text-lg">
               {p.ctaBtn} <ArrowRight size={20} />
             </Link>
           </div>
