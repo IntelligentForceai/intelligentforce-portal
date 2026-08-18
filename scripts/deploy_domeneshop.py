@@ -54,7 +54,17 @@ def upload_directory(ftp: ftplib.FTP_TLS, local_directory: Path, remote_director
             upload_file(ftp, item, f"{remote_directory}/{item.name}")
 
 
-def deploy(build_directory: Path, config: dict[str, str], dry_run: bool) -> None:
+def validate_remove_paths(paths: list[str]) -> list[str]:
+    validated: list[str] = []
+    for path in paths:
+        normalized = path.strip().lstrip("/")
+        if not normalized or ".." in normalized.split("/") or normalized.startswith("."):
+            raise ValueError(f"Unsafe remote removal path: {path}")
+        validated.append(normalized)
+    return validated
+
+
+def deploy(build_directory: Path, config: dict[str, str], dry_run: bool, remove_remote: list[str] | None = None) -> None:
     if not build_directory.is_dir():
         raise FileNotFoundError(f"Build output does not exist: {build_directory}")
     required_files = [build_directory / ".htaccess", build_directory / "index.html", build_directory / "assets"]
@@ -62,8 +72,11 @@ def deploy(build_directory: Path, config: dict[str, str], dry_run: bool) -> None
     if missing:
         raise FileNotFoundError(f"Build output is incomplete: {', '.join(missing)}")
 
+    remove_remote = validate_remove_paths(remove_remote or [])
     if dry_run:
         print(f"dry run only: would deploy {build_directory} to {config['host']}{config['remote_dir']}")
+        for path in remove_remote:
+            print(f"dry run only: would remove {path}")
         return
 
     remote_dir = config["remote_dir"].rstrip("/") or "/www"
@@ -98,6 +111,17 @@ def deploy(build_directory: Path, config: dict[str, str], dry_run: bool) -> None
                 upload_file(ftp, item, f"{remote_dir}/{item.name}")
             elif item.is_dir():
                 upload_directory(ftp, item, f"{remote_dir}/{item.name}")
+
+        for path in remove_remote:
+            remote_path = f"{remote_dir}/{path}"
+            try:
+                ftp.delete(remote_path)
+                print(f"removed {remote_path}")
+            except ftplib.error_perm as exc:
+                if str(exc).startswith("550"):
+                    print(f"already absent {remote_path}")
+                else:
+                    raise
     finally:
         try:
             ftp.quit()
@@ -109,9 +133,16 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Deploy IntelligentForce portal to Domeneshop")
     parser.add_argument("--build-dir", type=Path, default=DEFAULT_BUILD)
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument(
+        "--remove-remote",
+        action="append",
+        default=[],
+        metavar="PATH",
+        help="Explicit remote path to remove after a successful upload. May be supplied more than once.",
+    )
     args = parser.parse_args()
 
-    deploy(args.build_dir, load_config(), args.dry_run)
+    deploy(args.build_dir, load_config(), args.dry_run, args.remove_remote)
     print("deploy complete" if not args.dry_run else "dry run complete")
     return 0
 

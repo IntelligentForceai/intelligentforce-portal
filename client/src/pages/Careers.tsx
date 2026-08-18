@@ -7,9 +7,9 @@ const openRoles = [
   {
     title: "Senior AI Implementation Consultant",
     department: "Delivery",
-    location: "Oslo / Remote",
+    location: "International / Remote",
     type: "Full-time",
-    description: "Lead end-to-end AI automation deployments for mid-market and enterprise clients. You will own the client relationship from onboarding through go-live, ensuring every deployment delivers measurable ROI within 14 days.",
+    description: "Lead scoped AI automation pilot and implementation work for mid-market and enterprise clients. You will own the client relationship from onboarding through agreed go-live, ensuring each deployment is measured against documented customer objectives.",
     requirements: [
       "5+ years in enterprise software implementation or management consulting",
       "Strong understanding of business process automation",
@@ -20,7 +20,7 @@ const openRoles = [
   {
     title: "Business Development Manager",
     department: "Sales",
-    location: "Oslo / London / Remote",
+    location: "London / International / Remote",
     type: "Full-time",
     description: "Build and manage relationships with mid-market and enterprise prospects across Europe and beyond. You will be the first point of human contact for qualified leads, converting ALEX-initiated conversations into long-term partnerships.",
     requirements: [
@@ -46,9 +46,9 @@ const openRoles = [
   {
     title: "Client Success Manager",
     department: "Client Success",
-    location: "Oslo / Remote",
+    location: "International / Remote",
     type: "Full-time",
-    description: "Own the post-deployment relationship with our clients. You will monitor performance, identify expansion opportunities, and ensure every client achieves the ROI they were promised — and more.",
+    description: "Own the post-deployment relationship with our clients. You will monitor performance, identify expansion opportunities, and help each client evaluate results against agreed success measures.",
     requirements: [
       "3+ years in client success, account management, or consulting",
       "Strong analytical skills and comfort with operational metrics",
@@ -97,8 +97,8 @@ const values = [
 export default function Careers() {
   useSEO({
     title: "Careers at IntelligentForce – Join the AI Revolution",
-    description: "Join IntelligentForce and help build the future of AI business automation. Open positions in engineering, sales, and operations. Based in Oslo, Norway.",
-    keywords: "IntelligentForce careers, AI jobs Norway, Oslo tech jobs, AI automation jobs, join AI company",
+    description: "Join IntelligentForce and help build the future of AI business automation. Open positions in engineering, sales, and operations for an international, remote-first platform.",
+    keywords: "IntelligentForce careers, international AI jobs, remote AI automation jobs, join AI company",
     canonical: "https://intelligentforce.ai/careers",
     
   });
@@ -155,7 +155,7 @@ export default function Careers() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             {[
               ["Competitive compensation", "Base salary + performance bonus + equity participation for senior roles"],
-              ["Flexible location", "Remote-first with optional presence in Oslo. Work from where you do your best work."],
+              ["Flexible location", "Remote-first and internationally oriented. Work from where you do your best work."],
               ["Direct impact", "Small team means your work is visible and your decisions matter from day one"],
               ["Learning & development", "Budget for conferences, courses, and tools that make you better at what you do"],
               ["Modern tooling", "Access to the latest AI tools, platforms, and infrastructure — we eat our own cooking"],

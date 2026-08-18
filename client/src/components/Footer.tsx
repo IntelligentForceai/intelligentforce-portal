@@ -4,7 +4,8 @@ import { useLang } from "@/contexts/LanguageContext";
 import { Linkedin, Instagram, Facebook } from "lucide-react";
 
 export default function Footer() {
-  const { t } = useLang();
+  const { t, lang } = useLang();
+  const isNo = lang === "no";
   const [logoZoomed, setLogoZoomed] = useState(false);
 
   return (
@@ -31,7 +32,7 @@ export default function Footer() {
               />
             </Link>
             <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
-              AI-drevet forretningsautomatisering for norske bedrifter.
+              {isNo ? "Internasjonal AI-drevet forretningsautomatisering under etablering." : "International AI-powered business automation under establishment."}
             </p>
             {/* Social media */}
             <div className="flex gap-3">
@@ -113,7 +114,7 @@ export default function Footer() {
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-muted-foreground">{t.footer.rights}</p>
           <p className="text-xs text-muted-foreground">
-            Made with ❤️ in Oslo, Norway
+            {isNo ? "Bygges internasjonalt med AI" : "Built internationally with AI"}
           </p>
         </div>
       </div>

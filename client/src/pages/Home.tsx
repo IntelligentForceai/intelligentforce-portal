@@ -39,7 +39,7 @@ export default function Home() {
       "description": "AI-powered business automation platform. 9 specialised AI agents delivering measurable results.",
       "email": "hello@intelligentforce.ai",
       "foundingDate": "2026",
-      "areaServed": ["Worldwide", "Norway", "Scandinavia"],
+      "areaServed": "Worldwide",
       "serviceType": "AI Business Automation",
       "sameAs": [
         "https://linkedin.com/company/intelligentforce",

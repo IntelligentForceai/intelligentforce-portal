@@ -10,8 +10,8 @@ import { useSEO } from "@/hooks/useSEO";
 export default function About() {
   useSEO({
     title: "About IntelligentForce – AI Business Automation Company",
-    description: "Learn about IntelligentForce, the AI-powered business automation company based in Oslo, Norway. Our mission is to make enterprise-grade AI accessible to every business.",
-    keywords: "IntelligentForce about, AI company Norway, Oslo AI startup, business automation company, AI team",
+    description: "Learn about IntelligentForce, an international AI-powered business automation platform under establishment. Our mission is to make enterprise-grade AI accessible to ambitious businesses.",
+    keywords: "IntelligentForce about, international AI platform, business automation platform, enterprise AI, AI team",
     canonical: "https://intelligentforce.ai/about",
     
   });

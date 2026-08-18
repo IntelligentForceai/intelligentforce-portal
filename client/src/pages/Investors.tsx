@@ -29,7 +29,7 @@ export default function Investors() {
   useSEO({
     title: "Investor Relations – IntelligentForce",
     description: "IntelligentForce investor relations. Learn about our growth trajectory, market opportunity, and how to partner with us as we scale AI automation globally.",
-    keywords: "IntelligentForce investors, AI startup investment, business automation investment, AI company Norway",
+    keywords: "IntelligentForce investors, international AI startup investment, business automation investment, enterprise AI platform",
     canonical: "https://intelligentforce.ai/investors",
     
   });
@@ -338,7 +338,7 @@ export default function Investors() {
               <div>
                 <div className="text-white font-bold text-sm">Vlad Joffcheff</div>
                 <div className="text-cyan-400 text-xs">
-                  {isNo ? "Grunnlegger & CEO · IntelligentForce" : "Founder & CEO · IntelligentForce"}
+                  {isNo ? "Grunnlegger · IntelligentForce" : "Founder · IntelligentForce"}
                 </div>
               </div>
             </div>
@@ -373,8 +373,8 @@ export default function Investors() {
                 icon: <Clock size={24} className="text-yellow-400" />,
                 title: isNo ? "Bedrifter er klare — men mangel på ekspertise" : "Businesses Are Ready — But Lack Expertise",
                 desc: isNo
-                  ? "Over 80% av norske bedrifter identifiserer automatisering som sin viktigste AI-brukscase (NHH 2025), men færre enn 15% har intern kapasitet til å implementere det. IntelligentForce er broen."
-                  : "Over 80% of Nordic businesses identify automation as their primary AI use case (NHH 2025), but fewer than 15% have internal capacity to implement it. IntelligentForce is the bridge.",
+                  ? "Virksomheter i modne markeder ser stadig etter praktiske AI-løsninger, men mangler ofte intern kapasitet til å gå fra interesse til en kontrollert implementering. IntelligentForce er bygget for å støtte dette steget."
+                  : "Businesses in mature markets increasingly seek practical AI solutions, yet often lack internal capacity to move from interest to a controlled implementation. IntelligentForce is being built to support that step.",
               },
               {
                 icon: <TrendingUp size={24} className="text-green-400" />,

@@ -7,7 +7,7 @@ import { Cookie, ArrowLeft } from "lucide-react";
 export default function Cookies() {
   useSEO({
     title: "Cookie Policy – IntelligentForce",
-    description: "Cookie Policy for IntelligentForce AS. Learn how we use cookies and how to manage your preferences.",
+    description: "Cookie information for the IntelligentForce platform and how to manage your preferences.",
     canonical: "https://intelligentforce.ai/cookies",
   });
   usePageTracker("/cookies");

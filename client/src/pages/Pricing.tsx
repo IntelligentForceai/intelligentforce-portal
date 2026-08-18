@@ -92,8 +92,10 @@ export default function Pricing() {
     canonical: "https://intelligentforce.ai/pricing",
     
   });
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const p = t.pricing;
+  const isNo = lang === "no";
+  const pilotCta = isNo ? "Be om pilotforslag" : "Request a pilot proposal";
   const [yearly, setYearly] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   usePageTracker("/pricing");
@@ -106,7 +108,7 @@ export default function Pricing() {
     "Standard support",
     "Monthly reporting",
     "API access",
-    "14-day free trial",
+    "Pilot proposal subject to agreement",
   ];
 
   const proFeatures = [
@@ -118,7 +120,7 @@ export default function Pricing() {
     "Weekly reporting & analytics",
     "Custom API endpoints",
     "Team collaboration tools",
-    "14-day free trial",
+    "Pilot proposal subject to agreement",
   ];
 
   const entFeatures = [
@@ -166,27 +168,10 @@ export default function Pricing() {
           <h1 className="text-4xl sm:text-5xl font-extrabold text-white mb-4">{p.hero}</h1>
           <p className="text-muted-foreground text-xl mb-8">{p.heroSub}</p>
 
-          {/* Billing toggle */}
-          <div className="inline-flex items-center gap-3 bg-card border border-border rounded-full p-1.5">
-            <button
-              onClick={() => setYearly(false)}
-              className={`px-5 py-2 rounded-full text-sm font-medium transition-all ${
-                !yearly ? "bg-white/15 text-white" : "text-muted-foreground hover:text-white"
-              }`}
-            >
-              {p.monthly}
-            </button>
-            <button
-              onClick={() => setYearly(true)}
-              className={`px-5 py-2 rounded-full text-sm font-medium transition-all flex items-center gap-2 ${
-                yearly ? "bg-white/15 text-white" : "text-muted-foreground hover:text-white"
-              }`}
-            >
-              {p.yearly}
-              <span className="text-xs bg-green-500/20 text-green-400 px-2 py-0.5 rounded-full">
-                {p.yearlySave}
-              </span>
-            </button>
+          <div className="max-w-3xl mx-auto bg-cyan-500/5 border border-cyan-500/25 rounded-2xl px-5 py-4 text-sm text-muted-foreground">
+            {isNo
+              ? "IntelligentForce er under etablering. Prisene nedenfor er indikative og brukes kun som grunnlag for pilotdialog. Betalte tjenester, abonnementer og endelige vilkår avtales først med korrekt registrert juridisk enhet."
+              : "IntelligentForce is under establishment. The prices below are indicative and are shown only as a basis for pilot discussion. Paid services, subscriptions and final terms will be agreed only with the appropriate registered legal entity."}
           </div>
         </div>
       </section>
@@ -218,14 +203,9 @@ export default function Pricing() {
                   </li>
                 ))}
               </ul>
-              <a
-                href="https://buy.stripe.com/eVq6oIehC5KKgFDgZdaAw00"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-gradient px-6 py-3 rounded-full font-semibold text-white text-center block"
-              >
-                {p.startTrial}
-              </a>
+              <Link href="/contact" className="btn-gradient px-6 py-3 rounded-full font-semibold text-white text-center block">
+                {pilotCta}
+              </Link>
             </div>
 
             {/* Professional – most popular */}
@@ -249,14 +229,9 @@ export default function Pricing() {
                   </li>
                 ))}
               </ul>
-              <a
-                href="https://buy.stripe.com/8x2cN64H28WW753aAPaAw01"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-gradient px-6 py-3 rounded-full font-semibold text-white text-center block"
-              >
-                {p.startTrial}
-              </a>
+              <Link href="/contact" className="btn-gradient px-6 py-3 rounded-full font-semibold text-white text-center block">
+                {pilotCta}
+              </Link>
             </div>
 
             {/* Enterprise */}
@@ -280,7 +255,8 @@ export default function Pricing() {
           </div>
 
           <p className="text-center text-muted-foreground text-sm mt-6">
-            Spørsmål? Kontakt oss på <a href="mailto:hello@intelligentforce.ai" className="text-cyan-400 hover:text-cyan-300 transition-colors">hello@intelligentforce.ai</a> eller chat med <a href="/alex" className="text-cyan-400 hover:text-cyan-300 transition-colors">ALEX</a>.
+            {isNo ? "Ønsker du å utforske en pilot?" : "Would you like to explore a pilot?"} {" "}
+            {isNo ? "Kontakt oss på" : "Contact us at"} <a href="mailto:hello@intelligentforce.ai" className="text-cyan-400 hover:text-cyan-300 transition-colors">hello@intelligentforce.ai</a> {isNo ? "eller chat med" : "or chat with"} <a href="/alex" className="text-cyan-400 hover:text-cyan-300 transition-colors">ALEX</a>.
           </p>
         </div>
       </section>

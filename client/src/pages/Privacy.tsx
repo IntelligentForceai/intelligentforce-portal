@@ -6,14 +6,14 @@ import { Shield, ArrowLeft } from "lucide-react";
 
 export default function Privacy() {
   useSEO({
-    title: "Privacy Policy – IntelligentForce",
-    description: "Privacy Policy for IntelligentForce AS. Learn how we collect, use and protect your personal data in compliance with GDPR.",
+    title: "Privacy and Data Notice – IntelligentForce",
+    description: "Transition information about enquiries and data submitted to the IntelligentForce platform.",
     canonical: "https://intelligentforce.ai/privacy",
   });
   usePageTracker("/privacy");
   const { lang } = useLang();
   const isNo = lang === "no";
-  const lastUpdated = "31 July 2026";
+  const lastUpdated = "18 August 2026";
 
   return (
     <div className="min-h-screen pt-20 pb-24">
@@ -27,11 +27,11 @@ export default function Privacy() {
               <Shield className="w-5 h-5 text-cyan-400" />
             </div>
             <span className="text-cyan-400 text-sm font-medium uppercase tracking-widest">
-              {isNo ? "Juridisk dokument" : "Legal Document"}
+              {isNo ? "Overgangsinformasjon" : "Transition Information"}
             </span>
           </div>
           <h1 className="text-4xl font-extrabold text-white mb-3">
-            {isNo ? "Personvernerklæring" : "Privacy Policy"}
+            {isNo ? "Personvern og data" : "Privacy and Data"}
           </h1>
           <p className="text-muted-foreground">{isNo ? `Sist oppdatert: ${lastUpdated}` : `Last updated: ${lastUpdated}`}</p>
         </div>
@@ -39,148 +39,56 @@ export default function Privacy() {
         <div className="space-y-10 text-muted-foreground leading-relaxed">
           {isNo ? (
             <>
-              <section>
-                <h2 className="text-2xl font-bold text-white mb-4">1. Behandlingsansvarlig</h2>
-                <p>IntelligentForce AS er behandlingsansvarlig for personopplysningene som samles inn via intelligentforce.ai og vår plattform. Kontakt oss på <a href="mailto:hello@intelligentforce.ai" className="text-cyan-400 hover:underline">hello@intelligentforce.ai</a> for spørsmål om personvern.</p>
+              <section className="bg-cyan-500/5 border border-cyan-500/25 rounded-2xl p-6">
+                <h2 className="text-xl font-bold text-white mb-3">Plattform under etablering</h2>
+                <p>IntelligentForce er under etablering som internasjonal plattform. En registrert juridisk enhet og endelig behandlingsansvarlig for betalte kundeleveranser er ennå ikke publisert. Denne siden forklarer derfor hvordan vi håndterer enkle henvendelser i overgangsperioden, og erstattes av en full personvernerklæring når London-strukturen er registrert.</p>
               </section>
               <section>
-                <h2 className="text-2xl font-bold text-white mb-4">2. Hvilke opplysninger vi samler inn</h2>
-                <p>Vi samler inn følgende kategorier av personopplysninger:</p>
-                <ul className="list-disc pl-6 mt-3 space-y-2">
-                  <li><strong className="text-white">Kontaktopplysninger:</strong> Navn, e-postadresse, telefonnummer og stillingstittel som du oppgir via skjemaer, chatboten ALEX eller e-post.</li>
-                  <li><strong className="text-white">Kontoopplysninger:</strong> Brukernavn, passord (kryptert) og betalingsinformasjon for abonnenter.</li>
-                  <li><strong className="text-white">Bruksdata:</strong> IP-adresse, nettlesertype, besøkte sider, tid brukt på siden og andre tekniske data samlet inn automatisk.</li>
-                  <li><strong className="text-white">Forretningsdata:</strong> Informasjon du deler med oss i forbindelse med Business Health Check eller implementeringsprosjekter.</li>
-                  <li><strong className="text-white">Kommunikasjonsdata:</strong> Innholdet i meldinger du sender oss via e-post, kontaktskjema eller ALEX-chatboten.</li>
-                </ul>
+                <h2 className="text-2xl font-bold text-white mb-4">1. Hvilke opplysninger du kan sende</h2>
+                <p>Hvis du kontakter oss, kan vi motta kontaktopplysninger og innholdet i henvendelsen, for eksempel navn, e-postadresse, organisasjon, rolle og spørsmål om plattformen. Vi bruker dette kun til å besvare henvendelsen, vurdere mulig pilot- eller partnersamarbeid og forbedre vår dialog.</p>
               </section>
               <section>
-                <h2 className="text-2xl font-bold text-white mb-4">3. Formål og rettslig grunnlag</h2>
-                <p>Vi behandler personopplysninger for følgende formål:</p>
-                <ul className="list-disc pl-6 mt-3 space-y-2">
-                  <li><strong className="text-white">Levering av tjenester</strong> (Avtale): For å levere, administrere og forbedre plattformen og tjenestene.</li>
-                  <li><strong className="text-white">Kundeservice</strong> (Berettiget interesse): For å besvare henvendelser og yte support.</li>
-                  <li><strong className="text-white">Markedsføring</strong> (Samtykke): For å sende nyhetsbrev og markedsføringskommunikasjon til deg som har samtykket til dette.</li>
-                  <li><strong className="text-white">Analyse og forbedring</strong> (Berettiget interesse): For å analysere bruk av nettstedet og forbedre tjenestene.</li>
-                  <li><strong className="text-white">Rettslige forpliktelser</strong> (Lovpålagt): For å overholde gjeldende lover og forskrifter.</li>
-                </ul>
+                <h2 className="text-2xl font-bold text-white mb-4">2. Ikke send sensitive opplysninger</h2>
+                <p>Ikke send konfidensielle forretningsopplysninger, særlige kategorier personopplysninger, finansielle data, helseopplysninger, passord, API-nøkler eller annet regulert materiale gjennom offentlige skjemaer eller ALEX-chatten. Slike data skal først håndteres når riktig juridisk enhet, sikker dataflyt og skriftlig kundeavtale er etablert.</p>
               </section>
               <section>
-                <h2 className="text-2xl font-bold text-white mb-4">4. Deling av opplysninger</h2>
-                <p>Vi selger aldri personopplysningene dine. Vi kan dele opplysninger med:</p>
-                <ul className="list-disc pl-6 mt-3 space-y-2">
-                  <li><strong className="text-white">Tjenesteleverandører:</strong> Tredjeparter som hjelper oss med å levere tjenestene (f.eks. skyinfrastruktur, betalingsbehandling, e-posttjenester). Disse behandler data kun etter våre instruksjoner.</li>
-                  <li><strong className="text-white">Juridiske krav:</strong> Dersom vi er pålagt å utlevere opplysninger i henhold til lov, rettslig kjennelse eller myndighetskrav.</li>
-                  <li><strong className="text-white">Virksomhetsoverdragelse:</strong> I forbindelse med fusjon, oppkjøp eller salg av virksomheten, med forbehold om at mottakeren overholder denne personvernerklæringen.</li>
-                </ul>
+                <h2 className="text-2xl font-bold text-white mb-4">3. Deling og tjenester</h2>
+                <p>Vi bruker tekniske tjenester for nettsted, e-post, analyse, betaling i test- eller fremtidig produksjonsoppsett og AI-funksjoner. Vi selger ikke kontaktopplysninger. Kontaktinformasjon deles ikke for markedsføring med tredjeparter uten at det er nødvendig for en konkret, avtalt tjeneste eller du har samtykket.</p>
               </section>
               <section>
-                <h2 className="text-2xl font-bold text-white mb-4">5. Overføring til tredjeland</h2>
-                <p>Dersom personopplysninger overføres til land utenfor EØS, sikrer vi at overføringen er beskyttet av egnede garantier, som EUs standardkontraktsbestemmelser (SCC) eller tilsvarende mekanismer i henhold til GDPR artikkel 46.</p>
+                <h2 className="text-2xl font-bold text-white mb-4">4. Oppbevaring og sletting</h2>
+                <p>Henvendelser oppbevares bare så lenge det er rimelig nødvendig for oppfølging, dokumentasjon og etablering av korrekt juridisk struktur. Du kan be om innsyn, retting eller sletting av en henvendelse ved å skrive til <a href="mailto:hello@intelligentforce.ai" className="text-cyan-400 hover:underline">hello@intelligentforce.ai</a>. Vi vurderer og besvarer forespørselen så snart som praktisk mulig.</p>
               </section>
               <section>
-                <h2 className="text-2xl font-bold text-white mb-4">6. Oppbevaringstid</h2>
-                <p>Vi oppbevarer personopplysninger så lenge det er nødvendig for formålene de ble samlet inn for, eller så lenge det kreves ved lov. Kontoopplysninger slettes 30 dager etter at en konto avsluttes. Kommunikasjonsdata oppbevares i inntil 3 år. Regnskapsdata oppbevares i 5 år i henhold til norsk bokføringslov.</p>
-              </section>
-              <section>
-                <h2 className="text-2xl font-bold text-white mb-4">7. Dine rettigheter (GDPR)</h2>
-                <p>Som registrert har du følgende rettigheter:</p>
-                <ul className="list-disc pl-6 mt-3 space-y-2">
-                  <li><strong className="text-white">Innsyn:</strong> Rett til å få bekreftet om vi behandler opplysninger om deg og å motta en kopi.</li>
-                  <li><strong className="text-white">Retting:</strong> Rett til å få uriktige opplysninger rettet.</li>
-                  <li><strong className="text-white">Sletting:</strong> Rett til å få opplysninger slettet («retten til å bli glemt»), med visse unntak.</li>
-                  <li><strong className="text-white">Begrensning:</strong> Rett til å kreve at behandlingen begrenses i visse situasjoner.</li>
-                  <li><strong className="text-white">Dataportabilitet:</strong> Rett til å motta opplysningene i et strukturert, maskinlesbart format.</li>
-                  <li><strong className="text-white">Innsigelse:</strong> Rett til å protestere mot behandling basert på berettiget interesse.</li>
-                  <li><strong className="text-white">Trekke samtykke:</strong> Rett til å trekke tilbake samtykke til enhver tid uten at dette påvirker lovligheten av behandling før tilbaketrekkingen.</li>
-                </ul>
-                <p className="mt-3">For å utøve dine rettigheter, kontakt oss på <a href="mailto:hello@intelligentforce.ai" className="text-cyan-400 hover:underline">hello@intelligentforce.ai</a>. Vi besvarer henvendelser innen 30 dager. Du har også rett til å klage til Datatilsynet (datatilsynet.no).</p>
-              </section>
-              <section>
-                <h2 className="text-2xl font-bold text-white mb-4">8. Sikkerhet</h2>
-                <p>Vi implementerer tekniske og organisatoriske sikkerhetstiltak for å beskytte personopplysningene dine mot uautorisert tilgang, endring, utlevering eller sletting. Dette inkluderer kryptering av data i overføring og lagring, tilgangskontroll, og regelmessige sikkerhetsrevisjoner. Dersom det oppstår et sikkerhetsbrudd som påvirker dine rettigheter og friheter, vil vi varsle deg og Datatilsynet innen 72 timer der det er påkrevd.</p>
-              </section>
-              <section>
-                <h2 className="text-2xl font-bold text-white mb-4">9. Informasjonskapsler</h2>
-                <p>Vi bruker informasjonskapsler og lignende teknologier på nettstedet vårt. Se vår <Link href="/cookies" className="text-cyan-400 hover:underline">informasjonskapselpolicy</Link> for detaljert informasjon om hvilke informasjonskapsler vi bruker og hvordan du kan administrere dem.</p>
-              </section>
-              <section>
-                <h2 className="text-2xl font-bold text-white mb-4">10. Endringer i personvernerklæringen</h2>
-                <p>Vi kan oppdatere denne personvernerklæringen fra tid til annen. Vesentlige endringer varsles via e-post eller på nettstedet. Den oppdaterte datoen øverst på siden angir når erklæringen sist ble revidert.</p>
-              </section>
-              <section>
-                <h2 className="text-2xl font-bold text-white mb-4">11. Kontakt</h2>
-                <div className="bg-card border border-border rounded-xl p-5 space-y-1">
-                  <p className="text-white font-semibold">IntelligentForce AS — Personvernansvarlig</p>
-                  <p>E-post: <a href="mailto:hello@intelligentforce.ai" className="text-cyan-400 hover:underline">hello@intelligentforce.ai</a></p>
-                  <p>Datatilsynet: <a href="https://www.datatilsynet.no" target="_blank" rel="noopener noreferrer" className="text-cyan-400 hover:underline">datatilsynet.no</a></p>
-                </div>
+                <h2 className="text-2xl font-bold text-white mb-4">5. Fremtidig personvernerklæring</h2>
+                <p>Før en betalt kundeavtale eller behandling av kundedata starter, publiseres en fullstendig personvernerklæring med registrert juridisk enhet, kontaktpunkt for personvern, behandlingsformål, rettslig grunnlag, oppbevaring, internasjonale overføringer og klagemuligheter.</p>
               </section>
             </>
           ) : (
             <>
-              <section>
-                <h2 className="text-2xl font-bold text-white mb-4">1. Data Controller</h2>
-                <p>IntelligentForce AS is the data controller for personal data collected via intelligentforce.ai and our platform. Contact us at <a href="mailto:hello@intelligentforce.ai" className="text-cyan-400 hover:underline">hello@intelligentforce.ai</a> for privacy-related enquiries.</p>
+              <section className="bg-cyan-500/5 border border-cyan-500/25 rounded-2xl p-6">
+                <h2 className="text-xl font-bold text-white mb-3">Platform under establishment</h2>
+                <p>IntelligentForce is being established as an international platform. A registered legal entity and final data controller for paid customer delivery have not yet been published. This page therefore explains how simple enquiries are handled during the transition period and will be replaced by a full privacy policy once the London structure is registered.</p>
               </section>
               <section>
-                <h2 className="text-2xl font-bold text-white mb-4">2. Data We Collect</h2>
-                <p>We collect the following categories of personal data:</p>
-                <ul className="list-disc pl-6 mt-3 space-y-2">
-                  <li><strong className="text-white">Contact information:</strong> Name, email address, phone number and job title provided via forms, ALEX chatbot or email.</li>
-                  <li><strong className="text-white">Account information:</strong> Username, password (encrypted) and payment information for subscribers.</li>
-                  <li><strong className="text-white">Usage data:</strong> IP address, browser type, pages visited, time on site and other technical data collected automatically.</li>
-                  <li><strong className="text-white">Business data:</strong> Information you share in connection with the Business Health Check or implementation projects.</li>
-                  <li><strong className="text-white">Communication data:</strong> Content of messages sent via email, contact form or ALEX chatbot.</li>
-                </ul>
+                <h2 className="text-2xl font-bold text-white mb-4">1. Information you may submit</h2>
+                <p>If you contact us, we may receive contact details and the content of your enquiry, such as name, email address, organisation, role and questions about the platform. We use this only to respond, assess potential pilot or partnership work and improve our dialogue.</p>
               </section>
               <section>
-                <h2 className="text-2xl font-bold text-white mb-4">3. Purposes and Legal Basis</h2>
-                <p>We process personal data for the following purposes:</p>
-                <ul className="list-disc pl-6 mt-3 space-y-2">
-                  <li><strong className="text-white">Service delivery</strong> (Contract): To deliver, manage and improve the platform and services.</li>
-                  <li><strong className="text-white">Customer service</strong> (Legitimate interest): To respond to enquiries and provide support.</li>
-                  <li><strong className="text-white">Marketing</strong> (Consent): To send newsletters and marketing communications to those who have consented.</li>
-                  <li><strong className="text-white">Analytics and improvement</strong> (Legitimate interest): To analyse website usage and improve services.</li>
-                  <li><strong className="text-white">Legal obligations</strong> (Legal requirement): To comply with applicable laws and regulations.</li>
-                </ul>
+                <h2 className="text-2xl font-bold text-white mb-4">2. Do not submit sensitive information</h2>
+                <p>Do not submit confidential business information, special-category personal data, financial data, health information, passwords, API keys or other regulated material through public forms or ALEX chat. Such data should be handled only after the appropriate legal entity, secure data flow and written customer agreement are in place.</p>
               </section>
               <section>
-                <h2 className="text-2xl font-bold text-white mb-4">4. Sharing of Data</h2>
-                <p>We never sell your personal data. We may share data with service providers who help us deliver services (e.g. cloud infrastructure, payment processing, email services), who process data only on our instructions; with authorities where required by law; and in connection with a business transfer, subject to the recipient complying with this Privacy Policy.</p>
+                <h2 className="text-2xl font-bold text-white mb-4">3. Sharing and services</h2>
+                <p>We use technical services for the website, email, analytics, payment in test or future production arrangements and AI functionality. We do not sell contact information. Contact information is not shared with third parties for marketing unless necessary for a specific agreed service or you have consented.</p>
               </section>
               <section>
-                <h2 className="text-2xl font-bold text-white mb-4">5. International Transfers</h2>
-                <p>Where personal data is transferred to countries outside the EEA, we ensure the transfer is protected by appropriate safeguards, such as EU Standard Contractual Clauses (SCCs) or equivalent mechanisms under GDPR Article 46.</p>
+                <h2 className="text-2xl font-bold text-white mb-4">4. Retention and deletion</h2>
+                <p>Enquiries are retained only as long as reasonably necessary for follow-up, documentation and establishment of the correct legal structure. You may request access, correction or deletion of an enquiry by writing to <a href="mailto:hello@intelligentforce.ai" className="text-cyan-400 hover:underline">hello@intelligentforce.ai</a>. We will assess and respond as soon as reasonably practicable.</p>
               </section>
               <section>
-                <h2 className="text-2xl font-bold text-white mb-4">6. Retention</h2>
-                <p>We retain personal data for as long as necessary for the purposes for which it was collected, or as required by law. Account data is deleted 30 days after account closure. Communication data is retained for up to 3 years. Accounting data is retained for 5 years under Norwegian accounting law.</p>
-              </section>
-              <section>
-                <h2 className="text-2xl font-bold text-white mb-4">7. Your Rights (GDPR)</h2>
-                <p>As a data subject you have the right to: access your data; rectify inaccurate data; erasure ("right to be forgotten") subject to certain exceptions; restriction of processing; data portability; object to processing based on legitimate interest; and withdraw consent at any time without affecting the lawfulness of prior processing.</p>
-                <p className="mt-3">To exercise your rights, contact us at <a href="mailto:hello@intelligentforce.ai" className="text-cyan-400 hover:underline">hello@intelligentforce.ai</a>. We respond within 30 days. You also have the right to lodge a complaint with the Norwegian Data Protection Authority (Datatilsynet).</p>
-              </section>
-              <section>
-                <h2 className="text-2xl font-bold text-white mb-4">8. Security</h2>
-                <p>We implement technical and organisational security measures to protect your personal data against unauthorised access, alteration, disclosure or deletion, including encryption in transit and at rest, access controls and regular security audits. In the event of a data breach affecting your rights and freedoms, we will notify you and the supervisory authority within 72 hours where required.</p>
-              </section>
-              <section>
-                <h2 className="text-2xl font-bold text-white mb-4">9. Cookies</h2>
-                <p>We use cookies and similar technologies on our website. See our <Link href="/cookies" className="text-cyan-400 hover:underline">Cookie Policy</Link> for detailed information on which cookies we use and how to manage them.</p>
-              </section>
-              <section>
-                <h2 className="text-2xl font-bold text-white mb-4">10. Changes to This Policy</h2>
-                <p>We may update this Privacy Policy from time to time. Material changes will be notified via email or on the website. The updated date at the top of this page indicates when the policy was last revised.</p>
-              </section>
-              <section>
-                <h2 className="text-2xl font-bold text-white mb-4">11. Contact</h2>
-                <div className="bg-card border border-border rounded-xl p-5 space-y-1">
-                  <p className="text-white font-semibold">IntelligentForce AS — Data Protection</p>
-                  <p>Email: <a href="mailto:hello@intelligentforce.ai" className="text-cyan-400 hover:underline">hello@intelligentforce.ai</a></p>
-                  <p>Datatilsynet: <a href="https://www.datatilsynet.no" target="_blank" rel="noopener noreferrer" className="text-cyan-400 hover:underline">datatilsynet.no</a></p>
-                </div>
+                <h2 className="text-2xl font-bold text-white mb-4">5. Future privacy policy</h2>
+                <p>Before a paid customer agreement or processing of customer data begins, a complete privacy policy will be published with the registered legal entity, privacy contact point, processing purposes, legal bases, retention, international transfers and complaint routes.</p>
               </section>
             </>
           )}
@@ -190,9 +98,9 @@ export default function Privacy() {
           <h3 className="text-white font-bold mb-4">{isNo ? "Andre juridiske dokumenter" : "Other Legal Documents"}</h3>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {[
-              { label: isNo ? "Vilkår for bruk" : "Terms of Service", href: "/terms", desc: isNo ? "Regler for bruk av plattformen" : "Rules governing use of our platform" },
-              { label: isNo ? "Informasjonskapselpolicy" : "Cookie Policy", href: "/cookies", desc: isNo ? "Hvordan vi bruker informasjonskapsler" : "How we use cookies" },
-              { label: isNo ? "Juridisk oversikt" : "Legal Overview", href: "/legal", desc: isNo ? "Ansvarsfraskrivelser og juridisk informasjon" : "Disclaimers and legal information" },
+              { label: isNo ? "Vilkår for nettstedet" : "Website Terms", href: "/terms", desc: isNo ? "Status og vilkår under etablering" : "Status and transition terms" },
+              { label: isNo ? "Informasjonskapsler" : "Cookie Policy", href: "/cookies", desc: isNo ? "Hvordan nettstedet bruker informasjonskapsler" : "How the website uses cookies" },
+              { label: isNo ? "Juridisk oversikt" : "Legal Overview", href: "/legal", desc: isNo ? "Viktige forbehold og status" : "Key notices and status" },
             ].map((doc) => (
               <Link key={doc.href} href={doc.href} className="bg-card border border-border rounded-xl p-5 hover:border-cyan-500/40 transition-colors group">
                 <div className="text-white font-bold text-base mb-1 group-hover:text-cyan-300 transition-colors">{doc.label}</div>
