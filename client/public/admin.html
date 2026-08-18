@@ -1634,6 +1634,34 @@ function addAlexMsg(role, content, silent = false, attachments = []) {
   }
 }
 
+async function requestAlexResponse(payload) {
+  let lastError = null;
+  for (let attempt = 0; attempt < 2; attempt++) {
+    try {
+      const response = await fetch(WORKER_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      if (!response.ok) {
+        const error = new Error(`ALEX worker HTTP ${response.status}`);
+        error.retryable = [408, 429, 500, 502, 503, 504].includes(response.status);
+        throw error;
+      }
+      const data = await response.json();
+      if (!data || typeof data !== 'object') throw new Error('ALEX returned an invalid response');
+      return data;
+    } catch (error) {
+      lastError = error;
+      const isFinalAttempt = attempt === 1;
+      if (error.retryable === false || isFinalAttempt) throw error;
+      console.warn(`ALEX request failed temporarily; retrying once (${attempt + 1}/2).`, error);
+      await new Promise(resolve => setTimeout(resolve, 900));
+    }
+  }
+  throw lastError || new Error('ALEX request unavailable');
+}
+
 async function sendToAlex() {
   const inp = document.getElementById('alex-input');
   const files = attachmentState.alex.slice();
@@ -1659,13 +1687,7 @@ async function sendToAlex() {
       adminLang: adminLang,
       attachments: attachmentAnalysis.imageAttachments
     };
-    const chatResponse = await fetch(WORKER_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
-    if (!chatResponse.ok) throw new Error('ALEX analysis unavailable');
-    const chatData = await chatResponse.json();
+    const chatData = await requestAlexResponse(payload);
     typing.classList.remove('show');
     const reply = chatData.reply || 'Beklager, teknisk problem. Prøv igjen.';
     addAlexMsg('assistant', reply);
@@ -2200,20 +2222,14 @@ Hold svarene konsise og handlingsorienterte. Du er ikke en chatbot — du er en 
     const metadata = attachmentMetadata(files);
     agentMessages[agent.id].push({ role: 'user', content: text, attachments: metadata });
     renderAgentMsg('user', text, agent, metadata);
-    const res = await fetch(WORKER_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        messages: [
-          { role: 'user', content: agentSystemPrompt + '\n\n---\n\n' + text + attachmentAnalysis.documentContext },
-          ...agentMessages[agent.id].slice(1).map(m => ({ role: m.role, content: m.content }))
-        ],
-        attachments: attachmentAnalysis.imageAttachments,
-        adminMode: false
-      })
+    const data = await requestAlexResponse({
+      messages: [
+        { role: 'user', content: agentSystemPrompt + '\n\n---\n\n' + text + attachmentAnalysis.documentContext },
+        ...agentMessages[agent.id].slice(1).map(m => ({ role: m.role, content: m.content }))
+      ],
+      attachments: attachmentAnalysis.imageAttachments,
+      adminMode: false
     });
-    if (!res.ok) throw new Error('agent_attachment_analysis_unavailable');
-    const data = await res.json();
     const reply = data.reply || 'Beklager, teknisk problem.';
     agentMessages[agent.id].push({ role: 'assistant', content: reply });
     renderAgentMsg('assistant', reply, agent);
